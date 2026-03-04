@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام حجز الغرف الفندقية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#C9A84C;--gold-light:#E8C97A;--gold-dark:#8B6914;--dark:#0D0D0D;--dark2:#1A1A1A;--dark3:#252525;--dark4:#2E2E2E;--text:#F0E6D3;--text-muted:#9A8A70;--available:#2ECC71;--booked:#E74C3C;--border:rgba(201,168,76,0.2)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);min-height:100vh}
+header{background:linear-gradient(135deg,var(--dark2) 0%,#1C1408 100%);border-bottom:1px solid var(--border);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(0,0,0,.5)}
+.logo{display:flex;align-items:center;gap:14px}
+.logo-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 15px rgba(201,168,76,.3)}
+.logo-text h1{font-size:20px;font-weight:800;color:var(--gold);letter-spacing:1px}
+.logo-text p{font-size:12px;color:var(--text-muted);font-weight:300}
+.header-stats{display:flex;gap:16px}
+.stat-badge{text-align:center;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:8px 18px}
+.stat-badge .num{font-size:22px;font-weight:800;color:var(--gold)}
+.stat-badge .lbl{font-size:11px;color:var(--text-muted)}
+#floors-page{padding:40px;max-width:1400px;margin:0 auto}
+.page-title{margin-bottom:40px;text-align:center}
+.page-title h2{font-size:32px;font-weight:800;color:var(--gold);margin-bottom:8px}
+.page-title p{color:var(--text-muted);font-size:15px}
+.floor-section{margin-bottom:40px}
+.floor-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.floor-badge{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-weight:800;font-size:14px;padding:6px 16px;border-radius:20px;white-space:nowrap}
+.floor-title{font-size:20px;font-weight:700;color:var(--text)}
+.floor-count{margin-right:auto;font-size:13px;color:var(--text-muted);background:var(--dark3);padding:4px 12px;border-radius:20px;border:1px solid var(--border)}
+.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
+.room-card{background:var(--dark3);border:2px solid var(--border);border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden}
+.room-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--available);transition:all .25s}
+.room-card.booked::before{background:var(--booked)}
+.room-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 10px 30px rgba(201,168,76,.2)}
+.room-number{font-size:28px;font-weight:800;color:var(--gold);margin-bottom:8px}
+.room-status{font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;display:inline-block}
+.room-status.available{background:rgba(46,204,113,.15);color:var(--available);border:1px solid rgba(46,204,113,.3)}
+.room-status.booked{background:rgba(231,76,60,.15);color:var(--booked);border:1px solid rgba(231,76,60,.3)}
+.room-guests{font-size:11px;color:var(--text-muted);margin-top:6px}
+#booking-page{display:none;padding:40px;max-width:900px;margin:0 auto}
+.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:500;margin-bottom:30px;transition:all .2s}
+.back-btn:hover{border-color:var(--gold);color:var(--gold)}
+.booking-header{background:linear-gradient(135deg,var(--dark2),#1C1408);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:30px;display:flex;align-items:center;gap:24px}
+.room-big-number{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:40px;font-weight:800;width:90px;height:90px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 8px 25px rgba(201,168,76,.3)}
+.room-big-info h3{font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px}
+.room-big-info p{color:var(--text-muted);font-size:14px}
+.guests-section{margin-bottom:20px}
+.section-title{font-size:18px;font-weight:700;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.no-guests{background:var(--dark3);border:1px dashed var(--border);border-radius:12px;padding:30px;text-align:center;color:var(--text-muted);font-size:14px}
+.guest-card{background:var(--dark3);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px;transition:border-color .2s}
+.guest-card:hover{border-color:rgba(201,168,76,.4)}
+.guest-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.guest-name-display{font-size:17px;font-weight:700;color:var(--text)}
+.guest-actions{display:flex;gap:8px}
+.btn-edit,.btn-delete{padding:6px 14px;border-radius:8px;border:none;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-edit{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+.btn-edit:hover{background:rgba(201,168,76,.3)}
+.btn-delete{background:rgba(231,76,60,.15);color:var(--booked);border:1px solid rgba(231,76,60,.3)}
+.btn-delete:hover{background:rgba(231,76,60,.3)}
+.guest-details{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.guest-detail-item{background:var(--dark4);border-radius:8px;padding:10px 14px}
+.guest-detail-item .detail-label{font-size:11px;color:var(--text-muted);margin-bottom:4px}
+.guest-detail-item .detail-value{font-size:14px;font-weight:600;color:var(--text)}
+.booking-form{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:30px}
+.form-title{font-size:17px;font-weight:700;color:var(--gold);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.form-group{display:flex;flex-direction:column;gap:8px}
+label{font-size:13px;font-weight:600;color:var(--text-muted);letter-spacing:.5px}
+input[type=text],input[type=tel],input[type=date]{background:var(--dark3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;padding:12px 16px;outline:none;transition:border-color .2s;width:100%}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) saturate(2) hue-rotate(10deg)}
+.form-actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
+.btn-save{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:13px 28px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 15px rgba(201,168,76,.3)}
+.btn-save:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(201,168,76,.4)}
+.btn-cancel-form{background:var(--dark3);color:var(--text-muted);border:1px solid var(--border);padding:13px 28px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-cancel-form:hover{border-color:var(--text-muted);color:var(--text)}
+.btn-add-guest{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,.1);color:var(--gold);border:1px dashed rgba(201,168,76,.4);padding:12px 22px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;margin-bottom:24px}
+.btn-add-guest:hover{background:rgba(201,168,76,.2);border-color:var(--gold)}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:14px 28px;border-radius:12px;font-size:15px;font-weight:600;z-index:9999;transition:transform .3s ease;box-shadow:0 8px 30px rgba(0,0,0,.5);white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:var(--available);color:var(--available)}
+.toast.error{border-color:var(--booked);color:var(--booked)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center}
+.overlay.show{display:flex}
+.confirm-box{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:32px;max-width:380px;width:90%;text-align:center}
+.confirm-box h3{font-size:20px;font-weight:700;color:var(--text);margin-bottom:12px}
+.confirm-box p{color:var(--text-muted);font-size:14px;margin-bottom:24px}
+.confirm-btns{display:flex;gap:12px;justify-content:center}
+.btn-confirm-delete{background:var(--booked);color:white;border:none;padding:12px 24px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+.btn-confirm-cancel{background:var(--dark3);color:var(--text);border:1px solid var(--border);padding:12px 24px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+@media(max-width:700px){#floors-page,#booking-page{padding:20px}header{padding:14px 20px}.header-stats{gap:8px}.stat-badge{padding:6px 10px}.form-grid{grid-template-columns:1fr}.guest-details{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">
+    <div class="logo-icon">🏨</div>
+    <div class="logo-text">
+      <h1>الفندق الذهبي</h1>
+      <p>نظام إدارة الحجوزات</p>
+    </div>
+  </div>
+  <div class="header-stats">
+    <div class="stat-badge"><div class="num" id="stat-total">0</div><div class="lbl">إجمالي الغرف</div></div>
+    <div class="stat-badge"><div class="num" id="stat-booked" style="color:#E74C3C">0</div><div class="lbl">محجوزة</div></div>
+    <div class="stat-badge"><div class="num" id="stat-available" style="color:#2ECC71">0</div><div class="lbl">متاحة</div></div>
+  </div>
+</header>
+
+<div id="floors-page">
+  <div class="page-title">
+    <h2>🏨 غرف الفندق</h2>
+    <p>اختر غرفة لعرض تفاصيل الحجز أو إضافة حجز جديد</p>
+  </div>
+  <div id="floors-container"></div>
+</div>
+
+<div id="booking-page">
+  <button class="back-btn" onclick="goBack()">← العودة للغرف</button>
+  <div class="booking-header">
+    <div class="room-big-number" id="bp-room-num">101</div>
+    <div class="room-big-info">
+      <h3 id="bp-room-title">غرفة 101</h3>
+      <p id="bp-room-status-text">الحالة: متاحة</p>
+    </div>
+  </div>
+  <div class="guests-section">
+    <div class="section-title">قائمة الحجوزات</div>
+    <div id="guests-list"></div>
+  </div>
+  <button class="btn-add-guest" id="add-guest-btn" onclick="showAddForm()">＋ إضافة حجز جديد</button>
+  <div class="booking-form" id="booking-form" style="display:none">
+    <div class="form-title" id="form-title">📋 بيانات الحجز</div>
+    <input type="hidden" id="edit-index" value="-1">
+    <div class="form-grid">
+      <div class="form-group"><label>اسم العميل</label><input type="text" id="f-name" placeholder="أدخل الاسم الكامل"></div>
+      <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="f-phone" placeholder="01xxxxxxxxx"></div>
+      <div class="form-group"><label>تاريخ بداية الحجز</label><input type="date" id="f-checkin"></div>
+      <div class="form-group"><label>تاريخ نهاية الحجز</label><input type="date" id="f-checkout"></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" onclick="saveGuest()">💾 حفظ</button>
+      <button class="btn-cancel-form" onclick="cancelForm()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="overlay" id="confirm-overlay">
+  <div class="confirm-box">
+    <h3>⚠️ تأكيد الحذف</h3>
+    <p>هل أنت متأكد من حذف بيانات هذا العميل؟ لا يمكن التراجع.</p>
+    <div class="confirm-btns">
+      <button class="btn-confirm-delete" onclick="confirmDelete()">نعم، احذف</button>
+      <button class="btn-confirm-cancel" onclick="closeConfirm()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const FLOORS=[
+  {name:'الدور الأول',label:'الأول',rooms:['101','102','103','104','105','106','107','108']},
+  {name:'الدور الثاني',label:'الثاني',rooms:['201','202','203','204','205','206','207','208']},
+  {name:'الدور الثالث',label:'الثالث',rooms:['301','302','303','304','305','306','307','308']},
+  {name:'الدور الرابع',label:'الرابع',rooms:['401','402','403','404','405','406','407','408']}
+];
+let currentRoom=null,deleteIndex=null;
+function getData(){try{return JSON.parse(localStorage.getItem('hotelData')||'{}')}catch{return{}}}
+function saveData(d){localStorage.setItem('hotelData',JSON.stringify(d))}
+function getRoomGuests(r){return getData()[r]||[]}
+function setRoomGuests(r,g){const d=getData();d[r]=g;saveData(d)}
+function isRoomBooked(r){
+  const g=getRoomGuests(r);
+  if(!g.length)return false;
+  const today=new Date().toISOString().split('T')[0];
+  return g.some(x=>x.checkout>=today);
+}
+function renderFloors(){
+  const c=document.getElementById('floors-container');
+  c.innerHTML='';
+  let total=0,booked=0;
+  FLOORS.forEach((floor,fi)=>{
+    const sec=document.createElement('div');
+    sec.className='floor-section';
+    const cards=floor.rooms.map(rn=>{
+      total++;
+      const b=isRoomBooked(rn);
+      if(b)booked++;
+      const gc=getRoomGuests(rn).length;
+      return `<div class="room-card${b?' booked':''}" onclick="openRoom('${rn}','${floor.name}')">
+        <div class="room-number">${rn}</div>
+        <div class="room-status ${b?'booked':'available'}">${b?'محجوزة':'متاحة'}</div>
+        ${gc?`<div class="room-guests">${gc} حجز</div>`:''}
+      </div>`;
+    }).join('');
+    sec.innerHTML=`<div class="floor-header">
+      <span class="floor-badge">الدور ${floor.label}</span>
+      <span class="floor-title">${floor.name}</span>
+      <span class="floor-count">${floor.rooms.length} غرفة</span>
+    </div><div class="rooms-grid">${cards}</div>`;
+    c.appendChild(sec);
+  });
+  document.getElementById('stat-total').textContent=total;
+  document.getElementById('stat-booked').textContent=booked;
+  document.getElementById('stat-available').textContent=total-booked;
+}
+function openRoom(rn,floorName){
+  currentRoom=rn;
+  document.getElementById('floors-page').style.display='none';
+  document.getElementById('booking-page').style.display='block';
+  document.getElementById('bp-room-num').textContent=rn;
+  document.getElementById('bp-room-title').textContent=floorName+' - غرفة '+rn;
+  cancelForm();renderGuests();
+}
+function goBack(){
+  document.getElementById('booking-page').style.display='none';
+  document.getElementById('floors-page').style.display='block';
+  renderFloors();
+}
+function renderGuests(){
+  const g=getRoomGuests(currentRoom);
+  const list=document.getElementById('guests-list');
+  const b=isRoomBooked(currentRoom);
+  document.getElementById('bp-room-status-text').textContent='الحالة: '+(b?'🔴 محجوزة حالياً':'🟢 متاحة');
+  if(!g.length){list.innerHTML='<div class="no-guests">لا توجد حجوزات لهذه الغرفة حتى الآن</div>';return;}
+  list.innerHTML=g.map((x,i)=>`<div class="guest-card">
+    <div class="guest-card-header">
+      <div class="guest-name-display">👤 ${x.name}</div>
+      <div class="guest-actions">
+        <button class="btn-edit" onclick="editGuest(${i})">✏️ تعديل</button>
+        <button class="btn-delete" onclick="askDelete(${i})">🗑️ حذف</button>
+      </div>
+    </div>
+    <div class="guest-details">
+      <div class="guest-detail-item"><div class="detail-label">📞 رقم الهاتف</div><div class="detail-value">${x.phone}</div></div>
+      <div class="guest-detail-item"><div class="detail-label">📅 تاريخ الوصول</div><div class="detail-value">${fmt(x.checkin)}</div></div>
+      <div class="guest-detail-item"><div class="detail-label">📅 تاريخ المغادرة</div><div class="detail-value">${fmt(x.checkout)}</div></div>
+    </div>
+  </div>`).join('');
+}
+function fmt(d){if(!d)return'-';const[y,m,day]=d.split('-');return day+'/'+m+'/'+y}
+function showAddForm(){
+  document.getElementById('edit-index').value=-1;
+  document.getElementById('form-title').textContent='📋 إضافة حجز جديد';
+  document.getElementById('f-name').value='';
+  document.getElementById('f-phone').value='';
+  document.getElementById('f-checkin').value='';
+  document.getElementById('f-checkout').value='';
+  document.getElementById('booking-form').style.display='block';
+  document.getElementById('add-guest-btn').style.display='none';
+  document.getElementById('booking-form').scrollIntoView({behavior:'smooth'});
+}
+function editGuest(i){
+  const g=getRoomGuests(currentRoom)[i];
+  document.getElementById('edit-index').value=i;
+  document.getElementById('form-title').textContent='✏️ تعديل بيانات الحجز';
+  document.getElementById('f-name').value=g.name;
+  document.getElementById('f-phone').value=g.phone;
+  document.getElementById('f-checkin').value=g.checkin;
+  document.getElementById('f-checkout').value=g.checkout;
+  document.getElementById('booking-form').style.display='block';
+  document.getElementById('add-guest-btn').style.display='none';
+  document.getElementById('booking-form').scrollIntoView({behavior:'smooth'});
+}
+function isOverlap(checkin,checkout,bookings,excludeIndex){
+  // bookings is array of objects with checkin and checkout strings
+  const ci=new Date(checkin);
+  const co=new Date(checkout);
+  return bookings.some((b,i)=>{
+    if(typeof excludeIndex==='number' && i===excludeIndex) return false;
+    const bi=new Date(b.checkin);
+    const bo=new Date(b.checkout);
+    // treat bookings as [checkin,checkout] but allow new period to start on the previous checkout
+    // overlap only when periods have at least one full day in common (ci < bo && co > bi)
+    // this lets ci == bo or co == bi be allowed (touching boundaries).
+    return ci < bo && co > bi;
+  });
+}
+
+function saveGuest(){
+  const name=document.getElementById('f-name').value.trim();
+  const phone=document.getElementById('f-phone').value.trim();
+  const checkin=document.getElementById('f-checkin').value;
+  const checkout=document.getElementById('f-checkout').value;
+  if(!name||!phone||!checkin||!checkout){showToast('❌ من فضلك أكمل جميع البيانات','error');return}
+  if(checkout<=checkin){showToast('❌ تاريخ المغادرة يجب أن يكون بعد الوصول','error');return}
+  const guests=getRoomGuests(currentRoom);
+  const ei=parseInt(document.getElementById('edit-index').value);
+  // verify no overlapping bookings except the one we are editing
+  if(isOverlap(checkin,checkout,guests, ei>=0?ei:null)){
+    showToast('❌ يوجد حجز آخر في نفس الفترة','error');
+    return;
+  }
+  const gd={name,phone,checkin,checkout};
+  if(ei>=0){guests[ei]=gd;showToast('✅ تم تعديل بيانات الحجز بنجاح','success')}
+  else{guests.push(gd);showToast('✅ تم حفظ الحجز بنجاح','success')}
+  setRoomGuests(currentRoom,guests);
+  cancelForm();
+  renderGuests();
+  renderFloors(); // update status word on floor cards and stats
+}
+function cancelForm(){
+  document.getElementById('booking-form').style.display='none';
+  document.getElementById('add-guest-btn').style.display='inline-flex';
+}
+function askDelete(i){deleteIndex=i;document.getElementById('confirm-overlay').classList.add('show')}
+function confirmDelete(){
+  const g=getRoomGuests(currentRoom);
+  g.splice(deleteIndex,1);
+  setRoomGuests(currentRoom,g);
+  closeConfirm();
+  renderGuests();
+  renderFloors(); // refresh floor view statuses
+  showToast('🗑️ تم حذف الحجز بنجاح','success');
+}
+function closeConfirm(){document.getElementById('confirm-overlay').classList.remove('show');deleteIndex=null}
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+(type||'')+' show';
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+renderFloors();
+</script>
+</body>
+</html>
