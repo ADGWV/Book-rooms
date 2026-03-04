@@ -70,78 +70,6 @@ label{font-size:13px;font-weight:600;color:var(--text-muted);letter-spacing:.5px
 input[type=text],input[type=tel],input[type=date]{background:var(--dark3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;padding:12px 16px;outline:none;transition:border-color .2s;width:100%}
 input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
 input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) saturate(2) hue-rotate(10deg)}
-.form-actions{d<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام حجز الغرف الفندقية</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--gold:#C9A84C;--gold-light:#E8C97A;--gold-dark:#8B6914;--dark:#0D0D0D;--dark2:#1A1A1A;--dark3:#252525;--dark4:#2E2E2E;--text:#F0E6D3;--text-muted:#9A8A70;--available:#2ECC71;--booked:#E74C3C;--border:rgba(201,168,76,0.2)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);min-height:100vh}
-header{background:linear-gradient(135deg,var(--dark2) 0%,#1C1408 100%);border-bottom:1px solid var(--border);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(0,0,0,.5)}
-.logo{display:flex;align-items:center;gap:14px}
-.logo-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 15px rgba(201,168,76,.3)}
-.logo-text h1{font-size:20px;font-weight:800;color:var(--gold);letter-spacing:1px}
-.logo-text p{font-size:12px;color:var(--text-muted);font-weight:300}
-.header-stats{display:flex;gap:16px}
-.stat-badge{text-align:center;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:8px 18px}
-.stat-badge .num{font-size:22px;font-weight:800;color:var(--gold)}
-.stat-badge .lbl{font-size:11px;color:var(--text-muted)}
-#floors-page{padding:40px;max-width:1400px;margin:0 auto}
-.page-title{margin-bottom:40px;text-align:center}
-.page-title h2{font-size:32px;font-weight:800;color:var(--gold);margin-bottom:8px}
-.page-title p{color:var(--text-muted);font-size:15px}
-.floor-section{margin-bottom:40px}
-.floor-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.floor-badge{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-weight:800;font-size:14px;padding:6px 16px;border-radius:20px;white-space:nowrap}
-.floor-title{font-size:20px;font-weight:700;color:var(--text)}
-.floor-count{margin-right:auto;font-size:13px;color:var(--text-muted);background:var(--dark3);padding:4px 12px;border-radius:20px;border:1px solid var(--border)}
-.rooms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
-.room-card{background:var(--dark3);border:2px solid var(--border);border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;transition:all .25s ease;position:relative;overflow:hidden}
-.room-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--available);transition:all .25s}
-.room-card.booked::before{background:var(--booked)}
-.room-card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 10px 30px rgba(201,168,76,.2)}
-.room-number{font-size:28px;font-weight:800;color:var(--gold);margin-bottom:8px}
-.room-status{font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;display:inline-block}
-.room-status.available{background:rgba(46,204,113,.15);color:var(--available);border:1px solid rgba(46,204,113,.3)}
-.room-status.booked{background:rgba(231,76,60,.15);color:var(--booked);border:1px solid rgba(231,76,60,.3)}
-.room-guests{font-size:11px;color:var(--text-muted);margin-top:6px}
-#booking-page{display:none;padding:40px;max-width:900px;margin:0 auto}
-.back-btn{display:inline-flex;align-items:center;gap:8px;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:10px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:500;margin-bottom:30px;transition:all .2s}
-.back-btn:hover{border-color:var(--gold);color:var(--gold)}
-.booking-header{background:linear-gradient(135deg,var(--dark2),#1C1408);border:1px solid var(--border);border-radius:16px;padding:28px;margin-bottom:30px;display:flex;align-items:center;gap:24px}
-.room-big-number{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:40px;font-weight:800;width:90px;height:90px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 8px 25px rgba(201,168,76,.3)}
-.room-big-info h3{font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px}
-.room-big-info p{color:var(--text-muted);font-size:14px}
-.guests-section{margin-bottom:20px}
-.section-title{font-size:18px;font-weight:700;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.no-guests{background:var(--dark3);border:1px dashed var(--border);border-radius:12px;padding:30px;text-align:center;color:var(--text-muted);font-size:14px}
-.guest-card{background:var(--dark3);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px;transition:border-color .2s}
-.guest-card:hover{border-color:rgba(201,168,76,.4)}
-.guest-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.guest-name-display{font-size:17px;font-weight:700;color:var(--text)}
-.guest-actions{display:flex;gap:8px}
-.btn-edit,.btn-delete{padding:6px 14px;border-radius:8px;border:none;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-edit{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
-.btn-edit:hover{background:rgba(201,168,76,.3)}
-.btn-delete{background:rgba(231,76,60,.15);color:var(--booked);border:1px solid rgba(231,76,60,.3)}
-.btn-delete:hover{background:rgba(231,76,60,.3)}
-.guest-details{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.guest-detail-item{background:var(--dark4);border-radius:8px;padding:10px 14px}
-.guest-detail-item .detail-label{font-size:11px;color:var(--text-muted);margin-bottom:4px}
-.guest-detail-item .detail-value{font-size:14px;font-weight:600;color:var(--text)}
-.booking-form{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:30px}
-.form-title{font-size:17px;font-weight:700;color:var(--gold);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
-.form-group{display:flex;flex-direction:column;gap:8px}
-label{font-size:13px;font-weight:600;color:var(--text-muted);letter-spacing:.5px}
-input[type=text],input[type=tel],input[type=date]{background:var(--dark3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;padding:12px 16px;outline:none;transition:border-color .2s;width:100%}
-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
-input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) saturate(2) hue-rotate(10deg)}
 .form-actions{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap}
 .btn-save{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:13px 28px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 15px rgba(201,168,76,.3)}
 .btn-save:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(201,168,76,.4)}
@@ -169,7 +97,7 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) s
   <div class="logo">
     <div class="logo-icon">🏨</div>
     <div class="logo-text">
-      <h1>الفندق المدينة الشبابية برأس البر</h1>
+      <h1>الفندق الذهبي</h1>
       <p>نظام إدارة الحجوزات</p>
     </div>
   </div>
@@ -235,8 +163,7 @@ const FLOORS=[
   {name:'الدور الأول',label:'الأول',rooms:['VIP','102','106','107','108','109']},
   {name:'الدور الثاني',label:'الثاني',rooms:['201','202','203','204','206','207','208','209']},
   {name:'الدور الثالث',label:'الثالث',rooms:['301','302','303','304','305','306','307','308','309']},
-  {name:'الدور الرابع',label:'الرابع',rooms:['401','402','403','404','405','406','407','408','409']},
-  {name:'قاعة',label:'قاعة',rooms:['قاعه 1','قاعه 2','تنس','قاعه 4','قاعه كراسي','بلياردو - جيم']}
+  {name:'الدور الرابع',label:'الرابع',rooms:['401','402','403','404','405','406','407','408','409']}
 ];
 let currentRoom=null,deleteIndex=null;
 function getData(){try{return JSON.parse(localStorage.getItem('hotelData')||'{}')}catch{return{}}}
@@ -247,7 +174,7 @@ function isRoomBooked(r){
   const g=getRoomGuests(r);
   if(!g.length)return false;
   const today=new Date().toISOString().split('T')[0];
-  return g.some(x=>x.checkout>=today);
+  return g.some(x=>x.checkin<=today&&x.checkout>=today);
 }
 function renderFloors(){
   const c=document.getElementById('floors-container');
