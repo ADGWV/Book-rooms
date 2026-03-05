@@ -232,13 +232,7 @@ select:focus{border-color:var(--gold)}
 .bcopy{background:var(--dark3);color:var(--text);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
 .bclose{background:transparent;color:var(--text-muted);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
 
-/* INSTALL BANNER */
-#instbanner{display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--dark2),#1C1408);border-top:1px solid var(--border);padding:12px 18px calc(12px + var(--sab));z-index:200;align-items:center;gap:10px;box-shadow:0 -4px 18px rgba(0,0,0,.4)}
-#instbanner.show{display:flex}
-.ibtxt{flex:1;font-size:12px;color:var(--text)}
-.ibtxt strong{color:var(--gold);display:block;font-size:13px;margin-bottom:1px}
-.binst{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:8px 14px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
-.bdism{background:transparent;color:var(--text-muted);border:none;padding:6px 8px;cursor:pointer;font-size:18px}
+
 
 /* OFFLINE BANNER */
 #offlinebanner{display:none;background:rgba(231,76,60,.15);border-bottom:1px solid rgba(231,76,60,.3);padding:7px 22px;font-size:12px;color:var(--red);text-align:center}
@@ -490,14 +484,6 @@ select:focus{border-color:var(--gold)}
   </div>
 </div>
 
-<!-- INSTALL BANNER -->
-<div id="instbanner">
-  <div style="font-size:22px">📲</div>
-  <div class="ibtxt"><strong>ثبّت التطبيق</strong>أضفه على شاشتك الرئيسية للوصول السريع</div>
-  <button class="binst" onclick="installApp()">تثبيت</button>
-  <button class="bdism" onclick="dismissBanner()">✕</button>
-</div>
-
 <script>
 'use strict';
 
@@ -610,31 +596,7 @@ if('serviceWorker' in navigator) {
 /* ══════════════════════════════════════
    PWA INSTALL
 ══════════════════════════════════════ */
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if(!sessionStorage.getItem('banner-dismissed')) {
-    setTimeout(() => document.getElementById('instbanner').classList.add('show'), 4000);
-  }
-});
-window.addEventListener('appinstalled', () => {
-  deferredPrompt = null;
-  dismissBanner();
-  toast('✅ تم تثبيت التطبيق بنجاح!', 'success');
-});
-function installApp() {
-  if(!deferredPrompt) {
-    toast('📲 افتح المتصفح واضغط "إضافة إلى الشاشة الرئيسية"', 'info');
-    return;
-  }
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(() => { deferredPrompt = null; dismissBanner(); });
-}
-function dismissBanner() {
-  document.getElementById('instbanner').classList.remove('show');
-  sessionStorage.setItem('banner-dismissed', '1');
-}
+
 
 /* ══════════════════════════════════════
    NOTIFICATIONS
@@ -891,6 +853,22 @@ function hideLoad() {
 /* ══════════════════════════════════════
    AUTH
 ══════════════════════════════════════ */
+function applyLogin(found) {
+  curUser = found;
+  localStorage.setItem('hb_session', JSON.stringify(found));
+  document.getElementById('loginpage').classList.remove('show');
+  document.getElementById('app').classList.add('show');
+  document.getElementById('hdr-uname').textContent = found.name;
+  document.getElementById('hdr-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
+  if(found.role === 'admin') document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
+  try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
+  updateNotifBadge();
+  renderFloors();
+  if(Notification.permission === 'default') {
+    setTimeout(() => requestNotifPermission(), 2000);
+  }
+}
+
 function doLogin() {
   const u = document.getElementById('l-user').value.trim();
   const p = document.getElementById('l-pass').value;
@@ -900,25 +878,13 @@ function doLogin() {
     document.getElementById('l-pass').value = '';
     return;
   }
-  curUser = found;
   document.getElementById('login-err').classList.remove('show');
-  document.getElementById('loginpage').classList.remove('show');
-  document.getElementById('app').classList.add('show');
-  document.getElementById('hdr-uname').textContent = found.name;
-  document.getElementById('hdr-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
-  if(found.role === 'admin') document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
-  // Load saved notifs
-  try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
-  updateNotifBadge();
-  renderFloors();
-  // Ask notif permission on first login
-  if(Notification.permission === 'default') {
-    setTimeout(() => requestNotifPermission(), 2000);
-  }
+  applyLogin(found);
 }
 
 function doLogout() {
   curUser = null;
+  localStorage.removeItem('hb_session');
   document.getElementById('app').classList.remove('show');
   document.getElementById('loginpage').classList.add('show');
   document.getElementById('l-user').value = '';
@@ -1218,16 +1184,28 @@ function resetConfig() {
 }
 
 async function init() {
-  // Load saved notifs
   try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
-  
+
   if(!FB_URL) {
-    // No Firebase configured — show setup
     hideLoad();
     document.getElementById('fbsetupoverlay').classList.add('show');
-  } else {
-    await loadAll();
+    return;
   }
+
+  await loadAll();
+
+  // Restore session if user was logged in before
+  try {
+    const saved = JSON.parse(localStorage.getItem('hb_session') || 'null');
+    if(saved) {
+      const found = USERS.find(x => x.username === saved.username && x.password === saved.password);
+      if(found) {
+        document.getElementById('loginpage').classList.remove('show');
+        applyLogin(found);
+        return;
+      }
+    }
+  } catch(e) {}
 }
 init();
 </script>
