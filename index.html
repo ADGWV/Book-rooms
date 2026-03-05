@@ -1,1 +1,1525 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
+<!-- العنوان والوصف -->
+<title>فندق المدينة الشبابية برأس البر</title>
+<meta name="description" content="نظام إدارة حجوزات فندق المدينة الشبابية برأس البر">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231A1A1A'/><text y='.9em' font-size='80' x='10'>🏨</text></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231A1A1A'/><text y='.9em' font-size='80' x='10'>🏨</text></svg>">
+
+<!-- لون المتصفح -->
+<meta name="theme-color" content="#C9A84C">
+
+<!-- PWA -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="فندق المدينة الشبابية">
+
+<!-- Open Graph — المعاينة على واتساب وفيسبوك -->
+<meta property="og:title" content="فندق المدينة الشبابية برأس البر">
+<meta property="og:description" content="نظام إدارة حجوزات فندق المدينة الشبابية برأس البر">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="فندق المدينة الشبابية">
+
+<link rel="manifest" id="pwa-manifest">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-dark:#8B6914;
+  --dark:#0D0D0D;--dark2:#1A1A1A;--dark3:#252525;--dark4:#2E2E2E;
+  --text:#F0E6D3;--text-muted:#9A8A70;
+  --green:#2ECC71;--red:#E74C3C;--blue:#3498db;--orange:#F39C12;
+  --border:rgba(201,168,76,0.18);
+  --sab:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overscroll-behavior:none}
+
+/* LOADING */
+#loadscreen{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .4s}
+#loadscreen.hide{opacity:0;pointer-events:none}
+.load-icon{font-size:56px;animation:bob .9s infinite alternate}
+@keyframes bob{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.load-text{font-size:20px;font-weight:800;color:var(--gold)}
+.load-sub{font-size:12px;color:var(--text-muted)}
+.load-bar{width:180px;height:3px;background:var(--dark3);border-radius:3px;overflow:hidden}
+.load-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:3px;animation:lf 1.6s ease forwards}
+@keyframes lf{from{width:0}to{width:100%}}
+
+/* LOGIN */
+#loginpage{display:none;min-height:100vh;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 0%,#1C1408 0%,var(--dark) 70%)}
+#loginpage.show{display:flex}
+.login-box{background:var(--dark2);border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:pop .3s ease}
+@keyframes pop{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.login-logo{text-align:center;margin-bottom:28px}
+.login-logo .icon{font-size:52px;margin-bottom:10px}
+.login-logo h1{font-size:22px;font-weight:800;color:var(--gold)}
+.login-logo p{font-size:12px;color:var(--text-muted);margin-top:4px}
+.login-form .fg{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
+.login-form label{font-size:12px;font-weight:600;color:var(--text-muted)}
+.login-form input{background:var(--dark3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;padding:12px 14px;outline:none;transition:border-color .2s;width:100%}
+.login-form input:focus{border-color:var(--gold)}
+.login-err{background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);border-radius:9px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:none}
+.login-err.show{display:block}
+.btn-login{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:13px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(201,168,76,.3)}
+.btn-login:hover{transform:translateY(-2px)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* HEADER */
+header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 28px rgba(0,0,0,.6);gap:10px}
+.logo{display:flex;align-items:center;gap:11px;flex-shrink:0}
+.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 14px rgba(201,168,76,.35)}
+.logo h1{font-size:15px;font-weight:800;color:var(--gold)}
+.logo p{font-size:10px;color:var(--text-muted);font-weight:300}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sync-pill{display:flex;align-items:center;gap:5px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:11px;color:var(--text-muted);cursor:default;user-select:none}
+.sdot{width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0;transition:background .4s}
+.sdot.loading,.sdot.syncing{background:var(--gold);animation:blink .7s infinite}
+.sdot.synced{background:var(--green)}
+.sdot.error{background:var(--red)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.user-pill{display:flex;align-items:center;gap:7px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text)}
+.user-pill .uname{font-weight:700;color:var(--gold)}
+.user-pill .urole{font-size:10px;color:var(--text-muted)}
+.btn-logout{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.26);padding:5px 11px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-logout:hover{background:rgba(231,76,60,.24)}
+.hstats{display:flex;gap:7px}
+.sbadge{text-align:center;background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:5px 10px}
+.sbadge .n{font-size:16px;font-weight:800;color:var(--gold)}
+.sbadge .l{font-size:9px;color:var(--text-muted)}
+
+/* NOTIF BELL */
+.notif-btn{position:relative;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 11px;cursor:pointer;font-size:16px;transition:all .2s;display:flex;align-items:center;gap:5px}
+.notif-btn:hover{border-color:var(--gold)}
+.notif-badge{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none}
+.notif-badge.show{display:flex}
+
+/* NAV */
+.nav-tabs{display:flex;gap:4px;background:var(--dark2);border-bottom:1px solid var(--border);padding:0 22px}
+.nav-tab{padding:12px 18px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;user-select:none}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.nav-tab.admin-only{display:none}
+.nav-tab.admin-only.show{display:block}
+
+/* APP */
+#app{display:none}
+#app.show{display:block}
+
+/* SEARCH */
+.search-bar{padding:14px 22px 0;max-width:1400px;margin:0 auto}
+.search-wrap{position:relative;display:flex;align-items:center;gap:10px}
+.search-input{flex:1;background:var(--dark3);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;padding:11px 44px 11px 14px;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+.search-input::placeholder{color:var(--text-muted)}
+.search-icon{position:absolute;right:14px;font-size:16px;pointer-events:none;color:var(--text-muted)}
+.search-clear{background:var(--dark4);border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:6px 12px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;display:none;white-space:nowrap}
+.search-clear.show{display:block}
+.search-clear:hover{border-color:var(--gold);color:var(--gold)}
+.search-results{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:14px;display:none}
+.search-results.show{display:block}
+.search-results-title{font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.search-results-title span{color:var(--gold)}
+.search-result-card{background:var(--dark3);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
+.search-result-card:hover{border-color:var(--gold);transform:translateX(-3px)}
+.src-room{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:16px;font-weight:800;width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.src-info{flex:1;min-width:0}
+.src-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.src-details{font-size:11px;color:var(--text-muted);display:flex;gap:10px;flex-wrap:wrap}
+.src-floor{font-size:11px;color:var(--text-muted);white-space:nowrap}
+.src-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.src-status.bk{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.25)}
+.src-status.av{background:rgba(46,204,113,.12);color:var(--green);border:1px solid rgba(46,204,113,.25)}
+.no-results{text-align:center;padding:24px;color:var(--text-muted);font-size:13px}
+.search-highlight{color:var(--gold);font-weight:800}
+
+/* FLOORS */
+#fp{padding:22px 22px 90px;max-width:1400px;margin:0 auto}
+.ptitle{margin-bottom:26px;text-align:center}
+.ptitle h2{font-size:22px;font-weight:800;color:var(--gold);margin-bottom:4px}
+.ptitle p{color:var(--text-muted);font-size:12px}
+.fsec{margin-bottom:28px}
+.fhdr{display:flex;align-items:center;gap:12px;margin-bottom:13px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.fbadge{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-weight:800;font-size:11px;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.ftitle-fl{font-size:15px;font-weight:700}
+.fcnt{margin-right:auto;font-size:11px;color:var(--text-muted);background:var(--dark3);padding:3px 9px;border-radius:20px;border:1px solid var(--border)}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:9px}
+.rcard{background:var(--dark3);border:2px solid var(--border);border-radius:12px;padding:13px 8px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;user-select:none}
+.rcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--green);transition:background .3s}
+.rcard.booked::before{background:var(--red)}
+.rcard:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 20px rgba(201,168,76,.2)}
+.rcard:active{transform:scale(.96)}
+.rnum{font-size:22px;font-weight:800;color:var(--gold);margin-bottom:5px}
+.rstatus{font-size:10px;font-weight:600;padding:3px 7px;border-radius:20px;display:inline-block}
+.rstatus.av{background:rgba(46,204,113,.12);color:var(--green);border:1px solid rgba(46,204,113,.25)}
+.rstatus.bk{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.25)}
+.rcnt{font-size:10px;color:var(--text-muted);margin-top:3px}
+
+/* BOOKING */
+#bp{display:none;padding:22px 22px 90px;max-width:860px;margin:0 auto}
+.backbtn{display:inline-flex;align-items:center;gap:7px;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:8px 15px;border-radius:9px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:500;margin-bottom:16px;transition:all .2s}
+.backbtn:hover{border-color:var(--gold);color:var(--gold)}
+.bkhdr{background:linear-gradient(135deg,var(--dark2),#1C1408);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px}
+.rbn{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:28px;font-weight:800;width:68px;height:68px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bkinfo h3{font-size:17px;font-weight:700;margin-bottom:3px}
+.bkinfo p{color:var(--text-muted);font-size:12px}
+.stitle{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:9px}
+.stitle::after{content:'';flex:1;height:1px;background:var(--border)}
+.noguests{background:var(--dark3);border:1px dashed var(--border);border-radius:10px;padding:22px;text-align:center;color:var(--text-muted);font-size:13px}
+.gcard{background:var(--dark3);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:9px;transition:border-color .2s}
+.gcard:hover{border-color:rgba(201,168,76,.3)}
+.gchead{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;flex-wrap:wrap;gap:7px}
+.gname{font-size:14px;font-weight:700}
+.gacts{display:flex;gap:5px;flex-wrap:wrap}
+.bsm{padding:5px 10px;border-radius:7px;border:none;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.bedit{background:rgba(201,168,76,.12);color:var(--gold);border:1px solid rgba(201,168,76,.26)}
+.bedit:hover{background:rgba(201,168,76,.24)}
+.bdel{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.26)}
+.bdel:hover{background:rgba(231,76,60,.24)}
+.bshr{background:rgba(52,152,219,.12);color:var(--blue);border:1px solid rgba(52,152,219,.26)}
+.bshr:hover{background:rgba(52,152,219,.24)}
+.gdet{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.gdi{background:var(--dark4);border-radius:7px;padding:7px 10px}
+.gdi .dl{font-size:10px;color:var(--text-muted);margin-bottom:2px}
+.gdi .dv{font-size:12px;font-weight:600}
+.bkform{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-top:14px}
+.form-title{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fg{display:flex;flex-direction:column;gap:6px}
+label{font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.3px}
+input[type=text],input[type=tel],input[type=date],input[type=password]{background:var(--dark3);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;padding:10px 13px;outline:none;transition:border-color .2s;width:100%}
+input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) saturate(2) hue-rotate(10deg)}
+.facts{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}
+.bsave{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:11px 20px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 13px rgba(201,168,76,.28)}
+.bsave:hover{transform:translateY(-2px)}
+.bsave:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.bcanc{background:var(--dark3);color:var(--text-muted);border:1px solid var(--border);padding:11px 20px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.bcanc:hover{border-color:var(--text-muted);color:var(--text)}
+.baddg{display:inline-flex;align-items:center;gap:7px;background:rgba(201,168,76,.09);color:var(--gold);border:1px dashed rgba(201,168,76,.38);padding:9px 17px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;margin-bottom:14px;user-select:none}
+.baddg:hover{background:rgba(201,168,76,.18);border-color:var(--gold)}
+
+/* ADMIN */
+#adminpage{display:none;padding:22px 22px 90px;max-width:700px;margin:0 auto}
+.admin-section{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
+.admin-section h3{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.users-list{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.user-card{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.user-card-info .uname{font-size:14px;font-weight:700;color:var(--text)}
+.user-card-info .urole-badge{font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:3px}
+.urole-badge.admin{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+.urole-badge.staff{background:rgba(52,152,219,.12);color:var(--blue);border:1px solid rgba(52,152,219,.25)}
+.user-card-actions{display:flex;gap:6px}
+.add-user-form{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:4px}
+.add-user-form h4{font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:13px}
+.add-user-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.add-user-grid .fg{display:flex;flex-direction:column;gap:5px}
+select{background:var(--dark3);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;padding:10px 13px;outline:none;transition:border-color .2s;width:100%;cursor:pointer}
+select:focus{border-color:var(--gold)}
+
+/* NOTIF PAGE */
+#notifpage{display:none;padding:22px 22px 90px;max-width:700px;margin:0 auto}
+.notif-item{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;transition:border-color .2s}
+.notif-item.unread{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04)}
+.notif-item:hover{border-color:rgba(201,168,76,.3)}
+.notif-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px}
+.notif-item.read .notif-dot{background:#555}
+.notif-body{flex:1}
+.notif-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.notif-sub{font-size:11px;color:var(--text-muted)}
+.notif-time{font-size:10px;color:var(--text-muted);margin-top:4px}
+.notif-empty{text-align:center;padding:50px 20px;color:var(--text-muted)}
+.notif-cb{width:16px;height:16px;accent-color:var(--gold);cursor:pointer;flex-shrink:0;margin-top:3px}
+.notif-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.notif-toolbar-left{display:flex;align-items:center;gap:8px;flex:1}
+.notif-sel-all{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);cursor:pointer;user-select:none}
+.notif-sel-all input{width:16px;height:16px;accent-color:var(--gold);cursor:pointer}
+.bdel-sel{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.26);padding:6px 12px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:none}
+.bdel-sel.show{display:block}
+.bdel-sel:hover{background:rgba(231,76,60,.24)}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(20px + var(--sab));left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:11px 20px;border-radius:11px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;box-shadow:0 8px 26px rgba(0,0,0,.5);white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:var(--green);color:var(--green)}
+.toast.error{border-color:var(--red);color:var(--red)}
+.toast.info{border-color:var(--blue);color:var(--blue)}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.overlay.show{display:flex}
+.mbox{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:24px;max-width:380px;width:93%;text-align:center;animation:pop .22s ease}
+.mbox h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.mbox p{color:var(--text-muted);font-size:13px;margin-bottom:18px;line-height:1.6}
+.mbtns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+.mbox-left{text-align:right}
+.mbox-left h3{margin-bottom:14px}
+.cp-form{display:flex;flex-direction:column;gap:11px}
+
+/* FIREBASE SETUP MODAL */
+.fb-setup{background:var(--dark2);border:1px solid var(--gold);border-radius:16px;padding:24px;max-width:480px;width:95%;text-align:right;animation:pop .22s ease}
+.fb-setup h3{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:8px}
+.fb-setup p{color:var(--text-muted);font-size:12px;margin-bottom:16px;line-height:1.7}
+.fb-input-group{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.fb-input-group label{font-size:11px;color:var(--text-muted);font-weight:600}
+.fb-input-group input{background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:12px;padding:9px 12px;outline:none;direction:ltr}
+.fb-input-group input:focus{border-color:var(--gold)}
+.fb-note{background:rgba(201,168,76,.08);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:14px}
+.fb-note code{color:var(--gold);font-size:10px;background:var(--dark3);padding:1px 5px;border-radius:3px}
+
+/* SHARE */
+.sc{background:linear-gradient(135deg,#1e1a0e,#1C1408);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:14px;text-align:right}
+.sc-hotel{font-size:10px;color:var(--text-muted);margin-bottom:4px}
+.sc-head{font-size:14px;font-weight:800;color:var(--gold);margin-bottom:8px}
+.sc-div{height:1px;background:var(--border);margin:7px 0}
+.sc-row{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:3px}
+.sc-lbl{color:var(--text-muted);font-size:10px;min-width:55px}
+.sc-val{font-weight:600}
+.shrbtns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.bwa{background:#25D366;color:#fff;border:none;padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.bcopy{background:var(--dark3);color:var(--text);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
+.bclose{background:transparent;color:var(--text-muted);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
+
+
+
+/* OFFLINE BANNER */
+#offlinebanner{display:none;background:rgba(231,76,60,.15);border-bottom:1px solid rgba(231,76,60,.3);padding:7px 22px;font-size:12px;color:var(--red);text-align:center}
+#offlinebanner.show{display:block}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  header{padding:9px 12px}
+  .logo p,.sync-pill span:not(.sdot),.user-pill .urole{display:none}
+  .hstats{gap:4px}.sbadge{padding:4px 6px}.sbadge .n{font-size:14px}
+  #fp,#bp,#adminpage,#notifpage{padding:12px 12px 80px}
+  .rgrid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
+  .fgrid,.add-user-grid{grid-template-columns:1fr}
+  .gdet{grid-template-columns:1fr 1fr}
+  .bkhdr{flex-direction:column;align-items:flex-start}
+  .nav-tab{padding:10px 10px;font-size:11px}
+}
+@media(min-width:641px) and (max-width:1024px){
+  .rgrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:11px}
+  .fgrid{grid-template-columns:1fr 1fr}
+  .gdet{grid-template-columns:repeat(3,1fr)}
+}
+@media(min-width:1025px){
+  header{padding:16px 40px}
+  .logo-icon{width:44px;height:44px;font-size:21px}
+  .logo h1{font-size:19px}
+  .logo p{display:block;font-size:12px}
+  .sync-pill span{display:inline}
+  .user-pill .urole{display:block}
+  .nav-tabs{padding:0 40px}
+  .nav-tab{padding:14px 26px;font-size:15px}
+  #fp{padding:36px 40px 60px;max-width:1500px}
+  #bp{padding:36px 40px 60px;max-width:1000px}
+  #adminpage,#notifpage{padding:36px 40px 60px;max-width:800px}
+  .rgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
+  .rcard{padding:20px 14px;border-radius:15px}
+  .rnum{font-size:30px}
+  .fgrid{grid-template-columns:1fr 1fr;gap:16px}
+  .add-user-grid{grid-template-columns:1fr 1fr;gap:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loadscreen">
+  <div class="load-icon">🏨</div>
+  <div class="load-text">فندق المدينة الشبابية</div>
+  <div class="load-sub" id="load-sub-txt">جاري الاتصال بقاعدة البيانات...</div>
+  <div class="load-bar"><div class="load-fill"></div></div>
+</div>
+
+<!-- FIREBASE SETUP OVERLAY -->
+<div class="overlay" id="fbsetupoverlay">
+  <div class="fb-setup">
+    <h3>🔥 إعداد قاعدة البيانات</h3>
+    <p>لحفظ البيانات ومشاركتها بين الأجهزة، تحتاج إلى ربط Firebase مجاني.<br>الخطوات بسيطة جداً 👇</p>
+    <div class="fb-note">
+      1️⃣ افتح <strong>console.firebase.google.com</strong><br>
+      2️⃣ أنشئ مشروع جديد (مجاني)<br>
+      3️⃣ فعّل <strong>Realtime Database</strong> واختر <code>Test Mode</code><br>
+      4️⃣ انسخ رابط الـ Database URL (مثل: <code>https://xxx-default-rtdb.firebaseio.com</code>)<br>
+      5️⃣ الصقه هنا 👇
+    </div>
+    <div class="fb-input-group">
+      <label>🔗 Firebase Database URL</label>
+      <input type="text" id="fb-url-input" placeholder="https://your-project-default-rtdb.firebaseio.com" dir="ltr">
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="bsave" onclick="saveFbConfig()">✅ اتصال</button>
+      <button class="bcanc" onclick="useDemoMode()">🔧 وضع تجريبي (بدون Firebase)</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginpage">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="icon">🏨</div>
+      <h1>فندق المدينة الشبابية</h1>
+      <p>نظام إدارة الحجوزات — سجّل دخولك للمتابعة</p>
+    </div>
+    <div class="login-form">
+      <div class="fg"><label>اسم المستخدم</label><input type="text" id="l-user" placeholder="أدخل اسم المستخدم" autocomplete="username"></div>
+      <div class="fg"><label>كلمة المرور</label><input type="password" id="l-pass" placeholder="أدخل كلمة المرور" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <div class="login-err" id="login-err">اسم المستخدم أو كلمة المرور غلط</div>
+      <button class="btn-login" id="login-btn" onclick="doLogin()">دخول</button>
+      <div style="text-align:center;margin-top:14px">
+        <button onclick="resetConfig()" style="background:none;border:none;color:var(--text-muted);font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;text-decoration:underline">🔄 تغيير بيانات Firebase</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div id="offlinebanner">⚡ أنت غير متصل بالإنترنت — البيانات محلية مؤقتاً</div>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🏨</div>
+      <div>
+        <h1>فندق المدينة الشبابية</h1>
+        <p>نظام إدارة الحجوزات</p>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <div class="sync-pill">
+        <div class="sdot loading" id="sdot"></div>
+        <span id="stxt">...</span>
+      </div>
+      <button class="notif-btn" onclick="switchTab('notif')" title="الإشعارات">
+        🔔
+        <span class="notif-badge" id="notif-badge">0</span>
+      </button>
+      <div class="user-pill">
+        <span>👤</span>
+        <div>
+          <div class="uname" id="hdr-uname">–</div>
+          <div class="urole" id="hdr-urole">–</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">خروج</button>
+      <div class="hstats">
+        <div class="sbadge"><div class="n" id="st">–</div><div class="l">إجمالي</div></div>
+        <div class="sbadge"><div class="n" id="sb" style="color:var(--red)">–</div><div class="l">محجوزة</div></div>
+        <div class="sbadge"><div class="n" id="sa" style="color:var(--green)">–</div><div class="l">متاحة</div></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="tab-rooms" onclick="switchTab('rooms')">🏨 الغرف</button>
+    <button class="nav-tab" id="tab-search" onclick="switchTab('search')">🔍 بحث</button>
+    <button class="nav-tab" id="tab-notif" onclick="switchTab('notif')">🔔 الإشعارات</button>
+    <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin')">⚙️ المستخدمين</button>
+    <button class="nav-tab admin-only" id="tab-trash" onclick="switchTab('trash')">🗑️ المحذوفات</button>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar" id="search-bar" style="display:none">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text" placeholder="ابحث بالاسم، رقم الهاتف، أو رقم الغرفة..." oninput="doSearch(this.value)">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕ مسح</button>
+    </div>
+    <div class="search-results" id="search-results">
+      <div class="search-results-title">نتائج البحث: <span id="search-count">0</span> نتيجة</div>
+      <div id="search-list"></div>
+    </div>
+  </div>
+
+  <!-- FLOORS -->
+  <div id="fp"><div class="ptitle"><h2>🏨 غرف الفندق</h2><p>اختر غرفة لعرض تفاصيل الحجز أو إضافة حجز جديد</p></div><div id="fc"></div></div>
+
+  <!-- BOOKING -->
+  <div id="bp">
+    <button class="backbtn" onclick="goBack()">← العودة للغرف</button>
+    <div class="bkhdr">
+      <div class="rbn" id="bpn">–</div>
+      <div class="bkinfo"><h3 id="bpt">–</h3><p id="bps">–</p></div>
+    </div>
+    <div class="stitle">قائمة الحجوزات</div>
+    <div id="gl"></div>
+    <button class="baddg" id="addbtn" onclick="showAddForm()">＋ إضافة حجز جديد</button>
+    <div class="bkform" id="bkform" style="display:none">
+      <div class="form-title" id="ftitle">📋 بيانات الحجز</div>
+      <input type="hidden" id="ei" value="-1">
+      <div class="fgrid">
+        <div class="fg"><label>اسم العميل</label><input type="text" id="fn" placeholder="أدخل الاسم الكامل"></div>
+        <div class="fg"><label>رقم الهاتف</label><input type="tel" id="fph" placeholder="01xxxxxxxxx"></div>
+        <div class="fg"><label>تاريخ بداية الحجز</label><input type="date" id="fci"></div>
+        <div class="fg"><label>تاريخ نهاية الحجز</label><input type="date" id="fco"></div>
+        <div class="fg"><label>💰 المبلغ المدفوع (اختياري)</label><input type="text" id="famount" placeholder="مثال: 500" oninput="toggleReceiver(this.value)"></div>
+        <div class="fg" id="receiver-fg" style="display:none"><label>👤 استلمه</label><input type="text" id="freceiver" placeholder="اسم الموظف أو المدير"></div>
+      </div>
+      <div class="facts">
+        <button class="bsave" id="savebtn" onclick="saveGuest()">💾 حفظ</button>
+        <button class="bcanc" onclick="cancelForm()">إلغاء</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIF PAGE -->
+  <div id="notifpage">
+    <div class="ptitle"><h2>🔔 الإشعارات</h2><p>حجوزات جديدة من الأجهزة الأخرى</p></div>
+    <div class="notif-toolbar">
+      <div class="notif-toolbar-left">
+        <label class="notif-sel-all"><input type="checkbox" id="notif-sel-all" onchange="toggleSelectAll(this.checked)"> تحديد الكل</label>
+        <button class="bdel-sel" id="bdel-sel" onclick="deleteSelected()">🗑️ حذف المحدد</button>
+      </div>
+      <button class="bcanc" onclick="clearAllNotifs()" style="font-size:12px;padding:7px 14px">✓ قراءة الكل</button>
+    </div>
+    <div id="notif-list"></div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminpage">
+    <div class="admin-section">
+      <h3>👥 المستخدمون</h3>
+      <div class="users-list" id="users-list"></div>
+      <div class="add-user-form">
+        <h4>➕ إضافة مستخدم جديد</h4>
+        <div class="add-user-grid">
+          <div class="fg"><label>اسم المستخدم</label><input type="text" id="nu-user" placeholder="username"></div>
+          <div class="fg"><label>كلمة المرور</label><input type="password" id="nu-pass" placeholder="password"></div>
+          <div class="fg"><label>الاسم الكامل</label><input type="text" id="nu-name" placeholder="الاسم"></div>
+          <div class="fg"><label>الصلاحية</label><select id="nu-role"><option value="staff">موظف</option><option value="admin">أدمن</option></select></div>
+        </div>
+        <button class="bsave" onclick="addUser()">➕ إضافة</button>
+      </div>
+    </div>
+    <div class="admin-section">
+      <h3>🔧 الإعدادات</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:12px;color:var(--text-muted)">Firebase URL: <code id="fb-url-display" style="color:var(--gold);font-size:11px;word-break:break-all"></code></div>
+        <button class="bcanc" onclick="document.getElementById('fbsetupoverlay').classList.add('show')" style="width:fit-content">🔄 تغيير Firebase</button>
+        <button class="bcanc" onclick="requestNotifPermission()" style="width:fit-content">🔔 تفعيل الإشعارات</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRASH PAGE -->
+<div id="trashpage" style="display:none;padding:22px 22px 90px;max-width:700px;margin:0 auto">
+  <div class="ptitle"><h2>🗑️ الحجوزات المحذوفة</h2><p>يمكن استرجاع أي حجز محذوف</p></div>
+  <div id="trash-list"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- OVERLAYS -->
+<div class="overlay" id="deloverlay">
+  <div class="mbox mbox-left" style="max-width:380px">
+    <h3>🗑️ تأكيد الحذف</h3>
+    <p style="margin-bottom:14px;color:var(--text-muted);font-size:13px">أدخل كلمة المرور للمتابعة</p>
+    <div id="del-guest-preview" style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:var(--text-muted)"></div>
+    <div class="fg" style="margin-bottom:12px">
+      <label>🔑 كلمة مرور الحذف</label>
+      <input type="password" id="del-pass" placeholder="أدخل الباسورد" onkeydown="if(event.key==='Enter')confirmDelete()">
+    </div>
+    <div id="del-err" style="display:none;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:12px">❌ كلمة المرور غلط</div>
+    <div class="mbtns">
+      <button class="bsave" style="background:var(--red);box-shadow:none" onclick="confirmDelete()">🗑️ احذف</button>
+      <button class="bcanc" onclick="closeOverlay('deloverlay')">إلغاء</button>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="deluseroverlay">
+  <div class="mbox">
+    <h3>⚠️ حذف مستخدم</h3>
+    <p>هل أنت متأكد من حذف هذا المستخدم؟</p>
+    <div class="mbtns">
+      <button class="bsave" style="background:var(--red);box-shadow:none" onclick="confirmDeleteUser()">نعم، احذف</button>
+      <button class="bcanc" onclick="closeOverlay('deluseroverlay')">إلغاء</button>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="cpoverlay">
+  <div class="mbox mbox-left" style="max-width:360px">
+    <h3>🔑 تغيير كلمة المرور</h3>
+    <div class="cp-form">
+      <div class="fg"><label>كلمة المرور الجديدة</label><input type="password" id="cp-pass" placeholder="أدخل كلمة مرور جديدة"></div>
+      <div class="fg"><label>تأكيد كلمة المرور</label><input type="password" id="cp-pass2" placeholder="أعد إدخال كلمة المرور"></div>
+    </div>
+    <div class="mbtns" style="margin-top:16px">
+      <button class="bsave" onclick="confirmChangePass()">حفظ</button>
+      <button class="bcanc" onclick="closeOverlay('cpoverlay')">إلغاء</button>
+    </div>
+  </div>
+</div>
+<div class="overlay" id="shroverlay">
+  <div class="mbox" style="max-width:400px">
+    <h3>📤 مشاركة الحجز</h3>
+    <div class="sc" id="shrprev"></div>
+    <div class="shrbtns">
+      <button class="bwa" onclick="shareWA()">📲 واتساب</button>
+      <button class="bcopy" onclick="shareCopy()">📋 نسخ</button>
+      <button class="bclose" onclick="closeOverlay('shroverlay')">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════
+   CONFIG
+══════════════════════════════════════ */
+let FB_URL = localStorage.getItem('hb_fb_url') || null;
+let DEMO_MODE = false;
+
+const DEFAULT_USERS = [
+  {username:'admin', password:'admin123', name:'المدير', role:'admin'},
+  {username:'staff1', password:'staff123', name:'موظف 1', role:'staff'}
+];
+
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+let HD = {};
+let USERS = [];
+let DELETED_BK = [];
+const DEL_PASS = '12345678';
+let NOTIFS = [];
+let curUser = null;
+let curRoom = null, delIdx = null, delUserId = null, cpUserId = null, shrData = null;
+let saving = false;
+let lastSaveTime = 0;
+let pollTimer = null;
+let lastHotelHash = '';
+let unreadCount = 0;
+
+/* ══════════════════════════════════════
+   PWA MANIFEST
+══════════════════════════════════════ */
+(()=>{
+  const ic = s => `<svg xmlns='http://www.w3.org/2000/svg' width='${s}' height='${s}'><rect width='${s}' height='${s}' rx='${Math.round(s*.18)}' fill='%231A1A1A'/><text x='50%25' y='72%25' font-size='${Math.round(s*.55)}' text-anchor='middle'>%F0%9F%8F%A8</text></svg>`;
+  const m = {
+    name: "فندق المدينة الشبابية",
+    short_name: "فندق ذهبي",
+    description: "نظام إدارة حجوزات فندق المدينة الشبابية",
+    start_url: "./",
+    display: "standalone",
+    background_color: "#0D0D0D",
+    theme_color: "#C9A84C",
+    orientation: "any",
+    lang: "ar",
+    dir: "rtl",
+    icons: [
+      {src:"data:image/svg+xml,"+ic(192), sizes:"192x192", type:"image/svg+xml"},
+      {src:"data:image/svg+xml,"+ic(512), sizes:"512x512", type:"image/svg+xml", purpose:"any maskable"}
+    ]
+  };
+  document.getElementById('pwa-manifest').href = URL.createObjectURL(new Blob([JSON.stringify(m)], {type:'application/manifest+json'}));
+})();
+
+/* ══════════════════════════════════════
+   SERVICE WORKER (PWA)
+══════════════════════════════════════ */
+const SW_CODE = `
+const CACHE = 'hotel-v2';
+const ASSETS = ['./', './'];
+
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS).catch(()=>{})));
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(ks => Promise.all(
+      ks.filter(k => k !== CACHE).map(k => caches.delete(k))
+    ))
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  if(e.request.method !== 'GET') return;
+  e.respondWith(
+    fetch(e.request)
+      .then(r => { caches.open(CACHE).then(c => c.put(e.request, r.clone())); return r; })
+      .catch(() => caches.match(e.request))
+  );
+});
+
+self.addEventListener('push', e => {
+  if(!e.data) return;
+  const data = e.data.json();
+  e.waitUntil(
+    self.registration.showNotification(data.title || 'فندق المدينة الشبابية', {
+      body: data.body || '',
+      icon: data.icon || '',
+      badge: data.badge || '',
+      tag: data.tag || 'hotel',
+      data: data.data || {}
+    })
+  );
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(clients.openWindow('./'));
+});
+`;
+
+let swReg = null;
+if('serviceWorker' in navigator) {
+  const blob = new Blob([SW_CODE], {type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob))
+    .then(reg => { swReg = reg; })
+    .catch(() => {});
+}
+
+/* ══════════════════════════════════════
+   PWA INSTALL
+══════════════════════════════════════ */
+
+
+/* ══════════════════════════════════════
+   NOTIFICATIONS
+══════════════════════════════════════ */
+async function requestNotifPermission() {
+  if(!('Notification' in window)) { toast('❌ المتصفح لا يدعم الإشعارات', 'error'); return; }
+  const p = await Notification.requestPermission();
+  if(p === 'granted') { toast('✅ تم تفعيل الإشعارات', 'success'); }
+  else { toast('⚠️ لم يتم السماح بالإشعارات', 'info'); }
+}
+
+function sendLocalNotif(title, body) {
+  // In-app notification
+  addNotif(title, body);
+  // OS notification if allowed
+  if(Notification.permission === 'granted') {
+    if(swReg) {
+      swReg.showNotification(title, { body, icon: '', tag: 'hotel-booking', vibrate: [200, 100, 200] });
+    } else {
+      new Notification(title, { body });
+    }
+  }
+}
+
+function addNotif(title, body) {
+  const n = { id: Date.now(), title, body, time: new Date().toISOString(), read: false };
+  NOTIFS.unshift(n);
+  if(NOTIFS.length > 50) NOTIFS = NOTIFS.slice(0, 50);
+  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
+  updateNotifBadge();
+}
+
+function updateNotifBadge() {
+  unreadCount = NOTIFS.filter(n => !n.read).length;
+  const badge = document.getElementById('notif-badge');
+  if(unreadCount > 0) {
+    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+    badge.classList.add('show');
+  } else {
+    badge.classList.remove('show');
+  }
+}
+
+function renderNotifs() {
+  const list = document.getElementById('notif-list');
+  if(!NOTIFS.length) {
+    list.innerHTML = '<div class="notif-empty">🔔<br><br>لا توجد إشعارات حتى الآن</div>';
+    document.getElementById('bdel-sel').classList.remove('show');
+    document.getElementById('notif-sel-all').checked = false;
+    return;
+  }
+  list.innerHTML = NOTIFS.map(n => `
+    <div class="notif-item ${n.read?'read':'unread'}" style="cursor:default">
+      <input type="checkbox" class="notif-cb" data-id="${n.id}" onchange="onNotifCheck()">
+      <div class="notif-dot" style="cursor:pointer" onclick="markRead('${n.id}')"></div>
+      <div class="notif-body" onclick="markRead('${n.id}')" style="cursor:pointer">
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-sub">${n.body}</div>
+        <div class="notif-time">${fmtTime(n.time)}</div>
+      </div>
+      <button onclick="deleteSingleNotif('${n.id}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0" title="حذف">🗑️</button>
+    </div>`).join('');
+}
+
+function onNotifCheck() {
+  const checked = document.querySelectorAll('.notif-cb:checked').length;
+  const total = document.querySelectorAll('.notif-cb').length;
+  document.getElementById('bdel-sel').classList.toggle('show', checked > 0);
+  document.getElementById('notif-sel-all').checked = checked === total;
+  document.getElementById('bdel-sel').textContent = `🗑️ حذف (${checked})`;
+}
+
+function toggleSelectAll(val) {
+  document.querySelectorAll('.notif-cb').forEach(cb => cb.checked = val);
+  onNotifCheck();
+}
+
+function deleteSelected() {
+  const ids = [...document.querySelectorAll('.notif-cb:checked')].map(cb => cb.dataset.id);
+  NOTIFS = NOTIFS.filter(n => !ids.includes(String(n.id)));
+  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
+  updateNotifBadge();
+  renderNotifs();
+  toast('🗑️ تم حذف الإشعارات المحددة', 'success');
+}
+
+function deleteSingleNotif(id) {
+  NOTIFS = NOTIFS.filter(n => String(n.id) !== String(id));
+  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
+  updateNotifBadge();
+  renderNotifs();
+}
+
+function markRead(id) {
+  const n = NOTIFS.find(x => x.id == id);
+  if(n) { n.read = true; localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS)); updateNotifBadge(); renderNotifs(); }
+}
+
+function clearAllNotifs() {
+  NOTIFS.forEach(n => n.read = true);
+  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
+  updateNotifBadge();
+  renderNotifs();
+  toast('✅ تم تحديد الكل كمقروء', 'success');
+}
+
+function fmtTime(iso) {
+  if(!iso) return '';
+  const d = new Date(iso);
+  const now = new Date();
+  const diff = Math.floor((now - d) / 60000);
+  if(diff < 1) return 'الآن';
+  if(diff < 60) return `منذ ${diff} دقيقة`;
+  if(diff < 1440) return `منذ ${Math.floor(diff/60)} ساعة`;
+  return d.toLocaleDateString('ar-EG');
+}
+
+/* ══════════════════════════════════════
+   FIREBASE SETUP
+══════════════════════════════════════ */
+function saveFbConfig() {
+  const url = document.getElementById('fb-url-input').value.trim().replace(/\/$/, '');
+  if(!url.startsWith('https://')) { toast('❌ أدخل رابط Firebase صحيح', 'error'); return; }
+  FB_URL = url;
+  localStorage.setItem('hb_fb_url', FB_URL);
+  document.getElementById('fbsetupoverlay').classList.remove('show');
+  document.getElementById('fb-url-display').textContent = FB_URL;
+  toast('✅ تم الاتصال بـ Firebase', 'success');
+  loadAll();
+}
+
+function useDemoMode() {
+  DEMO_MODE = true;
+  document.getElementById('fbsetupoverlay').classList.remove('show');
+  document.getElementById('loginpage').classList.add('show');
+  try { USERS = JSON.parse(localStorage.getItem('hb_users_bk') || 'null') || DEFAULT_USERS; } catch(e) { USERS = DEFAULT_USERS; }
+  try { HD = JSON.parse(localStorage.getItem('hb_hotel_bk') || '{}'); } catch(e) { HD = {}; }
+  syncUI('synced');
+  hideLoad();
+  toast('⚠️ وضع تجريبي — البيانات محلية فقط', 'info');
+}
+
+/* ══════════════════════════════════════
+   FIREBASE CRUD
+══════════════════════════════════════ */
+async function fbGet(path) {
+  const r = await fetch(`${FB_URL}/${path}.json`, { cache: 'no-cache' });
+  if(!r.ok) throw new Error('Firebase read failed: ' + r.status);
+  return await r.json();
+}
+
+async function fbSet(path, data) {
+  const r = await fetch(`${FB_URL}/${path}.json`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if(!r.ok) throw new Error('Firebase write failed: ' + r.status);
+  return await r.json();
+}
+
+/* ══════════════════════════════════════
+   LOAD / SAVE
+══════════════════════════════════════ */
+async function loadAll() {
+  syncUI('loading');
+  document.getElementById('load-sub-txt').textContent = 'جاري الاتصال بقاعدة البيانات...';
+  try {
+    const [usersData, hotelData] = await Promise.all([
+      fbGet('users'),
+      fbGet('hotel')
+    ]);
+    USERS = (usersData && usersData.list) ? usersData.list : DEFAULT_USERS;
+    HD = (hotelData && hotelData.data) ? hotelData.data : {};
+    // Init if empty
+    if(!usersData || !usersData.list) await fbSet('users', { list: DEFAULT_USERS });
+    if(!hotelData || !hotelData.data) await fbSet('hotel', { data: {} });
+    lastHotelHash = JSON.stringify(HD);
+    localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
+    localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
+    syncUI('synced');
+    document.getElementById('fb-url-display').textContent = FB_URL || '';
+  } catch(e) {
+    console.error('Firebase load error:', e);
+    // Offline fallback
+    try { USERS = JSON.parse(localStorage.getItem('hb_users_bk') || 'null') || DEFAULT_USERS; } catch(x) { USERS = DEFAULT_USERS; }
+    try { HD = JSON.parse(localStorage.getItem('hb_hotel_bk') || '{}'); } catch(x) { HD = {}; }
+    syncUI('error');
+    toast('⚠️ تعذر الاتصال — البيانات محلية مؤقتاً', 'info');
+    document.getElementById('offlinebanner').classList.add('show');
+  }
+  hideLoad();
+  document.getElementById('loginpage').classList.add('show');
+  startPolling();
+}
+
+async function saveHotel() {
+  if(saving) return;
+  saving = true; syncUI('syncing');
+  localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
+  try {
+    if(!DEMO_MODE && FB_URL) {
+      await fbSet('hotel', { data: HD });
+    }
+    lastHotelHash = JSON.stringify(HD);
+    lastSaveTime = Date.now();
+    syncUI('synced');
+    document.getElementById('offlinebanner').classList.remove('show');
+  } catch(e) {
+    syncUI('error');
+    toast('⚠️ حُفظ محلياً — تحقق من الاتصال', 'info');
+  } finally { saving = false; }
+}
+
+async function saveUsers() {
+  localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
+  if(!DEMO_MODE && FB_URL) {
+    try { await fbSet('users', { list: USERS }); } catch(e) { toast('⚠️ تعذر حفظ المستخدمين', 'error'); }
+  }
+}
+
+/* ══════════════════════════════════════
+   REAL-TIME POLLING
+══════════════════════════════════════ */
+function startPolling() {
+  if(pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    if(saving || !curUser || DEMO_MODE || !FB_URL) return;
+    try {
+      const hotelData = await fbGet('hotel');
+      const fresh = (hotelData && hotelData.data) ? hotelData.data : {};
+      const newHash = JSON.stringify(fresh);
+      if(newHash !== lastHotelHash && lastHotelHash !== '') {
+        // Detect new bookings only if change came from another device
+        if(Date.now() - lastSaveTime > 8000) detectNewBookings(HD, fresh);
+        HD = fresh;
+        lastHotelHash = newHash;
+        localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
+        renderFloors();
+        if(curRoom) renderGuests();
+        syncUI('synced');
+      }
+      // Also refresh users silently
+      const ud = await fbGet('users');
+      if(ud && ud.list) {
+        USERS = ud.list;
+        localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
+      }
+      document.getElementById('offlinebanner').classList.remove('show');
+    } catch(e) {
+      // silent fail on poll
+    }
+  }, 5000); // every 5 seconds
+
+  // Re-render floors every minute to update booked/available colors based on date
+  setInterval(() => {
+    if(curUser) renderFloors();
+  }, 60000);
+}
+
+function detectNewBookings(oldData, newData) {
+  for(const room in newData) {
+    const oldGuests = (oldData[room] || []);
+    const newGuests = (newData[room] || []);
+    if(newGuests.length > oldGuests.length) {
+      const added = newGuests.slice(oldGuests.length);
+      added.forEach(g => {
+        if(g.by !== curUser.name) { // notification from another user
+          sendLocalNotif(
+            `🔔 حجز جديد — غرفة ${room}`,
+            `${g.name} | ${fmt(g.checkin)} → ${fmt(g.checkout)} | بواسطة: ${g.by||'—'}`
+          );
+        }
+      });
+    }
+  }
+}
+
+/* ══════════════════════════════════════
+   SYNC UI
+══════════════════════════════════════ */
+function syncUI(s) {
+  document.getElementById('sdot').className = 'sdot ' + s;
+  document.getElementById('stxt').textContent = { loading:'جاري...', syncing:'يحفظ...', synced:'✓ متزامن', error:'⚠️ خطأ' }[s] || s;
+}
+
+function hideLoad() {
+  const ls = document.getElementById('loadscreen');
+  ls.classList.add('hide');
+  setTimeout(() => ls.style.display='none', 500);
+}
+
+/* ══════════════════════════════════════
+   AUTH
+══════════════════════════════════════ */
+function applyLogin(found) {
+  curUser = found;
+  localStorage.setItem('hb_session', JSON.stringify(found));
+  document.getElementById('loginpage').classList.remove('show');
+  document.getElementById('app').classList.add('show');
+  document.getElementById('hdr-uname').textContent = found.name;
+  document.getElementById('hdr-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
+  if(found.role === 'admin') document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
+  try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
+  try { DELETED_BK = JSON.parse(localStorage.getItem('hb_deleted') || '[]'); } catch(e) { DELETED_BK = []; }
+  updateNotifBadge();
+  renderFloors();
+  if(Notification.permission === 'default') {
+    setTimeout(() => requestNotifPermission(), 2000);
+  }
+}
+
+function doLogin() {
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value;
+  const found = USERS.find(x => x.username === u && x.password === p);
+  if(!found) {
+    document.getElementById('login-err').classList.add('show');
+    document.getElementById('l-pass').value = '';
+    return;
+  }
+  document.getElementById('login-err').classList.remove('show');
+  applyLogin(found);
+}
+
+function doLogout() {
+  curUser = null;
+  localStorage.removeItem('hb_session');
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('loginpage').classList.add('show');
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+  document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('show'));
+  switchTab('rooms');
+}
+
+/* ══════════════════════════════════════
+   TABS
+══════════════════════════════════════ */
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  ['fp','bp','adminpage','notifpage','trashpage'].forEach(id => document.getElementById(id).style.display='none');
+  document.getElementById('search-bar').style.display = 'none';
+  if(tab === 'rooms') {
+    document.getElementById('tab-rooms').classList.add('active');
+    document.getElementById('fp').style.display = 'block';
+    renderFloors();
+  } else if(tab === 'search') {
+    document.getElementById('tab-search').classList.add('active');
+    document.getElementById('search-bar').style.display = 'block';
+    document.getElementById('fp').style.display = 'block';
+    renderFloors();
+    setTimeout(() => document.getElementById('search-input').focus(), 100);
+  } else if(tab === 'notif') {
+    document.getElementById('tab-notif').classList.add('active');
+    document.getElementById('notifpage').style.display = 'block';
+    renderNotifs();
+  } else if(tab === 'admin') {
+    document.getElementById('tab-admin').classList.add('active');
+    document.getElementById('adminpage').style.display = 'block';
+    renderAdminUsers();
+  } else if(tab === 'trash') {
+    document.getElementById('tab-trash').classList.add('active');
+    document.getElementById('trashpage').style.display = 'block';
+    renderTrash();
+  }
+}
+
+/* ══════════════════════════════════════
+   FLOORS
+══════════════════════════════════════ */
+const FLOORS = [
+  {name:'الدور الأول',  label:'الأول',  rooms:['VIP','102','106','107','108','109']},
+  {name:'الدور الثاني', label:'الثاني', rooms:['201','202','203','204','206','207','208','209']},
+  {name:'الدور الثالث', label:'الثالث', rooms:['301','302','303','304','305','306','307','308','309']},
+  {name:'الدور الرابع', label:'الرابع', rooms:['401','402','403','404','405','406','407','408','409']}
+];
+
+const GG = r => HD[r] || [];
+const SG = (r, g) => { HD[r] = g; };
+
+function isBooked(r) {
+  const g = GG(r); if(!g.length) return false;
+  const now = new Date();
+  const t = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  return g.some(x => x.checkin && x.checkout && x.checkin <= t && x.checkout >= t);
+}
+function overlap(ci, co, bks, ex) {
+  const a = new Date(ci), b = new Date(co);
+  return bks.some((k, i) => {
+    if(typeof ex === 'number' && i === ex) return false;
+    return a < new Date(k.checkout) && b > new Date(k.checkin);
+  });
+}
+function fmt(d) { if(!d) return '–'; const[y,m,day]=d.split('-'); return `${day}/${m}/${y}`; }
+
+function highlight(text, query) {
+  if(!query) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return String(text).replace(new RegExp('(' + escaped + ')', 'gi'), '<span class="search-highlight">$1</span>');
+}
+
+function doSearch(q) {
+  q = q.trim();
+  const clearBtn = document.getElementById('search-clear');
+  const resultsBox = document.getElementById('search-results');
+  const list = document.getElementById('search-list');
+  const countEl = document.getElementById('search-count');
+  clearBtn.classList.toggle('show', q.length > 0);
+  if(!q) { resultsBox.classList.remove('show'); return; }
+  const results = [];
+  const qLower = q.toLowerCase();
+  FLOORS.forEach(fl => {
+    fl.rooms.forEach(rn => {
+      const guests = GG(rn);
+      const roomMatch = rn.toLowerCase().includes(qLower);
+      guests.forEach((g, gi) => {
+        const nameMatch = g.name && g.name.toLowerCase().includes(qLower);
+        const phoneMatch = g.phone && g.phone.includes(q);
+        if(roomMatch || nameMatch || phoneMatch) {
+          results.push({room:rn, floor:fl.name, guest:g, gIdx:gi});
+        }
+      });
+      if(roomMatch && guests.length === 0) {
+        results.push({room:rn, floor:fl.name, guest:null, gIdx:-1});
+      }
+    });
+  });
+  countEl.textContent = results.length;
+  resultsBox.classList.add('show');
+  if(results.length === 0) {
+    list.innerHTML = '<div class="no-results">😔 لا توجد نتائج</div>';
+    return;
+  }
+  list.innerHTML = results.map(r => {
+    const booked = isBooked(r.room);
+    return `
+      <div class="search-result-card" onclick="openRoom('${r.room}','${r.floor}');switchTab('rooms')">
+        <div class="src-room">${r.room}</div>
+        <div class="src-info">
+          <div class="src-name">${r.guest ? highlight(r.guest.name, q) : '<span style="color:var(--text-muted)">لا يوجد حجز</span>'}</div>
+          <div class="src-details">
+            ${r.guest ? `<span>📞 ${highlight(r.guest.phone, q)}</span>` : ''}
+            ${r.guest ? `<span>📅 ${fmt(r.guest.checkin)} ← ${fmt(r.guest.checkout)}</span>` : ''}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
+          <span class="src-status ${booked?'bk':'av'}">${booked?'محجوزة':'متاحة'}</span>
+          <span class="src-floor">${r.floor}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-clear').classList.remove('show');
+  document.getElementById('search-results').classList.remove('show');
+  document.getElementById('search-input').focus();
+}
+
+function renderFloors() {
+  const c = document.getElementById('fc'); c.innerHTML = '';
+  let tot = 0, bkd = 0;
+  FLOORS.forEach(fl => {
+    const sec = document.createElement('div'); sec.className = 'fsec';
+    const cards = fl.rooms.map(rn => {
+      tot++; const b = isBooked(rn); if(b) bkd++;
+      const gc = GG(rn).length;
+      return `<div class="rcard${b?' booked':''}" onclick="openRoom('${rn}','${fl.name}')">
+        <div class="rnum">${rn}</div>
+        <div class="rstatus ${b?'bk':'av'}">${b?'محجوزة':'متاحة'}</div>
+        ${gc ? `<div class="rcnt">${gc} حجز</div>` : ''}
+      </div>`;
+    }).join('');
+    sec.innerHTML = `<div class="fhdr"><span class="fbadge">الدور ${fl.label}</span><span class="ftitle-fl">${fl.name}</span><span class="fcnt">${fl.rooms.length} غرفة</span></div><div class="rgrid">${cards}</div>`;
+    c.appendChild(sec);
+  });
+  document.getElementById('st').textContent = tot;
+  document.getElementById('sb').textContent = bkd;
+  document.getElementById('sa').textContent = tot - bkd;
+}
+
+/* ══════════════════════════════════════
+   BOOKING
+══════════════════════════════════════ */
+function openRoom(rn, fn) {
+  curRoom = rn;
+  document.getElementById('fp').style.display = 'none';
+  document.getElementById('bp').style.display = 'block';
+  document.getElementById('bpn').textContent = rn;
+  document.getElementById('bpt').textContent = fn + ' — غرفة ' + rn;
+  cancelForm(); renderGuests(); window.scrollTo(0,0);
+}
+function goBack() {
+  document.getElementById('bp').style.display = 'none';
+  document.getElementById('fp').style.display = 'block';
+  renderFloors(); window.scrollTo(0,0);
+}
+function renderGuests() {
+  const g = GG(curRoom);
+  const list = document.getElementById('gl');
+  document.getElementById('bps').textContent = 'الحالة: ' + (isBooked(curRoom) ? '🔴 محجوزة حالياً' : '🟢 متاحة');
+  if(!g.length) { list.innerHTML = '<div class="noguests">لا توجد حجوزات لهذه الغرفة حتى الآن</div>'; return; }
+  list.innerHTML = g.map((x, i) => `
+    <div class="gcard">
+      <div class="gchead">
+        <div class="gname">👤 ${x.name}</div>
+        <div class="gacts">
+          <button class="bsm bshr" onclick="openShare(${i})">📤</button>
+          <button class="bsm bedit" onclick="editGuest(${i})">✏️ تعديل</button>
+          <button class="bsm bdel" onclick="askDelete(${i})">🗑️ حذف</button>
+        </div>
+      </div>
+      <div class="gdet">
+        <div class="gdi"><div class="dl">📞 الهاتف</div><div class="dv">${x.phone}</div></div>
+        <div class="gdi"><div class="dl">📅 الوصول</div><div class="dv">${fmt(x.checkin)}</div></div>
+        <div class="gdi"><div class="dl">📅 المغادرة</div><div class="dv">${fmt(x.checkout)}</div></div>
+        ${x.amount ? `<div class="gdi"><div class="dl">💰 المبلغ</div><div class="dv" style="color:var(--green)">${x.amount} ج.م</div></div>` : ''}
+        ${x.amount && x.receiver ? `<div class="gdi"><div class="dl">👤 استلمه</div><div class="dv" style="color:var(--gold)">${x.receiver}</div></div>` : ''}
+      </div>
+    </div>`).join('');
+}
+function showAddForm() {
+  document.getElementById('ei').value = -1;
+  document.getElementById('ftitle').textContent = '📋 إضافة حجز جديد';
+  ['fn','fph','fci','fco','famount','freceiver'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('receiver-fg').style.display = 'none';
+  document.getElementById('bkform').style.display = 'block';
+  document.getElementById('addbtn').style.display = 'none';
+  document.getElementById('bkform').scrollIntoView({behavior:'smooth'});
+}
+function editGuest(i) {
+  const g = GG(curRoom)[i];
+  document.getElementById('ei').value = i;
+  document.getElementById('ftitle').textContent = '✏️ تعديل بيانات الحجز';
+  document.getElementById('fn').value = g.name;
+  document.getElementById('fph').value = g.phone;
+  document.getElementById('fci').value = g.checkin;
+  document.getElementById('fco').value = g.checkout;
+  document.getElementById('famount').value = g.amount || '';
+  document.getElementById('freceiver').value = g.receiver || '';
+  document.getElementById('receiver-fg').style.display = g.amount ? 'flex' : 'none';
+  document.getElementById('bkform').style.display = 'block';
+  document.getElementById('addbtn').style.display = 'none';
+  document.getElementById('bkform').scrollIntoView({behavior:'smooth'});
+}
+function toggleReceiver(val) {
+  const fg = document.getElementById('receiver-fg');
+  fg.style.display = val.trim() ? 'flex' : 'none';
+  if(!val.trim()) document.getElementById('freceiver').value = '';
+}
+
+async function saveGuest() {
+  const name = document.getElementById('fn').value.trim();
+  const phone = document.getElementById('fph').value.trim();
+  const ci = document.getElementById('fci').value;
+  const co = document.getElementById('fco').value;
+  if(!name || !phone || !ci || !co) { toast('❌ أكمل جميع البيانات', 'error'); return; }
+  if(co <= ci) { toast('❌ تاريخ المغادرة يجب أن يكون بعد الوصول', 'error'); return; }
+  const guests = GG(curRoom);
+  const ei = parseInt(document.getElementById('ei').value);
+  if(overlap(ci, co, guests, ei >= 0 ? ei : null)) { toast('❌ يوجد حجز آخر في نفس الفترة', 'error'); return; }
+  const amount = document.getElementById('famount').value.trim();
+  const receiver = document.getElementById('freceiver').value.trim();
+  const gd = { name, phone, checkin: ci, checkout: co, by: curUser.name, at: new Date().toISOString() };
+  if(amount) { gd.amount = amount; gd.receiver = receiver || curUser.name; }
+  if(ei >= 0) { guests[ei] = gd; } else { guests.push(gd); }
+  SG(curRoom, guests);
+  document.getElementById('savebtn').disabled = true;
+  await saveHotel();
+  document.getElementById('savebtn').disabled = false;
+  toast(ei >= 0 ? '✅ تم تعديل الحجز' : '✅ تم حفظ الحجز', 'success');
+  cancelForm(); renderGuests(); renderFloors();
+}
+function cancelForm() {
+  document.getElementById('bkform').style.display = 'none';
+  document.getElementById('addbtn').style.display = 'inline-flex';
+}
+function askDelete(i) {
+  delIdx = i;
+  const g = GG(curRoom)[i];
+  document.getElementById('del-guest-preview').innerHTML =
+    `👤 <strong>${g.name}</strong> &nbsp;|&nbsp; 📞 ${g.phone}<br>📅 ${fmt(g.checkin)} ← ${fmt(g.checkout)}`;
+  document.getElementById('del-pass').value = '';
+  document.getElementById('del-err').style.display = 'none';
+  document.getElementById('deloverlay').classList.add('show');
+  setTimeout(() => document.getElementById('del-pass').focus(), 200);
+}
+async function confirmDelete() {
+  const pass = document.getElementById('del-pass').value;
+  if(pass !== DEL_PASS) {
+    document.getElementById('del-err').style.display = 'block';
+    document.getElementById('del-pass').value = '';
+    document.getElementById('del-pass').focus();
+    return;
+  }
+  const guests = GG(curRoom);
+  const removed = guests[delIdx];
+  // Save to deleted archive
+  DELETED_BK.unshift({
+    ...removed,
+    room: curRoom,
+    deletedBy: curUser.name,
+    deletedAt: new Date().toISOString()
+  });
+  if(DELETED_BK.length > 100) DELETED_BK = DELETED_BK.slice(0, 100);
+  localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
+  guests.splice(delIdx, 1);
+  SG(curRoom, guests);
+  closeOverlay('deloverlay');
+  await saveHotel();
+  renderGuests(); renderFloors();
+  toast('🗑️ تم حذف الحجز', 'success');
+}
+
+/* ══════════════════════════════════════
+   ADMIN
+══════════════════════════════════════ */
+function renderAdminUsers() {
+  const list = document.getElementById('users-list');
+  list.innerHTML = USERS.map((u, i) => `
+    <div class="user-card">
+      <div class="user-card-info">
+        <div class="uname">${u.name} <span style="color:var(--text-muted);font-weight:400;font-size:12px">(${u.username})</span></div>
+        <span class="urole-badge ${u.role}">${u.role==='admin'?'أدمن':'موظف'}</span>
+      </div>
+      <div class="user-card-actions">
+        <button class="bsm bedit" onclick="openChangePass(${i})">🔑 تغيير الباسورد</button>
+        ${u.username !== 'admin' ? `<button class="bsm bdel" onclick="askDeleteUser(${i})">🗑️</button>` : ''}
+      </div>
+    </div>`).join('');
+}
+async function addUser() {
+  const username = document.getElementById('nu-user').value.trim();
+  const password = document.getElementById('nu-pass').value.trim();
+  const name = document.getElementById('nu-name').value.trim();
+  const role = document.getElementById('nu-role').value;
+  if(!username || !password || !name) { toast('❌ أكمل جميع البيانات', 'error'); return; }
+  if(USERS.find(u => u.username === username)) { toast('❌ اسم المستخدم موجود بالفعل', 'error'); return; }
+  USERS.push({username, password, name, role});
+  await saveUsers(); renderAdminUsers();
+  ['nu-user','nu-pass','nu-name'].forEach(id => document.getElementById(id).value = '');
+  toast('✅ تم إضافة المستخدم', 'success');
+}
+function askDeleteUser(i) {
+  if(USERS[i].username === 'admin') { toast('❌ لا يمكن حذف الأدمن الرئيسي', 'error'); return; }
+  delUserId = i; document.getElementById('deluseroverlay').classList.add('show');
+}
+async function confirmDeleteUser() {
+  USERS.splice(delUserId, 1);
+  closeOverlay('deluseroverlay');
+  await saveUsers(); renderAdminUsers();
+  toast('🗑️ تم حذف المستخدم', 'success');
+}
+function openChangePass(i) {
+  cpUserId = i;
+  document.getElementById('cp-pass').value = '';
+  document.getElementById('cp-pass2').value = '';
+  document.getElementById('cpoverlay').classList.add('show');
+}
+async function confirmChangePass() {
+  const p1 = document.getElementById('cp-pass').value;
+  const p2 = document.getElementById('cp-pass2').value;
+  if(!p1) { toast('❌ أدخل كلمة المرور', 'error'); return; }
+  if(p1 !== p2) { toast('❌ كلمتا المرور غير متطابقتان', 'error'); return; }
+  USERS[cpUserId].password = p1;
+  closeOverlay('cpoverlay');
+  await saveUsers();
+  toast('✅ تم تغيير كلمة المرور', 'success');
+}
+
+/* ══════════════════════════════════════
+   SHARE
+══════════════════════════════════════ */
+function buildTxt(room, g) {
+  return `🏨 *فندق المدينة الشبابية*\n━━━━━━━━━━━━━━\n🔔 *حجز جديد*\n🚪 الغرفة: *${room}*\n👤 الاسم: *${g.name}*\n📞 الهاتف: ${g.phone}\n📅 الوصول: ${fmt(g.checkin)}\n📅 المغادرة: ${fmt(g.checkout)}\n━━━━━━━━━━━━━━`;
+}
+function openShare(i) {
+  shrData = {room:curRoom, g:GG(curRoom)[i]};
+  const x = shrData.g;
+  document.getElementById('shrprev').innerHTML = `
+    <div class="sc-hotel">🏨 فندق المدينة الشبابية</div>
+    <div class="sc-head">🔔 حجز جديد — غرفة ${shrData.room}</div>
+    <div class="sc-div"></div>
+    <div class="sc-row"><span class="sc-lbl">👤 الاسم</span><span class="sc-val">${x.name}</span></div>
+    <div class="sc-row"><span class="sc-lbl">📞 الهاتف</span><span class="sc-val">${x.phone}</span></div>
+    <div class="sc-row"><span class="sc-lbl">📅 الوصول</span><span class="sc-val">${fmt(x.checkin)}</span></div>
+    <div class="sc-row"><span class="sc-lbl">📅 المغادرة</span><span class="sc-val">${fmt(x.checkout)}</span></div>`;
+  document.getElementById('shroverlay').classList.add('show');
+}
+function shareWA() {
+  if(!shrData) return;
+  window.open('https://wa.me/?text=' + encodeURIComponent(buildTxt(shrData.room, shrData.g)), '_blank');
+  closeOverlay('shroverlay');
+}
+async function shareCopy() {
+  if(!shrData) return;
+  const txt = buildTxt(shrData.room, shrData.g);
+  try { await navigator.clipboard.writeText(txt); }
+  catch(e) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+  toast('✅ تم نسخ بيانات الحجز', 'success');
+  closeOverlay('shroverlay');
+}
+
+/* ══════════════════════════════════════
+   UTILS
+══════════════════════════════════════ */
+function closeOverlay(id) {
+  document.getElementById(id).classList.remove('show');
+  if(id === 'deloverlay') delIdx = null;
+  if(id === 'deluseroverlay') delUserId = null;
+  if(id === 'cpoverlay') cpUserId = null;
+  if(id === 'shroverlay') shrData = null;
+}
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + (type||'') + ' show';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+/* ══════════════════════════════════════
+   ONLINE / OFFLINE
+══════════════════════════════════════ */
+window.addEventListener('online', () => {
+  document.getElementById('offlinebanner').classList.remove('show');
+  if(!DEMO_MODE && FB_URL) loadAll();
+});
+window.addEventListener('offline', () => {
+  document.getElementById('offlinebanner').classList.add('show');
+  syncUI('error');
+});
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
+function renderTrash() {
+  const list = document.getElementById('trash-list');
+  if(!DELETED_BK.length) {
+    list.innerHTML = '<div class="noguests" style="text-align:center;padding:40px;color:var(--text-muted)">🗑️<br><br>لا توجد حجوزات محذوفة</div>';
+    return;
+  }
+  list.innerHTML = DELETED_BK.map((x, i) => `
+    <div class="gcard">
+      <div class="gchead">
+        <div>
+          <div class="gname">👤 ${x.name}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">🚪 غرفة ${x.room} &nbsp;|&nbsp; حُذف بواسطة: ${x.deletedBy||'—'} &nbsp;|&nbsp; ${fmtTime(x.deletedAt)}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="bsm bedit" onclick="askRestore(${i})">↩️ استرجاع</button>
+          <button class="bsm bdel" onclick="askPermDelete(${i})">❌ حذف نهائي</button>
+        </div>
+      </div>
+      <div class="gdet">
+        <div class="gdi"><div class="dl">📞 الهاتف</div><div class="dv">${x.phone}</div></div>
+        <div class="gdi"><div class="dl">📅 الوصول</div><div class="dv">${fmt(x.checkin)}</div></div>
+        <div class="gdi"><div class="dl">📅 المغادرة</div><div class="dv">${fmt(x.checkout)}</div></div>
+        ${x.amount ? `<div class="gdi"><div class="dl">💰 المبلغ</div><div class="dv" style="color:var(--green)">${x.amount} ج.م</div></div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function askPermDelete(i) {
+  const d = DELETED_BK[i];
+  if(confirm(`⚠️ حذف نهائي لـ "${d.name}" — لا يمكن الاسترجاع بعدها!
+هل أنت متأكد؟`)) {
+    DELETED_BK.splice(i, 1);
+    localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
+    renderTrash();
+    toast('🗑️ تم الحذف النهائي', 'success');
+  }
+}
+
+function askRestore(i) {
+  const d = DELETED_BK[i];
+  if(confirm(`استرجاع حجز "${d.name}" للغرفة ${d.room}؟`)) {
+    restoreBooking(i);
+  }
+}
+
+async function restoreBooking(i) {
+  const d = DELETED_BK[i];
+  const guests = GG(d.room) || [];
+  guests.push({
+    name: d.name, phone: d.phone, checkin: d.checkin, checkout: d.checkout,
+    by: d.by, at: d.at, amount: d.amount, receiver: d.receiver,
+    restoredBy: curUser.name, restoredAt: new Date().toISOString()
+  });
+  SG(d.room, guests);
+  DELETED_BK.splice(i, 1);
+  localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
+  await saveHotel();
+  renderTrash();
+  renderFloors();
+  toast('✅ تم استرجاع الحجز بنجاح', 'success');
+}
+
+function resetConfig() {
+  localStorage.removeItem('hb_fb_url');
+  FB_URL = null;
+  DEMO_MODE = false;
+  document.getElementById('loginpage').classList.remove('show');
+  document.getElementById('fb-url-input').value = '';
+  document.getElementById('fbsetupoverlay').classList.add('show');
+}
+
+async function init() {
+  try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
+
+  if(!FB_URL) {
+    hideLoad();
+    document.getElementById('fbsetupoverlay').classList.add('show');
+    return;
+  }
+
+  await loadAll();
+
+  // Restore session if user was logged in before
+  try {
+    const saved = JSON.parse(localStorage.getItem('hb_session') || 'null');
+    if(saved) {
+      const found = USERS.find(x => x.username === saved.username && x.password === saved.password);
+      if(found) {
+        document.getElementById('loginpage').classList.remove('show');
+        applyLogin(found);
+        return;
+      }
+    }
+  } catch(e) {}
+}
+init();
+</script>
+</body>
+</html>
