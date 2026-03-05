@@ -6,12 +6,8 @@
 <meta name="theme-color" content="#0D0D0D">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="الفندق الذهبي">
-<meta name="description" content="نظام إدارة حجوزات الفندق الذهبي">
-<meta property="og:title" content="🏨 الفندق الذهبي">
-<meta property="og:description" content="نظام إدارة حجوزات الفندق الذهبي">
-<meta property="og:type" content="website">
-<title>الفندق الذهبي</title>
+<meta name="apple-mobile-web-app-title" content="الفندق المدينة الشبابية برأس البر">
+<title>الفندق المدينة الشبابية برأس البر</title>
 <link rel="manifest" id="pwa-manifest">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -19,14 +15,14 @@
   --gold:#C9A84C;--gold-dark:#8B6914;
   --dark:#0D0D0D;--dark2:#1A1A1A;--dark3:#252525;--dark4:#2E2E2E;
   --text:#F0E6D3;--text-muted:#9A8A70;
-  --green:#2ECC71;--red:#E74C3C;--blue:#3498db;
+  --green:#2ECC71;--red:#E74C3C;--blue:#3498db;--orange:#F39C12;
   --border:rgba(201,168,76,0.18);
   --sab:env(safe-area-inset-bottom,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overscroll-behavior:none}
 
-/* ── LOADING ── */
+/* LOADING */
 #loadscreen{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .4s}
 #loadscreen.hide{opacity:0;pointer-events:none}
 .load-icon{font-size:56px;animation:bob .9s infinite alternate}
@@ -37,7 +33,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);m
 .load-fill{height:100%;background:linear-gradient(90deg,var(--gold-dark),var(--gold));border-radius:3px;animation:lf 1.6s ease forwards}
 @keyframes lf{from{width:0}to{width:100%}}
 
-/* ── LOGIN PAGE ── */
+/* LOGIN */
 #loginpage{display:none;min-height:100vh;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 0%,#1C1408 0%,var(--dark) 70%)}
 #loginpage.show{display:flex}
 .login-box{background:var(--dark2);border:1px solid var(--border);border-radius:20px;padding:36px 32px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.6);animation:pop .3s ease}
@@ -49,27 +45,27 @@ body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);m
 .login-form .fg{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
 .login-form label{font-size:12px;font-weight:600;color:var(--text-muted)}
 .login-form input{background:var(--dark3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:15px;padding:12px 14px;outline:none;transition:border-color .2s;width:100%}
-.login-form input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+.login-form input:focus{border-color:var(--gold)}
 .login-err{background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);border-radius:9px;padding:10px 14px;font-size:13px;color:var(--red);margin-bottom:14px;display:none}
 .login-err.show{display:block}
-.btn-login{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:13px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(201,168,76,.3);margin-top:4px}
-.btn-login:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(201,168,76,.4)}
+.btn-login{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:13px;border-radius:10px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(201,168,76,.3)}
+.btn-login:hover{transform:translateY(-2px)}
 .btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
-/* ── HEADER ── */
+/* HEADER */
 header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 28px rgba(0,0,0,.6);gap:10px}
 .logo{display:flex;align-items:center;gap:11px;flex-shrink:0}
 .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 14px rgba(201,168,76,.35)}
 .logo h1{font-size:15px;font-weight:800;color:var(--gold)}
 .logo p{font-size:10px;color:var(--text-muted);font-weight:300}
-.hdr-right{display:flex;align-items:center;gap:8px}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .sync-pill{display:flex;align-items:center;gap:5px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:11px;color:var(--text-muted);cursor:default;user-select:none}
 .sdot{width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0;transition:background .4s}
 .sdot.loading,.sdot.syncing{background:var(--gold);animation:blink .7s infinite}
 .sdot.synced{background:var(--green)}
 .sdot.error{background:var(--red)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.user-pill{display:flex;align-items:center;gap:7px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text);cursor:default}
+.user-pill{display:flex;align-items:center;gap:7px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text)}
 .user-pill .uname{font-weight:700;color:var(--gold)}
 .user-pill .urole{font-size:10px;color:var(--text-muted)}
 .btn-logout{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.26);padding:5px 11px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
@@ -79,7 +75,13 @@ header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px
 .sbadge .n{font-size:16px;font-weight:800;color:var(--gold)}
 .sbadge .l{font-size:9px;color:var(--text-muted)}
 
-/* ── NAV TABS ── */
+/* NOTIF BELL */
+.notif-btn{position:relative;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 11px;cursor:pointer;font-size:16px;transition:all .2s;display:flex;align-items:center;gap:5px}
+.notif-btn:hover{border-color:var(--gold)}
+.notif-badge{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none}
+.notif-badge.show{display:flex}
+
+/* NAV */
 .nav-tabs{display:flex;gap:4px;background:var(--dark2);border-bottom:1px solid var(--border);padding:0 22px}
 .nav-tab{padding:12px 18px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;user-select:none}
 .nav-tab:hover{color:var(--text)}
@@ -87,9 +89,36 @@ header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px
 .nav-tab.admin-only{display:none}
 .nav-tab.admin-only.show{display:block}
 
-/* ── MAIN PAGES ── */
+/* APP */
 #app{display:none}
 #app.show{display:block}
+
+/* ── SEARCH ── */
+.search-bar{padding:14px 22px 0;max-width:1400px;margin:0 auto}
+.search-wrap{position:relative;display:flex;align-items:center;gap:10px}
+.search-input{flex:1;background:var(--dark3);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;padding:11px 44px 11px 14px;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
+.search-input::placeholder{color:var(--text-muted)}
+.search-icon{position:absolute;right:14px;font-size:16px;pointer-events:none;color:var(--text-muted)}
+.search-clear{background:var(--dark4);border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:6px 12px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;display:none;white-space:nowrap}
+.search-clear.show{display:block}
+.search-clear:hover{border-color:var(--gold);color:var(--gold)}
+.search-results{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:14px;display:none}
+.search-results.show{display:block}
+.search-results-title{font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.search-results-title span{color:var(--gold)}
+.search-result-card{background:var(--dark3);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
+.search-result-card:hover{border-color:var(--gold);transform:translateX(-3px)}
+.src-room{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:16px;font-weight:800;width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.src-info{flex:1;min-width:0}
+.src-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.src-details{font-size:11px;color:var(--text-muted);display:flex;gap:10px;flex-wrap:wrap}
+.src-floor{font-size:11px;color:var(--text-muted);white-space:nowrap}
+.src-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
+.src-status.bk{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.25)}
+.src-status.av{background:rgba(46,204,113,.12);color:var(--green);border:1px solid rgba(46,204,113,.25)}
+.no-results{text-align:center;padding:24px;color:var(--text-muted);font-size:13px}
+.search-highlight{color:var(--gold);font-weight:800}
 
 /* FLOORS */
 #fp{padding:22px 22px 90px;max-width:1400px;margin:0 auto}
@@ -113,12 +142,12 @@ header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px
 .rstatus.bk{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.25)}
 .rcnt{font-size:10px;color:var(--text-muted);margin-top:3px}
 
-/* BOOKING PAGE */
+/* BOOKING */
 #bp{display:none;padding:22px 22px 90px;max-width:860px;margin:0 auto}
 .backbtn{display:inline-flex;align-items:center;gap:7px;background:var(--dark3);border:1px solid var(--border);color:var(--text);padding:8px 15px;border-radius:9px;cursor:pointer;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:500;margin-bottom:16px;transition:all .2s}
 .backbtn:hover{border-color:var(--gold);color:var(--gold)}
 .bkhdr{background:linear-gradient(135deg,var(--dark2),#1C1408);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px;display:flex;align-items:center;gap:14px}
-.rbn{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:28px;font-weight:800;width:68px;height:68px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 6px 18px rgba(201,168,76,.3)}
+.rbn{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:28px;font-weight:800;width:68px;height:68px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .bkinfo h3{font-size:17px;font-weight:700;margin-bottom:3px}
 .bkinfo p{color:var(--text-muted);font-size:12px}
 .stitle{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:11px;display:flex;align-items:center;gap:9px}
@@ -150,14 +179,14 @@ input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
 input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) saturate(2) hue-rotate(10deg)}
 .facts{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}
 .bsave{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:11px 20px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 13px rgba(201,168,76,.28)}
-.bsave:hover{transform:translateY(-2px);box-shadow:0 7px 20px rgba(201,168,76,.38)}
+.bsave:hover{transform:translateY(-2px)}
 .bsave:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .bcanc{background:var(--dark3);color:var(--text-muted);border:1px solid var(--border);padding:11px 20px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
 .bcanc:hover{border-color:var(--text-muted);color:var(--text)}
 .baddg{display:inline-flex;align-items:center;gap:7px;background:rgba(201,168,76,.09);color:var(--gold);border:1px dashed rgba(201,168,76,.38);padding:9px 17px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;margin-bottom:14px;user-select:none}
 .baddg:hover{background:rgba(201,168,76,.18);border-color:var(--gold)}
 
-/* ADMIN PAGE */
+/* ADMIN */
 #adminpage{display:none;padding:22px 22px 90px;max-width:700px;margin:0 auto}
 .admin-section{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:22px;margin-bottom:18px}
 .admin-section h3{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
@@ -175,11 +204,21 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) s
 select{background:var(--dark3);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;padding:10px 13px;outline:none;transition:border-color .2s;width:100%;cursor:pointer}
 select:focus{border-color:var(--gold)}
 
-/* CHANGE PASSWORD MODAL */
-.cp-form{display:flex;flex-direction:column;gap:11px}
+/* NOTIF PAGE */
+#notifpage{display:none;padding:22px 22px 90px;max-width:700px;margin:0 auto}
+.notif-item{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;transition:border-color .2s}
+.notif-item.unread{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04)}
+.notif-item:hover{border-color:rgba(201,168,76,.3)}
+.notif-dot{width:9px;height:9px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:5px}
+.notif-item.read .notif-dot{background:#555}
+.notif-body{flex:1}
+.notif-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.notif-sub{font-size:11px;color:var(--text-muted)}
+.notif-time{font-size:10px;color:var(--text-muted);margin-top:4px}
+.notif-empty{text-align:center;padding:50px 20px;color:var(--text-muted)}
 
 /* TOAST */
-.toast{position:fixed;bottom:calc(20px + var(--sab));left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:11px 20px;border-radius:11px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;box-shadow:0 8px 26px rgba(0,0,0,.5);white-space:nowrap;pointer-events:none}
+.toast{position:fixed;bottom:calc(20px + var(--sab));left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:11px 20px;border-radius:11px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;box-shadow:0 8px 26px rgba(0,0,0,.5);white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.success{border-color:var(--green);color:var(--green)}
 .toast.error{border-color:var(--red);color:var(--red)}
@@ -194,6 +233,18 @@ select:focus{border-color:var(--gold)}
 .mbtns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
 .mbox-left{text-align:right}
 .mbox-left h3{margin-bottom:14px}
+.cp-form{display:flex;flex-direction:column;gap:11px}
+
+/* FIREBASE SETUP MODAL */
+.fb-setup{background:var(--dark2);border:1px solid var(--gold);border-radius:16px;padding:24px;max-width:480px;width:95%;text-align:right;animation:pop .22s ease}
+.fb-setup h3{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:8px}
+.fb-setup p{color:var(--text-muted);font-size:12px;margin-bottom:16px;line-height:1.7}
+.fb-input-group{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.fb-input-group label{font-size:11px;color:var(--text-muted);font-weight:600}
+.fb-input-group input{background:var(--dark3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:12px;padding:9px 12px;outline:none;direction:ltr}
+.fb-input-group input:focus{border-color:var(--gold)}
+.fb-note{background:rgba(201,168,76,.08);border:1px solid var(--border);border-radius:8px;padding:10px;font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:14px}
+.fb-note code{color:var(--gold);font-size:10px;background:var(--dark3);padding:1px 5px;border-radius:3px}
 
 /* SHARE */
 .sc{background:linear-gradient(135deg,#1e1a0e,#1C1408);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:14px;text-align:right}
@@ -208,7 +259,7 @@ select:focus{border-color:var(--gold)}
 .bcopy{background:var(--dark3);color:var(--text);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
 .bclose{background:transparent;color:var(--text-muted);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
 
-/* INSTALL */
+/* INSTALL BANNER */
 #instbanner{display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--dark2),#1C1408);border-top:1px solid var(--border);padding:12px 18px calc(12px + var(--sab));z-index:200;align-items:center;gap:10px;box-shadow:0 -4px 18px rgba(0,0,0,.4)}
 #instbanner.show{display:flex}
 .ibtxt{flex:1;font-size:12px;color:var(--text)}
@@ -216,128 +267,46 @@ select:focus{border-color:var(--gold)}
 .binst{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:8px 14px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
 .bdism{background:transparent;color:var(--text-muted);border:none;padding:6px 8px;cursor:pointer;font-size:18px}
 
-/* ── موبايل صغير ── */
+/* OFFLINE BANNER */
+#offlinebanner{display:none;background:rgba(231,76,60,.15);border-bottom:1px solid rgba(231,76,60,.3);padding:7px 22px;font-size:12px;color:var(--red);text-align:center}
+#offlinebanner.show{display:block}
+
+/* RESPONSIVE */
 @media(max-width:640px){
   header{padding:9px 12px}
   .logo p,.sync-pill span:not(.sdot),.user-pill .urole{display:none}
   .hstats{gap:4px}.sbadge{padding:4px 6px}.sbadge .n{font-size:14px}
-  #fp,#bp,#adminpage{padding:12px 12px 80px}
+  #fp,#bp,#adminpage,#notifpage{padding:12px 12px 80px}
+  .search-bar{padding:10px 12px 0}
+  .search-input{font-size:13px;padding:10px 40px 10px 12px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
   .fgrid,.add-user-grid{grid-template-columns:1fr}
   .gdet{grid-template-columns:1fr 1fr}
   .bkhdr{flex-direction:column;align-items:flex-start}
-  .nav-tab{padding:10px 12px;font-size:12px}
+  .nav-tab{padding:10px 10px;font-size:11px}
 }
-
-/* ── تابلت (641px → 1024px) ── */
 @media(min-width:641px) and (max-width:1024px){
-  header{padding:14px 28px}
-  .logo h1{font-size:17px}
-  .logo p{display:block;font-size:11px}
-  .sbadge .n{font-size:18px}.sbadge .l{font-size:10px}
-  .sbadge{padding:6px 13px}
-  #fp,#bp,#adminpage{padding:22px 28px 90px}
-  .ptitle h2{font-size:24px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:11px}
-  .rnum{font-size:24px}
-  .rstatus{font-size:11px}
   .fgrid{grid-template-columns:1fr 1fr}
   .gdet{grid-template-columns:repeat(3,1fr)}
-  .nav-tab{padding:12px 20px;font-size:14px}
-  .bkhdr{padding:22px}
-  .rbn{width:76px;height:76px;font-size:30px}
-  .bkinfo h3{font-size:19px}
-  .admin-section{padding:24px}
 }
-
-/* ── لاب توب / كمبيوتر (1025px → 1440px) ── */
 @media(min-width:1025px){
   header{padding:16px 40px}
   .logo-icon{width:44px;height:44px;font-size:21px}
   .logo h1{font-size:19px}
   .logo p{display:block;font-size:12px}
-  .sync-pill{padding:6px 14px;font-size:12px}
   .sync-pill span{display:inline}
-  .user-pill{padding:6px 14px;font-size:13px}
   .user-pill .urole{display:block}
-  .sbadge .n{font-size:22px}.sbadge .l{font-size:10px}
-  .sbadge{padding:7px 16px}
-  .btn-logout{padding:7px 14px;font-size:12px}
   .nav-tabs{padding:0 40px}
   .nav-tab{padding:14px 26px;font-size:15px}
   #fp{padding:36px 40px 60px;max-width:1500px}
   #bp{padding:36px 40px 60px;max-width:1000px}
-  #adminpage{padding:36px 40px 60px;max-width:800px}
-  .ptitle h2{font-size:30px}
-  .ptitle p{font-size:15px}
-  .ptitle{margin-bottom:36px}
-  .fhdr{margin-bottom:18px;padding-bottom:14px}
-  .fbadge{font-size:13px;padding:6px 16px}
-  .ftitle-fl{font-size:18px}
-  .fcnt{font-size:12px;padding:4px 12px}
+  #adminpage,#notifpage{padding:36px 40px 60px;max-width:800px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
   .rcard{padding:20px 14px;border-radius:15px}
-  .rnum{font-size:30px;margin-bottom:8px}
-  .rstatus{font-size:12px;padding:4px 10px}
-  .rcnt{font-size:11px;margin-top:5px}
-  .fsec{margin-bottom:40px}
-  .backbtn{padding:10px 20px;font-size:14px;margin-bottom:22px}
-  .bkhdr{padding:26px;border-radius:16px;margin-bottom:22px;gap:20px}
-  .rbn{width:88px;height:88px;font-size:36px;border-radius:16px}
-  .bkinfo h3{font-size:21px}
-  .bkinfo p{font-size:14px}
-  .stitle{font-size:17px;margin-bottom:16px}
-  .gcard{padding:20px;margin-bottom:12px;border-radius:14px}
-  .gname{font-size:16px}
-  .gdet{gap:10px}
-  .gdi{padding:10px 14px;border-radius:8px}
-  .gdi .dl{font-size:11px}
-  .gdi .dv{font-size:14px}
-  .bkform{padding:28px;border-radius:16px;margin-top:20px}
-  .form-title{font-size:16px;margin-bottom:20px;padding-bottom:14px}
-  .fgrid{grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
-  label{font-size:12px}
-  input[type=text],input[type=tel],input[type=date],input[type=password]{font-size:15px;padding:12px 15px;border-radius:10px}
-  .facts{gap:12px;margin-top:18px}
-  .bsave{padding:13px 26px;font-size:15px;border-radius:10px}
-  .bcanc{padding:13px 26px;font-size:15px;border-radius:10px}
-  .baddg{padding:13px 22px;font-size:14px;border-radius:10px;margin-bottom:20px}
-  .noguests{padding:32px;font-size:15px;border-radius:14px}
-  .admin-section{padding:28px;border-radius:16px;margin-bottom:22px}
-  .admin-section h3{font-size:18px;margin-bottom:20px;padding-bottom:14px}
-  .user-card{padding:16px 20px;border-radius:12px}
-  .user-card-info .uname{font-size:15px}
-  .add-user-form{padding:20px;border-radius:12px}
-  .add-user-form h4{font-size:14px;margin-bottom:16px}
+  .rnum{font-size:30px}
+  .fgrid{grid-template-columns:1fr 1fr;gap:16px}
   .add-user-grid{grid-template-columns:1fr 1fr;gap:14px}
-  select{font-size:15px;padding:12px 15px}
-  .login-box{padding:44px 40px;max-width:440px;border-radius:24px}
-  .login-logo .icon{font-size:64px}
-  .login-logo h1{font-size:26px}
-  .login-logo p{font-size:14px;margin-top:6px}
-  .login-form .fg{gap:8px;margin-bottom:16px}
-  .login-form label{font-size:13px}
-  .login-form input{font-size:15px;padding:13px 16px}
-  .btn-login{font-size:16px;padding:14px}
-  .mbox{padding:30px;border-radius:18px}
-  .mbox h3{font-size:19px}
-  .mbox p{font-size:14px}
-  .bsm{padding:7px 14px;font-size:12px}
-}
-
-/* ── شاشات كبيرة جداً (1441px+) ── */
-@media(min-width:1441px){
-  #fp{max-width:1700px;padding:42px 60px 70px}
-  #bp{max-width:1100px;padding:42px 60px 70px}
-  #adminpage{max-width:900px;padding:42px 60px 70px}
-  .rgrid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
-  .rcard{padding:22px 16px}
-  .rnum{font-size:34px}
-  header{padding:18px 60px}
-  .nav-tabs{padding:0 60px}
-  .ptitle h2{font-size:34px}
-  .sbadge .n{font-size:24px}
-  .sbadge{padding:8px 20px}
 }
 </style>
 </head>
@@ -346,28 +315,45 @@ select:focus{border-color:var(--gold)}
 <!-- LOADING -->
 <div id="loadscreen">
   <div class="load-icon">🏨</div>
-  <div class="load-text">الفندق الذهبي</div>
-  <div class="load-sub">جاري تحميل البيانات...</div>
+  <div class="load-text">الفندق المدينة الشبابية برأس البر</div>
+  <div class="load-sub" id="load-sub-txt">جاري الاتصال بقاعدة البيانات...</div>
   <div class="load-bar"><div class="load-fill"></div></div>
 </div>
 
-<!-- LOGIN PAGE -->
+<!-- FIREBASE SETUP OVERLAY -->
+<div class="overlay" id="fbsetupoverlay">
+  <div class="fb-setup">
+    <h3>🔥 إعداد قاعدة البيانات</h3>
+    <p>لحفظ البيانات ومشاركتها بين الأجهزة، تحتاج إلى ربط Firebase مجاني.<br>الخطوات بسيطة جداً 👇</p>
+    <div class="fb-note">
+      1️⃣ افتح <strong>console.firebase.google.com</strong><br>
+      2️⃣ أنشئ مشروع جديد (مجاني)<br>
+      3️⃣ فعّل <strong>Realtime Database</strong> واختر <code>Test Mode</code><br>
+      4️⃣ انسخ رابط الـ Database URL (مثل: <code>https://xxx-default-rtdb.firebaseio.com</code>)<br>
+      5️⃣ الصقه هنا 👇
+    </div>
+    <div class="fb-input-group">
+      <label>🔗 Firebase Database URL</label>
+      <input type="text" id="fb-url-input" placeholder="https://your-project-default-rtdb.firebaseio.com" dir="ltr">
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="bsave" onclick="saveFbConfig()">✅ اتصال</button>
+      <button class="bcanc" onclick="useDemoMode()">🔧 وضع تجريبي (بدون Firebase)</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
 <div id="loginpage">
   <div class="login-box">
     <div class="login-logo">
       <div class="icon">🏨</div>
-      <h1>الفندق الذهبي</h1>
+      <h1>الفندق المدينة الشبابية برأس البر</h1>
       <p>نظام إدارة الحجوزات — سجّل دخولك للمتابعة</p>
     </div>
     <div class="login-form">
-      <div class="fg">
-        <label>اسم المستخدم</label>
-        <input type="text" id="l-user" placeholder="أدخل اسم المستخدم" autocomplete="username">
-      </div>
-      <div class="fg">
-        <label>كلمة المرور</label>
-        <input type="password" id="l-pass" placeholder="أدخل كلمة المرور" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
-      </div>
+      <div class="fg"><label>اسم المستخدم</label><input type="text" id="l-user" placeholder="أدخل اسم المستخدم" autocomplete="username"></div>
+      <div class="fg"><label>كلمة المرور</label><input type="password" id="l-pass" placeholder="أدخل كلمة المرور" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="login-err" id="login-err">اسم المستخدم أو كلمة المرور غلط</div>
       <button class="btn-login" id="login-btn" onclick="doLogin()">دخول</button>
     </div>
@@ -376,11 +362,12 @@ select:focus{border-color:var(--gold)}
 
 <!-- MAIN APP -->
 <div id="app">
+  <div id="offlinebanner">⚡ أنت غير متصل بالإنترنت — البيانات محلية مؤقتاً</div>
   <header>
     <div class="logo">
       <div class="logo-icon">🏨</div>
       <div>
-        <h1>الفندق الذهبي</h1>
+        <h1>الفندق المدينة الشبابية برأس البر</h1>
         <p>نظام إدارة الحجوزات</p>
       </div>
     </div>
@@ -389,6 +376,10 @@ select:focus{border-color:var(--gold)}
         <div class="sdot loading" id="sdot"></div>
         <span id="stxt">...</span>
       </div>
+      <button class="notif-btn" onclick="switchTab('notif')" title="الإشعارات">
+        🔔
+        <span class="notif-badge" id="notif-badge">0</span>
+      </button>
       <div class="user-pill">
         <span>👤</span>
         <div>
@@ -407,27 +398,33 @@ select:focus{border-color:var(--gold)}
 
   <div class="nav-tabs">
     <button class="nav-tab active" id="tab-rooms" onclick="switchTab('rooms')">🏨 الغرف</button>
-    <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin')">⚙️ إدارة المستخدمين</button>
+    <button class="nav-tab" id="tab-search" onclick="switchTab('search')">🔍 بحث</button>
+    <button class="nav-tab" id="tab-notif" onclick="switchTab('notif')">🔔 الإشعارات</button>
+    <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin')">⚙️ المستخدمين</button>
+  </div>
+
+  <!-- SEARCH BAR -->
+  <div class="search-bar" id="search-bar" style="display:none">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="text" placeholder="ابحث بالاسم، رقم الهاتف، أو رقم الغرفة..." oninput="doSearch(this.value)">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕ مسح</button>
+    </div>
+    <div class="search-results" id="search-results">
+      <div class="search-results-title">نتائج البحث: <span id="search-count">0</span> نتيجة</div>
+      <div id="search-list"></div>
+    </div>
   </div>
 
   <!-- FLOORS -->
-  <div id="fp">
-    <div class="ptitle">
-      <h2>🏨 غرف الفندق</h2>
-      <p>اختر غرفة لعرض تفاصيل الحجز أو إضافة حجز جديد</p>
-    </div>
-    <div id="fc"></div>
-  </div>
+  <div id="fp"><div class="ptitle"><h2>🏨 غرف الفندق</h2><p>اختر غرفة لعرض تفاصيل الحجز أو إضافة حجز جديد</p></div><div id="fc"></div></div>
 
   <!-- BOOKING -->
   <div id="bp">
     <button class="backbtn" onclick="goBack()">← العودة للغرف</button>
     <div class="bkhdr">
       <div class="rbn" id="bpn">–</div>
-      <div class="bkinfo">
-        <h3 id="bpt">–</h3>
-        <p id="bps">–</p>
-      </div>
+      <div class="bkinfo"><h3 id="bpt">–</h3><p id="bps">–</p></div>
     </div>
     <div class="stitle">قائمة الحجوزات</div>
     <div id="gl"></div>
@@ -448,7 +445,16 @@ select:focus{border-color:var(--gold)}
     </div>
   </div>
 
-  <!-- ADMIN PAGE -->
+  <!-- NOTIF PAGE -->
+  <div id="notifpage">
+    <div class="ptitle"><h2>🔔 الإشعارات</h2><p>حجوزات جديدة من الأجهزة الأخرى</p></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+      <button class="bcanc" onclick="clearAllNotifs()" style="font-size:12px;padding:7px 14px">✓ قراءة الكل</button>
+    </div>
+    <div id="notif-list"></div>
+  </div>
+
+  <!-- ADMIN -->
   <div id="adminpage">
     <div class="admin-section">
       <h3>👥 المستخدمون</h3>
@@ -459,14 +465,17 @@ select:focus{border-color:var(--gold)}
           <div class="fg"><label>اسم المستخدم</label><input type="text" id="nu-user" placeholder="username"></div>
           <div class="fg"><label>كلمة المرور</label><input type="password" id="nu-pass" placeholder="password"></div>
           <div class="fg"><label>الاسم الكامل</label><input type="text" id="nu-name" placeholder="الاسم"></div>
-          <div class="fg"><label>الصلاحية</label>
-            <select id="nu-role">
-              <option value="staff">موظف</option>
-              <option value="admin">أدمن</option>
-            </select>
-          </div>
+          <div class="fg"><label>الصلاحية</label><select id="nu-role"><option value="staff">موظف</option><option value="admin">أدمن</option></select></div>
         </div>
         <button class="bsave" onclick="addUser()">➕ إضافة</button>
+      </div>
+    </div>
+    <div class="admin-section">
+      <h3>🔧 الإعدادات</h3>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:12px;color:var(--text-muted)">Firebase URL: <code id="fb-url-display" style="color:var(--gold);font-size:11px;word-break:break-all"></code></div>
+        <button class="bcanc" onclick="document.getElementById('fbsetupoverlay').classList.add('show')" style="width:fit-content">🔄 تغيير Firebase</button>
+        <button class="bcanc" onclick="requestNotifPermission()" style="width:fit-content">🔔 تفعيل الإشعارات</button>
       </div>
     </div>
   </div>
@@ -475,7 +484,7 @@ select:focus{border-color:var(--gold)}
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- DELETE BOOKING CONFIRM -->
+<!-- OVERLAYS -->
 <div class="overlay" id="deloverlay">
   <div class="mbox">
     <h3>⚠️ تأكيد الحذف</h3>
@@ -486,8 +495,6 @@ select:focus{border-color:var(--gold)}
     </div>
   </div>
 </div>
-
-<!-- DELETE USER CONFIRM -->
 <div class="overlay" id="deluseroverlay">
   <div class="mbox">
     <h3>⚠️ حذف مستخدم</h3>
@@ -498,8 +505,6 @@ select:focus{border-color:var(--gold)}
     </div>
   </div>
 </div>
-
-<!-- CHANGE PASSWORD -->
 <div class="overlay" id="cpoverlay">
   <div class="mbox mbox-left" style="max-width:360px">
     <h3>🔑 تغيير كلمة المرور</h3>
@@ -513,8 +518,6 @@ select:focus{border-color:var(--gold)}
     </div>
   </div>
 </div>
-
-<!-- SHARE -->
 <div class="overlay" id="shroverlay">
   <div class="mbox" style="max-width:400px">
     <h3>📤 مشاركة الحجز</h3>
@@ -527,10 +530,10 @@ select:focus{border-color:var(--gold)}
   </div>
 </div>
 
-<!-- INSTALL -->
+<!-- INSTALL BANNER -->
 <div id="instbanner">
   <div style="font-size:22px">📲</div>
-  <div class="ibtxt"><strong>ثبّت التطبيق</strong>أضفه على شاشتك الرئيسية</div>
+  <div class="ibtxt"><strong>ثبّت التطبيق</strong>أضفه على شاشتك الرئيسية للوصول السريع</div>
   <button class="binst" onclick="installApp()">تثبيت</button>
   <button class="bdism" onclick="dismissBanner()">✕</button>
 </div>
@@ -539,16 +542,11 @@ select:focus{border-color:var(--gold)}
 'use strict';
 
 /* ══════════════════════════════════════
-   JSONBIN CONFIG
+   CONFIG
 ══════════════════════════════════════ */
-const JKEY = '$2a$10$Xqq9f8yAA5WrpgpoysB6B.CTOLsOur1RJMprwulaIahtGKPQSBU/y';
-const JAPI = 'https://api.jsonbin.io/v3';
-let BIN_HOTEL = localStorage.getItem('hb_hotel') || null;
-let BIN_USERS = localStorage.getItem('hb_users') || null;
+let FB_URL = localStorage.getItem('hb_fb_url') || null;
+let DEMO_MODE = false;
 
-/* ══════════════════════════════════════
-   DEFAULT USERS (first run)
-══════════════════════════════════════ */
 const DEFAULT_USERS = [
   {username:'admin', password:'admin123', name:'المدير', role:'admin'},
   {username:'staff1', password:'staff123', name:'موظف 1', role:'staff'}
@@ -557,252 +555,611 @@ const DEFAULT_USERS = [
 /* ══════════════════════════════════════
    STATE
 ══════════════════════════════════════ */
-let HD = {};          // hotel bookings
-let USERS = [];       // users list
-let curUser = null;   // logged-in user object
+let HD = {};
+let USERS = [];
+
+let NOTIFS = [];
+let curUser = null;
 let curRoom = null, delIdx = null, delUserId = null, cpUserId = null, shrData = null;
 let saving = false;
-let lastPollStr = '';
+let pollTimer = null;
+let lastHotelHash = '';
+let unreadCount = 0;
 
 /* ══════════════════════════════════════
-   PWA
+   PWA MANIFEST
 ══════════════════════════════════════ */
 (()=>{
   const ic = s => `<svg xmlns='http://www.w3.org/2000/svg' width='${s}' height='${s}'><rect width='${s}' height='${s}' rx='${Math.round(s*.18)}' fill='%231A1A1A'/><text x='50%25' y='72%25' font-size='${Math.round(s*.55)}' text-anchor='middle'>%F0%9F%8F%A8</text></svg>`;
-  const m={name:"الفندق الذهبي",short_name:"الفندق الذهبي",description:"نظام إدارة حجوزات الفندق الذهبي",start_url:"./",display:"standalone",background_color:"#0D0D0D",theme_color:"#0D0D0D",orientation:"any",lang:"ar",dir:"rtl",icons:[{src:"data:image/svg+xml,"+ic(192),sizes:"192x192",type:"image/svg+xml"},{src:"data:image/svg+xml,"+ic(512),sizes:"512x512",type:"image/svg+xml",purpose:"any maskable"}]};
-  document.getElementById('pwa-manifest').href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/manifest+json'}));
+  const m = {
+    name: "الفندق المدينة الشبابية برأس البر",
+    short_name: "فندق المدينة الشبابية برأس البر",
+    description: "نظام إدارة حجوزات الفندق المدينة الشبابية برأس البر",
+    start_url: "./",
+    display: "standalone",
+    background_color: "#0D0D0D",
+    theme_color: "#C9A84C",
+    orientation: "any",
+    lang: "ar",
+    dir: "rtl",
+    icons: [
+      {src:"data:image/svg+xml,"+ic(192), sizes:"192x192", type:"image/svg+xml"},
+      {src:"data:image/svg+xml,"+ic(512), sizes:"512x512", type:"image/svg+xml", purpose:"any maskable"}
+    ]
+  };
+  document.getElementById('pwa-manifest').href = URL.createObjectURL(new Blob([JSON.stringify(m)], {type:'application/manifest+json'}));
 })();
-if('serviceWorker' in navigator){
-  const sw=`const C='hg5';self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==C).map(k=>caches.delete(k)))));self.clients.claim();});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{caches.open(C).then(c=>c.put(e.request,r.clone()));return r;}).catch(()=>caches.match(e.request)));});`;
-  navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
-}
-let dp=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;if(!sessionStorage.getItem('bd'))setTimeout(()=>document.getElementById('instbanner').classList.add('show'),5000);});
-function installApp(){if(!dp)return;dp.prompt();dp.userChoice.then(()=>{dp=null;dismissBanner();});}
-function dismissBanner(){document.getElementById('instbanner').classList.remove('show');sessionStorage.setItem('bd','1');}
 
 /* ══════════════════════════════════════
-   SYNC UI
+   SERVICE WORKER (PWA)
 ══════════════════════════════════════ */
-function syncUI(s){
-  document.getElementById('sdot').className='sdot '+s;
-  document.getElementById('stxt').textContent={loading:'جاري...',syncing:'يحفظ...',synced:'✓ متزامن',error:'خطأ!'}[s]||s;
+const SW_CODE = `
+const CACHE = 'hotel-v2';
+const ASSETS = ['./', './'];
+
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS).catch(()=>{})));
+});
+
+self.addEventListener('activate', e => {
+  e.waitUntil(
+    caches.keys().then(ks => Promise.all(
+      ks.filter(k => k !== CACHE).map(k => caches.delete(k))
+    ))
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+  if(e.request.method !== 'GET') return;
+  e.respondWith(
+    fetch(e.request)
+      .then(r => { caches.open(CACHE).then(c => c.put(e.request, r.clone())); return r; })
+      .catch(() => caches.match(e.request))
+  );
+});
+
+self.addEventListener('push', e => {
+  if(!e.data) return;
+  const data = e.data.json();
+  e.waitUntil(
+    self.registration.showNotification(data.title || 'الفندق المدينة الشبابية برأس البر', {
+      body: data.body || '',
+      icon: data.icon || '',
+      badge: data.badge || '',
+      tag: data.tag || 'hotel',
+      data: data.data || {}
+    })
+  );
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  e.waitUntil(clients.openWindow('./'));
+});
+`;
+
+let swReg = null;
+if('serviceWorker' in navigator) {
+  const blob = new Blob([SW_CODE], {type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob))
+    .then(reg => { swReg = reg; })
+    .catch(() => {});
 }
 
 /* ══════════════════════════════════════
-   JSONBIN HELPERS
+   PWA INSTALL
 ══════════════════════════════════════ */
-async function createBin(name, data){
-  const r=await fetch(`${JAPI}/b`,{method:'POST',headers:{'Content-Type':'application/json','X-Master-Key':JKEY,'X-Bin-Name':name,'X-Bin-Private':'false'},body:JSON.stringify(data)});
-  if(!r.ok) throw new Error('create bin failed');
-  return (await r.json()).metadata.id;
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if(!sessionStorage.getItem('banner-dismissed')) {
+    setTimeout(() => document.getElementById('instbanner').classList.add('show'), 4000);
+  }
+});
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  dismissBanner();
+  toast('✅ تم تثبيت التطبيق بنجاح!', 'success');
+});
+function installApp() {
+  if(!deferredPrompt) {
+    toast('📲 افتح المتصفح واضغط "إضافة إلى الشاشة الرئيسية"', 'info');
+    return;
+  }
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => { deferredPrompt = null; dismissBanner(); });
 }
-async function readBin(id){
-  const r=await fetch(`${JAPI}/b/${id}/latest`,{headers:{'X-Master-Key':JKEY}});
-  if(!r.ok) throw new Error('read bin failed');
-  return (await r.json()).record;
+function dismissBanner() {
+  document.getElementById('instbanner').classList.remove('show');
+  sessionStorage.setItem('banner-dismissed', '1');
 }
-async function writeBin(id, data){
-  const r=await fetch(`${JAPI}/b/${id}`,{method:'PUT',headers:{'Content-Type':'application/json','X-Master-Key':JKEY},body:JSON.stringify(data)});
-  if(!r.ok) throw new Error('write bin failed');
+
+/* ══════════════════════════════════════
+   NOTIFICATIONS
+══════════════════════════════════════ */
+async function requestNotifPermission() {
+  if(!('Notification' in window)) { toast('❌ المتصفح لا يدعم الإشعارات', 'error'); return; }
+  const p = await Notification.requestPermission();
+  if(p === 'granted') { toast('✅ تم تفعيل الإشعارات', 'success'); }
+  else { toast('⚠️ لم يتم السماح بالإشعارات', 'info'); }
+}
+
+function sendLocalNotif(title, body) {
+  // In-app notification
+  addNotif(title, body);
+  // OS notification if allowed
+  if(Notification.permission === 'granted') {
+    if(swReg) {
+      swReg.showNotification(title, { body, icon: '', tag: 'hotel-booking', vibrate: [200, 100, 200] });
+    } else {
+      new Notification(title, { body });
+    }
+  }
+}
+
+function addNotif(title, body) {
+  const n = { id: Date.now(), title, body, time: new Date().toISOString(), read: false };
+  NOTIFS.unshift(n);
+  if(NOTIFS.length > 50) NOTIFS = NOTIFS.slice(0, 50);
+  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
+  updateNotifBadge();
+}
+
+function updateNotifBadge() {
+  unreadCount = NOTIFS.filter(n => !n.read).length;
+  const badge = document.getElementById('notif-badge');
+  if(unreadCount > 0) {
+    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+    badge.classList.add('show');
+  } else {
+    badge.classList.remove('show');
+  }
+}
+
+function renderNotifs() {
+  const list = document.getElementById('notif-list');
+  if(!NOTIFS.length) {
+    list.innerHTML = '<div class="notif-empty">🔔<br><br>لا توجد إشعارات حتى الآن</div>';
+    return;
+  }
+  list.innerHTML = NOTIFS.map(n => `
+    <div class="notif-item ${n.read?'read':'unread'}" onclick="markRead('${n.id}')">
+      <div class="notif-dot"></div>
+      <div class="notif-body">
+        <div class="notif-title">${n.title}</div>
+        <div class="notif-sub">${n.body}</div>
+        <div class="notif-time">${fmtTime(n.time)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function markRead(id) {
+  const n = NOTIFS.find(x => x.id == id);
+  if(n) { n.read = true; localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS)); updateNotifBadge(); renderNotifs(); }
+}
+
+function clearAllNotifs() {
+  NOTIFS.forEach(n => n.read = true);
+  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
+  updateNotifBadge();
+  renderNotifs();
+  toast('✅ تم تحديد الكل كمقروء', 'success');
+}
+
+function fmtTime(iso) {
+  if(!iso) return '';
+  const d = new Date(iso);
+  const now = new Date();
+  const diff = Math.floor((now - d) / 60000);
+  if(diff < 1) return 'الآن';
+  if(diff < 60) return `منذ ${diff} دقيقة`;
+  if(diff < 1440) return `منذ ${Math.floor(diff/60)} ساعة`;
+  return d.toLocaleDateString('ar-EG');
+}
+
+/* ══════════════════════════════════════
+   FIREBASE SETUP
+══════════════════════════════════════ */
+function saveFbConfig() {
+  const url = document.getElementById('fb-url-input').value.trim().replace(/\/$/, '');
+  if(!url.startsWith('https://')) { toast('❌ أدخل رابط Firebase صحيح', 'error'); return; }
+  FB_URL = url;
+  localStorage.setItem('hb_fb_url', FB_URL);
+  document.getElementById('fbsetupoverlay').classList.remove('show');
+  document.getElementById('fb-url-display').textContent = FB_URL;
+  toast('✅ تم الاتصال بـ Firebase', 'success');
+  loadAll();
+}
+
+function useDemoMode() {
+  DEMO_MODE = true;
+  document.getElementById('fbsetupoverlay').classList.remove('show');
+  document.getElementById('loginpage').classList.add('show');
+  try { USERS = JSON.parse(localStorage.getItem('hb_users_bk') || 'null') || DEFAULT_USERS; } catch(e) { USERS = DEFAULT_USERS; }
+  try { HD = JSON.parse(localStorage.getItem('hb_hotel_bk') || '{}'); } catch(e) { HD = {}; }
+  syncUI('synced');
+  hideLoad();
+  toast('⚠️ وضع تجريبي — البيانات محلية فقط', 'info');
+}
+
+/* ══════════════════════════════════════
+   FIREBASE CRUD
+══════════════════════════════════════ */
+async function fbGet(path) {
+  const r = await fetch(`${FB_URL}/${path}.json`, { cache: 'no-cache' });
+  if(!r.ok) throw new Error('Firebase read failed: ' + r.status);
+  return await r.json();
+}
+
+async function fbSet(path, data) {
+  const r = await fetch(`${FB_URL}/${path}.json`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if(!r.ok) throw new Error('Firebase write failed: ' + r.status);
+  return await r.json();
 }
 
 /* ══════════════════════════════════════
    LOAD / SAVE
 ══════════════════════════════════════ */
-async function loadAll(){
+async function loadAll() {
   syncUI('loading');
-  try{
-    // USERS BIN
-    if(!BIN_USERS){
-      BIN_USERS=await createBin('hotel-users',{users:DEFAULT_USERS});
-      localStorage.setItem('hb_users',BIN_USERS);
-      USERS=DEFAULT_USERS;
-    } else {
-      const d=await readBin(BIN_USERS);
-      USERS=d.users||DEFAULT_USERS;
-    }
-    // HOTEL BIN
-    if(!BIN_HOTEL){
-      BIN_HOTEL=await createBin('hotel-bookings',{data:{}});
-      localStorage.setItem('hb_hotel',BIN_HOTEL);
-      HD={};
-    } else {
-      const d=await readBin(BIN_HOTEL);
-      HD=d.data||{};
-    }
-    lastPollStr=JSON.stringify(HD);
+  document.getElementById('load-sub-txt').textContent = 'جاري الاتصال بقاعدة البيانات...';
+  try {
+    const [usersData, hotelData] = await Promise.all([
+      fbGet('users'),
+      fbGet('hotel')
+    ]);
+    USERS = (usersData && usersData.list) ? usersData.list : DEFAULT_USERS;
+    HD = (hotelData && hotelData.data) ? hotelData.data : {};
+    // Init if empty
+    if(!usersData || !usersData.list) await fbSet('users', { list: DEFAULT_USERS });
+    if(!hotelData || !hotelData.data) await fbSet('hotel', { data: {} });
+    lastHotelHash = JSON.stringify(HD);
+    localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
+    localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
     syncUI('synced');
-  }catch(e){
-    // offline fallback
-    try{USERS=JSON.parse(localStorage.getItem('hb_users_bk')||'null')||DEFAULT_USERS;}catch(x){USERS=DEFAULT_USERS;}
-    try{HD=JSON.parse(localStorage.getItem('hb_hotel_bk')||'{}');}catch(x){HD={};}
+    document.getElementById('fb-url-display').textContent = FB_URL || '';
+  } catch(e) {
+    console.error('Firebase load error:', e);
+    // Offline fallback
+    try { USERS = JSON.parse(localStorage.getItem('hb_users_bk') || 'null') || DEFAULT_USERS; } catch(x) { USERS = DEFAULT_USERS; }
+    try { HD = JSON.parse(localStorage.getItem('hb_hotel_bk') || '{}'); } catch(x) { HD = {}; }
     syncUI('error');
-    toast('⚠️ تعذر الاتصال، البيانات محلية مؤقتاً','info');
+    toast('⚠️ تعذر الاتصال — البيانات محلية مؤقتاً', 'info');
+    document.getElementById('offlinebanner').classList.add('show');
+  }
+  hideLoad();
+  document.getElementById('loginpage').classList.add('show');
+  startPolling();
+}
+
+async function saveHotel() {
+  if(saving) return;
+  saving = true; syncUI('syncing');
+  localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
+  try {
+    if(!DEMO_MODE && FB_URL) {
+      await fbSet('hotel', { data: HD });
+    }
+    lastHotelHash = JSON.stringify(HD);
+    syncUI('synced');
+    document.getElementById('offlinebanner').classList.remove('show');
+  } catch(e) {
+    syncUI('error');
+    toast('⚠️ حُفظ محلياً — تحقق من الاتصال', 'info');
+  } finally { saving = false; }
+}
+
+async function saveUsers() {
+  localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
+  if(!DEMO_MODE && FB_URL) {
+    try { await fbSet('users', { list: USERS }); } catch(e) { toast('⚠️ تعذر حفظ المستخدمين', 'error'); }
   }
 }
 
-async function saveHotel(){
-  if(saving) return;
-  saving=true; syncUI('syncing');
-  localStorage.setItem('hb_hotel_bk',JSON.stringify(HD));
-  try{
-    await writeBin(BIN_HOTEL,{data:HD});
-    lastPollStr=JSON.stringify(HD);
-    syncUI('synced');
-  }catch(e){syncUI('error');toast('⚠️ حُفظ محلياً، تحقق من الاتصال','info');}
-  finally{saving=false;}
-}
-
-async function saveUsers(){
-  localStorage.setItem('hb_users_bk',JSON.stringify(USERS));
-  try{ await writeBin(BIN_USERS,{users:USERS}); }
-  catch(e){ toast('⚠️ تعذر حفظ المستخدمين','error'); }
-}
-
-async function poll(){
-  if(saving) return;
-  try{
-    const d=await readBin(BIN_HOTEL);
-    const fresh=d.data||{};
-    const str=JSON.stringify(fresh);
-    if(str!==lastPollStr&&lastPollStr!==''){
-      HD=fresh; lastPollStr=str;
-      renderFloors();
-      if(curRoom) renderGuests();
-      toast('🔄 تم تحديث البيانات من جهاز آخر','info');
+/* ══════════════════════════════════════
+   REAL-TIME POLLING
+══════════════════════════════════════ */
+function startPolling() {
+  if(pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    if(saving || !curUser || DEMO_MODE || !FB_URL) return;
+    try {
+      const hotelData = await fbGet('hotel');
+      const fresh = (hotelData && hotelData.data) ? hotelData.data : {};
+      const newHash = JSON.stringify(fresh);
+      if(newHash !== lastHotelHash && lastHotelHash !== '') {
+        // Detect new bookings
+        detectNewBookings(HD, fresh);
+        HD = fresh;
+        lastHotelHash = newHash;
+        localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
+        renderFloors();
+        if(curRoom) renderGuests();
+        syncUI('synced');
+      }
+      // Also refresh users silently
+      const ud = await fbGet('users');
+      if(ud && ud.list) {
+        USERS = ud.list;
+        localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
+      }
+      document.getElementById('offlinebanner').classList.remove('show');
+    } catch(e) {
+      // silent fail on poll
     }
-    // also refresh users silently
-    const ud=await readBin(BIN_USERS);
-    USERS=ud.users||USERS;
-    localStorage.setItem('hb_users_bk',JSON.stringify(USERS));
-  }catch(e){}
+  }, 5000); // every 5 seconds
+}
+
+function detectNewBookings(oldData, newData) {
+  for(const room in newData) {
+    const oldGuests = (oldData[room] || []);
+    const newGuests = (newData[room] || []);
+    if(newGuests.length > oldGuests.length) {
+      const added = newGuests.slice(oldGuests.length);
+      added.forEach(g => {
+        if(g.by !== curUser.name) { // notification from another user
+          sendLocalNotif(
+            `🔔 حجز جديد — غرفة ${room}`,
+            `${g.name} | ${fmt(g.checkin)} → ${fmt(g.checkout)} | بواسطة: ${g.by||'—'}`
+          );
+        }
+      });
+    }
+  }
+}
+
+/* ══════════════════════════════════════
+   SYNC UI
+══════════════════════════════════════ */
+function syncUI(s) {
+  document.getElementById('sdot').className = 'sdot ' + s;
+  document.getElementById('stxt').textContent = { loading:'جاري...', syncing:'يحفظ...', synced:'✓ متزامن', error:'⚠️ خطأ' }[s] || s;
+}
+
+function hideLoad() {
+  const ls = document.getElementById('loadscreen');
+  ls.classList.add('hide');
+  setTimeout(() => ls.style.display='none', 500);
 }
 
 /* ══════════════════════════════════════
    AUTH
 ══════════════════════════════════════ */
-function doLogin(){
-  const u=document.getElementById('l-user').value.trim();
-  const p=document.getElementById('l-pass').value;
-  const found=USERS.find(x=>x.username===u && x.password===p);
-  if(!found){
+function doLogin() {
+  const u = document.getElementById('l-user').value.trim();
+  const p = document.getElementById('l-pass').value;
+  const found = USERS.find(x => x.username === u && x.password === p);
+  if(!found) {
     document.getElementById('login-err').classList.add('show');
-    document.getElementById('l-pass').value='';
+    document.getElementById('l-pass').value = '';
     return;
   }
-  curUser=found;
+  curUser = found;
   document.getElementById('login-err').classList.remove('show');
   document.getElementById('loginpage').classList.remove('show');
   document.getElementById('app').classList.add('show');
-  document.getElementById('hdr-uname').textContent=found.name;
-  document.getElementById('hdr-urole').textContent=found.role==='admin'?'أدمن':'موظف';
-  // show admin tab if admin
-  if(found.role==='admin'){
-    document.querySelectorAll('.admin-only').forEach(el=>el.classList.add('show'));
-  }
+  document.getElementById('hdr-uname').textContent = found.name;
+  document.getElementById('hdr-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
+  if(found.role === 'admin') document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
+  // Load saved notifs
+  try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
+  updateNotifBadge();
   renderFloors();
+  // Ask notif permission on first login
+  if(Notification.permission === 'default') {
+    setTimeout(() => requestNotifPermission(), 2000);
+  }
 }
 
-function doLogout(){
-  curUser=null;
+function doLogout() {
+  curUser = null;
   document.getElementById('app').classList.remove('show');
   document.getElementById('loginpage').classList.add('show');
-  document.getElementById('l-user').value='';
-  document.getElementById('l-pass').value='';
-  document.getElementById('l-user').focus();
-  // reset admin tabs
-  document.querySelectorAll('.admin-only').forEach(el=>el.classList.remove('show'));
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+  document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('show'));
   switchTab('rooms');
 }
 
 /* ══════════════════════════════════════
    TABS
 ══════════════════════════════════════ */
-function switchTab(tab){
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('fp').style.display='none';
-  document.getElementById('bp').style.display='none';
-  document.getElementById('adminpage').style.display='none';
-  if(tab==='rooms'){
+function switchTab(tab) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  ['fp','bp','adminpage','notifpage'].forEach(id => document.getElementById(id).style.display='none');
+  document.getElementById('search-bar').style.display = 'none';
+  if(tab === 'rooms') {
     document.getElementById('tab-rooms').classList.add('active');
-    document.getElementById('fp').style.display='block';
+    document.getElementById('fp').style.display = 'block';
     renderFloors();
-  } else if(tab==='admin'){
+  } else if(tab === 'search') {
+    document.getElementById('tab-search').classList.add('active');
+    document.getElementById('search-bar').style.display = 'block';
+    document.getElementById('fp').style.display = 'block';
+    renderFloors();
+    setTimeout(() => document.getElementById('search-input').focus(), 100);
+  } else if(tab === 'notif') {
+    document.getElementById('tab-notif').classList.add('active');
+    document.getElementById('notifpage').style.display = 'block';
+    renderNotifs();
+  } else if(tab === 'admin') {
     document.getElementById('tab-admin').classList.add('active');
-    document.getElementById('adminpage').style.display='block';
+    document.getElementById('adminpage').style.display = 'block';
     renderAdminUsers();
   }
 }
 
 /* ══════════════════════════════════════
+   SEARCH
+══════════════════════════════════════ */
+function getFloorName(room) {
+  for(const fl of FLOORS) {
+    if(fl.rooms.includes(room)) return fl.name;
+  }
+  return '';
+}
+
+function highlight(text, query) {
+  if(!query) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return String(text).replace(new RegExp(`(${escaped})`, 'gi'), '<span class="search-highlight">$1</span>');
+}
+
+function doSearch(q) {
+  q = q.trim();
+  const clearBtn = document.getElementById('search-clear');
+  const resultsBox = document.getElementById('search-results');
+  const list = document.getElementById('search-list');
+  const countEl = document.getElementById('search-count');
+
+  clearBtn.classList.toggle('show', q.length > 0);
+
+  if(!q) {
+    resultsBox.classList.remove('show');
+    return;
+  }
+
+  // Collect all results
+  const results = [];
+  const qLower = q.toLowerCase();
+
+  FLOORS.forEach(fl => {
+    fl.rooms.forEach(rn => {
+      const guests = GG(rn);
+      // Search by room number
+      const roomMatch = rn.toLowerCase().includes(qLower);
+
+      guests.forEach((g, gi) => {
+        const nameMatch = g.name && g.name.toLowerCase().includes(qLower);
+        const phoneMatch = g.phone && g.phone.includes(q);
+        if(roomMatch || nameMatch || phoneMatch) {
+          results.push({room: rn, floor: fl.name, guest: g, gIdx: gi, matchType: roomMatch ? 'room' : nameMatch ? 'name' : 'phone'});
+        }
+      });
+
+      // If room matched but no guests, still show the room
+      if(roomMatch && guests.length === 0) {
+        results.push({room: rn, floor: fl.name, guest: null, gIdx: -1, matchType: 'room'});
+      }
+    });
+  });
+
+  countEl.textContent = results.length;
+  resultsBox.classList.add('show');
+
+  if(results.length === 0) {
+    list.innerHTML = `<div class="no-results">😔 لا توجد نتائج لـ "<strong>${q}</strong>"</div>`;
+    return;
+  }
+
+  list.innerHTML = results.map(r => {
+    const booked = isBooked(r.room);
+    const roomDisplay = highlight(r.room, q);
+    const nameDisplay = r.guest ? highlight(r.guest.name, q) : '—';
+    const phoneDisplay = r.guest ? highlight(r.guest.phone, q) : '—';
+    return `
+      <div class="search-result-card" onclick="openRoom('${r.room}','${r.floor}');switchTab('rooms')">
+        <div class="src-room">${r.room}</div>
+        <div class="src-info">
+          <div class="src-name">${r.guest ? nameDisplay : '<span style="color:var(--text-muted)">لا يوجد حجز</span>'}</div>
+          <div class="src-details">
+            ${r.guest ? `<span>📞 ${phoneDisplay}</span>` : ''}
+            ${r.guest ? `<span>📅 ${fmt(r.guest.checkin)} ← ${fmt(r.guest.checkout)}</span>` : ''}
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
+          <span class="src-status ${booked?'bk':'av'}">${booked?'محجوزة':'متاحة'}</span>
+          <span class="src-floor">${r.floor}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-clear').classList.remove('show');
+  document.getElementById('search-results').classList.remove('show');
+  document.getElementById('search-input').focus();
+}
+
+/* ══════════════════════════════════════
    FLOORS
 ══════════════════════════════════════ */
-const FLOORS=[
+const FLOORS = [
   {name:'الدور الأول',  label:'الأول',  rooms:['VIP','102','106','107','108','109']},
   {name:'الدور الثاني', label:'الثاني', rooms:['201','202','203','204','206','207','208','209']},
   {name:'الدور الثالث', label:'الثالث', rooms:['301','302','303','304','305','306','307','308','309']},
   {name:'الدور الرابع', label:'الرابع', rooms:['401','402','403','404','405','406','407','408','409']}
 ];
 
-const GG=r=>HD[r]||[];
-const SG=(r,g)=>{HD[r]=g;};
+const GG = r => HD[r] || [];
+const SG = (r, g) => { HD[r] = g; };
 
-function isBooked(r){
-  const g=GG(r);if(!g.length)return false;
-  const t=new Date().toISOString().split('T')[0];
-  return g.some(x=>x.checkin<=t&&x.checkout>=t);
+function isBooked(r) {
+  const g = GG(r); if(!g.length) return false;
+  const t = new Date().toISOString().split('T')[0];
+  return g.some(x => x.checkin <= t && x.checkout >= t);
 }
-function overlap(ci,co,bks,ex){
-  const a=new Date(ci),b=new Date(co);
-  return bks.some((k,i)=>{if(typeof ex==='number'&&i===ex)return false;return a<new Date(k.checkout)&&b>new Date(k.checkin);});
+function overlap(ci, co, bks, ex) {
+  const a = new Date(ci), b = new Date(co);
+  return bks.some((k, i) => {
+    if(typeof ex === 'number' && i === ex) return false;
+    return a < new Date(k.checkout) && b > new Date(k.checkin);
+  });
 }
-function fmt(d){if(!d)return'–';const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}
+function fmt(d) { if(!d) return '–'; const[y,m,day]=d.split('-'); return `${day}/${m}/${y}`; }
 
-function renderFloors(){
-  const c=document.getElementById('fc');c.innerHTML='';
-  let tot=0,bkd=0;
-  FLOORS.forEach(fl=>{
-    const sec=document.createElement('div');sec.className='fsec';
-    const cards=fl.rooms.map(rn=>{
-      tot++;const b=isBooked(rn);if(b)bkd++;
-      const gc=GG(rn).length;
+function renderFloors() {
+  const c = document.getElementById('fc'); c.innerHTML = '';
+  let tot = 0, bkd = 0;
+  FLOORS.forEach(fl => {
+    const sec = document.createElement('div'); sec.className = 'fsec';
+    const cards = fl.rooms.map(rn => {
+      tot++; const b = isBooked(rn); if(b) bkd++;
+      const gc = GG(rn).length;
       return `<div class="rcard${b?' booked':''}" onclick="openRoom('${rn}','${fl.name}')">
         <div class="rnum">${rn}</div>
         <div class="rstatus ${b?'bk':'av'}">${b?'محجوزة':'متاحة'}</div>
-        ${gc?`<div class="rcnt">${gc} حجز</div>`:''}
+        ${gc ? `<div class="rcnt">${gc} حجز</div>` : ''}
       </div>`;
     }).join('');
-    sec.innerHTML=`<div class="fhdr"><span class="fbadge">الدور ${fl.label}</span><span class="ftitle-fl">${fl.name}</span><span class="fcnt">${fl.rooms.length} غرفة</span></div><div class="rgrid">${cards}</div>`;
+    sec.innerHTML = `<div class="fhdr"><span class="fbadge">الدور ${fl.label}</span><span class="ftitle-fl">${fl.name}</span><span class="fcnt">${fl.rooms.length} غرفة</span></div><div class="rgrid">${cards}</div>`;
     c.appendChild(sec);
   });
-  document.getElementById('st').textContent=tot;
-  document.getElementById('sb').textContent=bkd;
-  document.getElementById('sa').textContent=tot-bkd;
+  document.getElementById('st').textContent = tot;
+  document.getElementById('sb').textContent = bkd;
+  document.getElementById('sa').textContent = tot - bkd;
 }
 
 /* ══════════════════════════════════════
    BOOKING
 ══════════════════════════════════════ */
-function openRoom(rn,fn){
-  curRoom=rn;
-  document.getElementById('fp').style.display='none';
-  document.getElementById('bp').style.display='block';
-  document.getElementById('bpn').textContent=rn;
-  document.getElementById('bpt').textContent=fn+' — غرفة '+rn;
-  cancelForm();renderGuests();window.scrollTo(0,0);
+function openRoom(rn, fn) {
+  curRoom = rn;
+  document.getElementById('fp').style.display = 'none';
+  document.getElementById('bp').style.display = 'block';
+  document.getElementById('bpn').textContent = rn;
+  document.getElementById('bpt').textContent = fn + ' — غرفة ' + rn;
+  cancelForm(); renderGuests(); window.scrollTo(0,0);
 }
-function goBack(){
-  document.getElementById('bp').style.display='none';
-  document.getElementById('fp').style.display='block';
-  renderFloors();window.scrollTo(0,0);
+function goBack() {
+  document.getElementById('bp').style.display = 'none';
+  document.getElementById('fp').style.display = 'block';
+  renderFloors(); window.scrollTo(0,0);
 }
-function renderGuests(){
-  const g=GG(curRoom);
-  const list=document.getElementById('gl');
-  document.getElementById('bps').textContent='الحالة: '+(isBooked(curRoom)?'🔴 محجوزة حالياً':'🟢 متاحة');
-  if(!g.length){list.innerHTML='<div class="noguests">لا توجد حجوزات لهذه الغرفة حتى الآن</div>';return;}
-  list.innerHTML=g.map((x,i)=>`
+function renderGuests() {
+  const g = GG(curRoom);
+  const list = document.getElementById('gl');
+  document.getElementById('bps').textContent = 'الحالة: ' + (isBooked(curRoom) ? '🔴 محجوزة حالياً' : '🟢 متاحة');
+  if(!g.length) { list.innerHTML = '<div class="noguests">لا توجد حجوزات لهذه الغرفة حتى الآن</div>'; return; }
+  list.innerHTML = g.map((x, i) => `
     <div class="gcard">
       <div class="gchead">
         <div class="gname">👤 ${x.name}</div>
@@ -819,62 +1176,64 @@ function renderGuests(){
       </div>
     </div>`).join('');
 }
-function showAddForm(){
-  document.getElementById('ei').value=-1;
-  document.getElementById('ftitle').textContent='📋 إضافة حجز جديد';
-  ['fn','fph','fci','fco'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('bkform').style.display='block';
-  document.getElementById('addbtn').style.display='none';
+function showAddForm() {
+  document.getElementById('ei').value = -1;
+  document.getElementById('ftitle').textContent = '📋 إضافة حجز جديد';
+  ['fn','fph','fci','fco'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('bkform').style.display = 'block';
+  document.getElementById('addbtn').style.display = 'none';
   document.getElementById('bkform').scrollIntoView({behavior:'smooth'});
 }
-function editGuest(i){
-  const g=GG(curRoom)[i];
-  document.getElementById('ei').value=i;
-  document.getElementById('ftitle').textContent='✏️ تعديل بيانات الحجز';
-  document.getElementById('fn').value=g.name;
-  document.getElementById('fph').value=g.phone;
-  document.getElementById('fci').value=g.checkin;
-  document.getElementById('fco').value=g.checkout;
-  document.getElementById('bkform').style.display='block';
-  document.getElementById('addbtn').style.display='none';
+function editGuest(i) {
+  const g = GG(curRoom)[i];
+  document.getElementById('ei').value = i;
+  document.getElementById('ftitle').textContent = '✏️ تعديل بيانات الحجز';
+  document.getElementById('fn').value = g.name;
+  document.getElementById('fph').value = g.phone;
+  document.getElementById('fci').value = g.checkin;
+  document.getElementById('fco').value = g.checkout;
+  document.getElementById('bkform').style.display = 'block';
+  document.getElementById('addbtn').style.display = 'none';
   document.getElementById('bkform').scrollIntoView({behavior:'smooth'});
 }
-async function saveGuest(){
-  const name=document.getElementById('fn').value.trim();
-  const phone=document.getElementById('fph').value.trim();
-  const ci=document.getElementById('fci').value;
-  const co=document.getElementById('fco').value;
-  if(!name||!phone||!ci||!co){toast('❌ أكمل جميع البيانات','error');return;}
-  if(co<=ci){toast('❌ تاريخ المغادرة يجب أن يكون بعد الوصول','error');return;}
-  const guests=GG(curRoom);
-  const ei=parseInt(document.getElementById('ei').value);
-  if(overlap(ci,co,guests,ei>=0?ei:null)){toast('❌ يوجد حجز آخر في نفس الفترة','error');return;}
-  const gd={name,phone,checkin:ci,checkout:co,by:curUser.name};
-  if(ei>=0){guests[ei]=gd;}else{guests.push(gd);}
-  SG(curRoom,guests);
-  document.getElementById('savebtn').disabled=true;
+async function saveGuest() {
+  const name = document.getElementById('fn').value.trim();
+  const phone = document.getElementById('fph').value.trim();
+  const ci = document.getElementById('fci').value;
+  const co = document.getElementById('fco').value;
+  if(!name || !phone || !ci || !co) { toast('❌ أكمل جميع البيانات', 'error'); return; }
+  if(co <= ci) { toast('❌ تاريخ المغادرة يجب أن يكون بعد الوصول', 'error'); return; }
+  const guests = GG(curRoom);
+  const ei = parseInt(document.getElementById('ei').value);
+  if(overlap(ci, co, guests, ei >= 0 ? ei : null)) { toast('❌ يوجد حجز آخر في نفس الفترة', 'error'); return; }
+  const gd = { name, phone, checkin: ci, checkout: co, by: curUser.name, at: new Date().toISOString() };
+  if(ei >= 0) { guests[ei] = gd; } else { guests.push(gd); }
+  SG(curRoom, guests);
+  document.getElementById('savebtn').disabled = true;
   await saveHotel();
-  document.getElementById('savebtn').disabled=false;
-  toast(ei>=0?'✅ تم تعديل الحجز':'✅ تم حفظ الحجز','success');
-  cancelForm();renderGuests();renderFloors();
+  document.getElementById('savebtn').disabled = false;
+  toast(ei >= 0 ? '✅ تم تعديل الحجز' : '✅ تم حفظ الحجز', 'success');
+  cancelForm(); renderGuests(); renderFloors();
 }
-function cancelForm(){
-  document.getElementById('bkform').style.display='none';
-  document.getElementById('addbtn').style.display='inline-flex';
+function cancelForm() {
+  document.getElementById('bkform').style.display = 'none';
+  document.getElementById('addbtn').style.display = 'inline-flex';
 }
-function askDelete(i){delIdx=i;document.getElementById('deloverlay').classList.add('show');}
-async function confirmDelete(){
-  const g=GG(curRoom);g.splice(delIdx,1);SG(curRoom,g);
-  closeOverlay('deloverlay');await saveHotel();
-  renderGuests();renderFloors();toast('🗑️ تم حذف الحجز','success');
+function askDelete(i) { delIdx = i; document.getElementById('deloverlay').classList.add('show'); }
+async function confirmDelete() {
+  const g = GG(curRoom); g.splice(delIdx, 1); SG(curRoom, g);
+  closeOverlay('deloverlay');
+  await saveHotel();
+  renderGuests(); renderFloors();
+  toast('🗑️ تم حذف الحجز', 'success');
 }
 
 /* ══════════════════════════════════════
-   ADMIN — USERS
+   ADMIN
 ══════════════════════════════════════ */
-function renderAdminUsers(){
-  const list=document.getElementById('users-list');
-  list.innerHTML=USERS.map((u,i)=>`
+function renderAdminUsers() {
+  const list = document.getElementById('users-list');
+  list.innerHTML = USERS.map((u, i) => `
     <div class="user-card">
       <div class="user-card-info">
         <div class="uname">${u.name} <span style="color:var(--text-muted);font-weight:400;font-size:12px">(${u.username})</span></div>
@@ -882,66 +1241,60 @@ function renderAdminUsers(){
       </div>
       <div class="user-card-actions">
         <button class="bsm bedit" onclick="openChangePass(${i})">🔑 تغيير الباسورد</button>
-        ${u.username!=='admin'?`<button class="bsm bdel" onclick="askDeleteUser(${i})">🗑️</button>`:''}
+        ${u.username !== 'admin' ? `<button class="bsm bdel" onclick="askDeleteUser(${i})">🗑️</button>` : ''}
       </div>
     </div>`).join('');
 }
-
-async function addUser(){
-  const username=document.getElementById('nu-user').value.trim();
-  const password=document.getElementById('nu-pass').value.trim();
-  const name=document.getElementById('nu-name').value.trim();
-  const role=document.getElementById('nu-role').value;
-  if(!username||!password||!name){toast('❌ أكمل جميع البيانات','error');return;}
-  if(USERS.find(u=>u.username===username)){toast('❌ اسم المستخدم موجود بالفعل','error');return;}
-  USERS.push({username,password,name,role});
-  await saveUsers();
-  renderAdminUsers();
-  ['nu-user','nu-pass','nu-name'].forEach(id=>document.getElementById(id).value='');
-  toast('✅ تم إضافة المستخدم','success');
+async function addUser() {
+  const username = document.getElementById('nu-user').value.trim();
+  const password = document.getElementById('nu-pass').value.trim();
+  const name = document.getElementById('nu-name').value.trim();
+  const role = document.getElementById('nu-role').value;
+  if(!username || !password || !name) { toast('❌ أكمل جميع البيانات', 'error'); return; }
+  if(USERS.find(u => u.username === username)) { toast('❌ اسم المستخدم موجود بالفعل', 'error'); return; }
+  USERS.push({username, password, name, role});
+  await saveUsers(); renderAdminUsers();
+  ['nu-user','nu-pass','nu-name'].forEach(id => document.getElementById(id).value = '');
+  toast('✅ تم إضافة المستخدم', 'success');
 }
-
-function askDeleteUser(i){
-  if(USERS[i].username==='admin'){toast('❌ لا يمكن حذف الأدمن الرئيسي','error');return;}
-  delUserId=i;
-  document.getElementById('deluseroverlay').classList.add('show');
+function askDeleteUser(i) {
+  if(USERS[i].username === 'admin') { toast('❌ لا يمكن حذف الأدمن الرئيسي', 'error'); return; }
+  delUserId = i; document.getElementById('deluseroverlay').classList.add('show');
 }
-async function confirmDeleteUser(){
-  USERS.splice(delUserId,1);
+async function confirmDeleteUser() {
+  USERS.splice(delUserId, 1);
   closeOverlay('deluseroverlay');
-  await saveUsers();
-  renderAdminUsers();
-  toast('🗑️ تم حذف المستخدم','success');
+  await saveUsers(); renderAdminUsers();
+  toast('🗑️ تم حذف المستخدم', 'success');
 }
-
-function openChangePass(i){
-  cpUserId=i;
-  document.getElementById('cp-pass').value='';
-  document.getElementById('cp-pass2').value='';
+function openChangePass(i) {
+  cpUserId = i;
+  document.getElementById('cp-pass').value = '';
+  document.getElementById('cp-pass2').value = '';
   document.getElementById('cpoverlay').classList.add('show');
 }
-async function confirmChangePass(){
-  const p1=document.getElementById('cp-pass').value;
-  const p2=document.getElementById('cp-pass2').value;
-  if(!p1){toast('❌ أدخل كلمة المرور','error');return;}
-  if(p1!==p2){toast('❌ كلمتا المرور غير متطابقتان','error');return;}
-  USERS[cpUserId].password=p1;
+async function confirmChangePass() {
+  const p1 = document.getElementById('cp-pass').value;
+  const p2 = document.getElementById('cp-pass2').value;
+  if(!p1) { toast('❌ أدخل كلمة المرور', 'error'); return; }
+  if(p1 !== p2) { toast('❌ كلمتا المرور غير متطابقتان', 'error'); return; }
+  USERS[cpUserId].password = p1;
   closeOverlay('cpoverlay');
   await saveUsers();
-  toast('✅ تم تغيير كلمة المرور','success');
+  toast('✅ تم تغيير كلمة المرور', 'success');
 }
 
 /* ══════════════════════════════════════
    SHARE
 ══════════════════════════════════════ */
-function buildTxt(room,g){
-  return `🏨 *الفندق الذهبي*\n━━━━━━━━━━━━━━\n🔔 *حجز جديد*\n🚪 الغرفة: *${room}*\n👤 الاسم: *${g.name}*\n📞 الهاتف: ${g.phone}\n📅 الوصول: ${fmt(g.checkin)}\n📅 المغادرة: ${fmt(g.checkout)}\n━━━━━━━━━━━━━━`;
+function buildTxt(room, g) {
+  return `🏨 *الفندق المدينة الشبابية برأس البر*\n━━━━━━━━━━━━━━\n🔔 *حجز جديد*\n🚪 الغرفة: *${room}*\n👤 الاسم: *${g.name}*\n📞 الهاتف: ${g.phone}\n📅 الوصول: ${fmt(g.checkin)}\n📅 المغادرة: ${fmt(g.checkout)}\n━━━━━━━━━━━━━━`;
 }
-function openShare(i){
-  shrData={room:curRoom,g:GG(curRoom)[i]};
-  const x=shrData.g;
-  document.getElementById('shrprev').innerHTML=`
-    <div class="sc-hotel">🏨 الفندق الذهبي</div>
+function openShare(i) {
+  shrData = {room:curRoom, g:GG(curRoom)[i]};
+  const x = shrData.g;
+  document.getElementById('shrprev').innerHTML = `
+    <div class="sc-hotel">🏨 الفندق المدينة الشبابية برأس البر</div>
     <div class="sc-head">🔔 حجز جديد — غرفة ${shrData.room}</div>
     <div class="sc-div"></div>
     <div class="sc-row"><span class="sc-lbl">👤 الاسم</span><span class="sc-val">${x.name}</span></div>
@@ -950,49 +1303,63 @@ function openShare(i){
     <div class="sc-row"><span class="sc-lbl">📅 المغادرة</span><span class="sc-val">${fmt(x.checkout)}</span></div>`;
   document.getElementById('shroverlay').classList.add('show');
 }
-function shareWA(){
-  if(!shrData)return;
-  window.open('https://wa.me/?text='+encodeURIComponent(buildTxt(shrData.room,shrData.g)),'_blank');
+function shareWA() {
+  if(!shrData) return;
+  window.open('https://wa.me/?text=' + encodeURIComponent(buildTxt(shrData.room, shrData.g)), '_blank');
   closeOverlay('shroverlay');
 }
-async function shareCopy(){
-  if(!shrData)return;
-  const txt=buildTxt(shrData.room,shrData.g);
-  try{await navigator.clipboard.writeText(txt);}
-  catch(e){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);}
-  toast('✅ تم نسخ بيانات الحجز','success');
+async function shareCopy() {
+  if(!shrData) return;
+  const txt = buildTxt(shrData.room, shrData.g);
+  try { await navigator.clipboard.writeText(txt); }
+  catch(e) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
+  toast('✅ تم نسخ بيانات الحجز', 'success');
   closeOverlay('shroverlay');
 }
 
 /* ══════════════════════════════════════
    UTILS
 ══════════════════════════════════════ */
-function closeOverlay(id){
+function closeOverlay(id) {
   document.getElementById(id).classList.remove('show');
-  if(id==='deloverlay')delIdx=null;
-  if(id==='deluseroverlay')delUserId=null;
-  if(id==='cpoverlay')cpUserId=null;
-  if(id==='shroverlay')shrData=null;
+  if(id === 'deloverlay') delIdx = null;
+  if(id === 'deluseroverlay') delUserId = null;
+  if(id === 'cpoverlay') cpUserId = null;
+  if(id === 'shroverlay') shrData = null;
 }
-function toast(msg,type){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+(type||'')+' show';
-  setTimeout(()=>t.classList.remove('show'),3000);
+function toast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + (type||'') + ' show';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3500);
 }
+
+/* ══════════════════════════════════════
+   ONLINE / OFFLINE
+══════════════════════════════════════ */
+window.addEventListener('online', () => {
+  document.getElementById('offlinebanner').classList.remove('show');
+  if(!DEMO_MODE && FB_URL) loadAll();
+});
+window.addEventListener('offline', () => {
+  document.getElementById('offlinebanner').classList.add('show');
+  syncUI('error');
+});
 
 /* ══════════════════════════════════════
    INIT
 ══════════════════════════════════════ */
-async function init(){
-  await loadAll();
-  const ls=document.getElementById('loadscreen');
-  ls.classList.add('hide');
-  setTimeout(()=>ls.style.display='none',500);
-  // show login
-  document.getElementById('loginpage').classList.add('show');
-  document.getElementById('l-user').focus();
-  // poll every 8s
-  setInterval(poll,8000);
+async function init() {
+  // Load saved notifs
+  try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
+  
+  if(!FB_URL) {
+    // No Firebase configured — show setup
+    hideLoad();
+    document.getElementById('fbsetupoverlay').classList.add('show');
+  } else {
+    await loadAll();
+  }
 }
 init();
 </script>
