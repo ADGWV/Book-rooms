@@ -507,6 +507,7 @@ let NOTIFS = [];
 let curUser = null;
 let curRoom = null, delIdx = null, delUserId = null, cpUserId = null, shrData = null;
 let saving = false;
+let lastSaveTime = 0;
 let pollTimer = null;
 let lastHotelHash = '';
 let unreadCount = 0;
@@ -769,6 +770,7 @@ async function saveHotel() {
       await fbSet('hotel', { data: HD });
     }
     lastHotelHash = JSON.stringify(HD);
+    lastSaveTime = Date.now();
     syncUI('synced');
     document.getElementById('offlinebanner').classList.remove('show');
   } catch(e) {
@@ -796,8 +798,8 @@ function startPolling() {
       const fresh = (hotelData && hotelData.data) ? hotelData.data : {};
       const newHash = JSON.stringify(fresh);
       if(newHash !== lastHotelHash && lastHotelHash !== '') {
-        // Detect new bookings
-        detectNewBookings(HD, fresh);
+        // Detect new bookings only if change came from another device
+        if(Date.now() - lastSaveTime > 8000) detectNewBookings(HD, fresh);
         HD = fresh;
         lastHotelHash = newHash;
         localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
