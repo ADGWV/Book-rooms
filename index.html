@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#0D0D0D">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="الفندق المدينة الشبابية برأس البر">
-<title>الفندق المدينة الشبابية برأس البر</title>
+<meta name="apple-mobile-web-app-title" content="فندق المدينة الشبابية برأس البر">
+<title>فندق المدينة الشبابية برأس البر</title>
 <link rel="manifest" id="pwa-manifest">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -315,7 +315,7 @@ select:focus{border-color:var(--gold)}
 <!-- LOADING -->
 <div id="loadscreen">
   <div class="load-icon">🏨</div>
-  <div class="load-text">الفندق المدينة الشبابية برأس البر</div>
+  <div class="load-text">فندق المدينة الشبابية برأس البر</div>
   <div class="load-sub" id="load-sub-txt">جاري الاتصال بقاعدة البيانات...</div>
   <div class="load-bar"><div class="load-fill"></div></div>
 </div>
@@ -348,7 +348,7 @@ select:focus{border-color:var(--gold)}
   <div class="login-box">
     <div class="login-logo">
       <div class="icon">🏨</div>
-      <h1>الفندق المدينة الشبابية برأس البر</h1>
+      <h1>فندق المدينة الشبابية برأس البر</h1>
       <p>نظام إدارة الحجوزات — سجّل دخولك للمتابعة</p>
     </div>
     <div class="login-form">
@@ -367,7 +367,7 @@ select:focus{border-color:var(--gold)}
     <div class="logo">
       <div class="logo-icon">🏨</div>
       <div>
-        <h1>الفندق المدينة الشبابية برأس البر</h1>
+        <h1>فندق المدينة الشبابية برأس البر</h1>
         <p>نظام إدارة الحجوزات</p>
       </div>
     </div>
@@ -417,7 +417,7 @@ select:focus{border-color:var(--gold)}
   </div>
 
   <!-- FLOORS -->
-  <div id="fp"><div class="ptitle"><h2>🏨 غرف الفندق</h2><p>اختر غرفة لعرض تفاصيل الحجز أو إضافة حجز جديد</p></div><div id="fc"></div></div>
+  <div id="fp"><div class="ptitle"><h2>🏨 غرف فندق</h2><p>اختر غرفة لعرض تفاصيل الحجز أو إضافة حجز جديد</p></div><div id="fc"></div></div>
 
   <!-- BOOKING -->
   <div id="bp">
@@ -572,9 +572,9 @@ let unreadCount = 0;
 (()=>{
   const ic = s => `<svg xmlns='http://www.w3.org/2000/svg' width='${s}' height='${s}'><rect width='${s}' height='${s}' rx='${Math.round(s*.18)}' fill='%231A1A1A'/><text x='50%25' y='72%25' font-size='${Math.round(s*.55)}' text-anchor='middle'>%F0%9F%8F%A8</text></svg>`;
   const m = {
-    name: "الفندق المدينة الشبابية برأس البر",
+    name: "فندق المدينة الشبابية برأس البر",
     short_name: "فندق المدينة الشبابية برأس البر",
-    description: "نظام إدارة حجوزات الفندق المدينة الشبابية برأس البر",
+    description: "نظام إدارة حجوزات فندق المدينة الشبابية برأس البر",
     start_url: "./",
     display: "standalone",
     background_color: "#0D0D0D",
@@ -624,7 +624,7 @@ self.addEventListener('push', e => {
   if(!e.data) return;
   const data = e.data.json();
   e.waitUntil(
-    self.registration.showNotification(data.title || 'الفندق المدينة الشبابية برأس البر', {
+    self.registration.showNotification(data.title || 'فندق المدينة الشبابية برأس البر', {
       body: data.body || '',
       icon: data.icon || '',
       badge: data.badge || '',
@@ -1288,13 +1288,13 @@ async function confirmChangePass() {
    SHARE
 ══════════════════════════════════════ */
 function buildTxt(room, g) {
-  return `🏨 *الفندق المدينة الشبابية برأس البر*\n━━━━━━━━━━━━━━\n🔔 *حجز جديد*\n🚪 الغرفة: *${room}*\n👤 الاسم: *${g.name}*\n📞 الهاتف: ${g.phone}\n📅 الوصول: ${fmt(g.checkin)}\n📅 المغادرة: ${fmt(g.checkout)}\n━━━━━━━━━━━━━━`;
+  return `🏨 *فندق المدينة الشبابية برأس البر*\n━━━━━━━━━━━━━━\n🔔 *حجز جديد*\n🚪 الغرفة: *${room}*\n👤 الاسم: *${g.name}*\n📞 الهاتف: ${g.phone}\n📅 الوصول: ${fmt(g.checkin)}\n📅 المغادرة: ${fmt(g.checkout)}\n━━━━━━━━━━━━━━`;
 }
 function openShare(i) {
   shrData = {room:curRoom, g:GG(curRoom)[i]};
   const x = shrData.g;
   document.getElementById('shrprev').innerHTML = `
-    <div class="sc-hotel">🏨 الفندق المدينة الشبابية برأس البر</div>
+    <div class="sc-hotel">🏨 فندق المدينة الشبابية برأس البر</div>
     <div class="sc-head">🔔 حجز جديد — غرفة ${shrData.room}</div>
     <div class="sc-div"></div>
     <div class="sc-row"><span class="sc-lbl">👤 الاسم</span><span class="sc-val">${x.name}</span></div>
