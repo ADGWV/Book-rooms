@@ -189,6 +189,14 @@ select:focus{border-color:var(--gold)}
 .notif-sub{font-size:11px;color:var(--text-muted)}
 .notif-time{font-size:10px;color:var(--text-muted);margin-top:4px}
 .notif-empty{text-align:center;padding:50px 20px;color:var(--text-muted)}
+.notif-cb{width:16px;height:16px;accent-color:var(--gold);cursor:pointer;flex-shrink:0;margin-top:3px}
+.notif-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.notif-toolbar-left{display:flex;align-items:center;gap:8px;flex:1}
+.notif-sel-all{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);cursor:pointer;user-select:none}
+.notif-sel-all input{width:16px;height:16px;accent-color:var(--gold);cursor:pointer}
+.bdel-sel{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.26);padding:6px 12px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:none}
+.bdel-sel.show{display:block}
+.bdel-sel:hover{background:rgba(231,76,60,.24)}
 
 /* TOAST */
 .toast{position:fixed;bottom:calc(20px + var(--sab));left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:11px 20px;border-radius:11px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;box-shadow:0 8px 26px rgba(0,0,0,.5);white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center}
@@ -402,7 +410,11 @@ select:focus{border-color:var(--gold)}
   <!-- NOTIF PAGE -->
   <div id="notifpage">
     <div class="ptitle"><h2>🔔 الإشعارات</h2><p>حجوزات جديدة من الأجهزة الأخرى</p></div>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+    <div class="notif-toolbar">
+      <div class="notif-toolbar-left">
+        <label class="notif-sel-all"><input type="checkbox" id="notif-sel-all" onchange="toggleSelectAll(this.checked)"> تحديد الكل</label>
+        <button class="bdel-sel" id="bdel-sel" onclick="deleteSelected()">🗑️ حذف المحدد</button>
+      </div>
       <button class="bcanc" onclick="clearAllNotifs()" style="font-size:12px;padding:7px 14px">✓ قراءة الكل</button>
     </div>
     <div id="notif-list"></div>
@@ -645,17 +657,50 @@ function renderNotifs() {
   const list = document.getElementById('notif-list');
   if(!NOTIFS.length) {
     list.innerHTML = '<div class="notif-empty">🔔<br><br>لا توجد إشعارات حتى الآن</div>';
+    document.getElementById('bdel-sel').classList.remove('show');
+    document.getElementById('notif-sel-all').checked = false;
     return;
   }
   list.innerHTML = NOTIFS.map(n => `
-    <div class="notif-item ${n.read?'read':'unread'}" onclick="markRead('${n.id}')">
-      <div class="notif-dot"></div>
-      <div class="notif-body">
+    <div class="notif-item ${n.read?'read':'unread'}" style="cursor:default">
+      <input type="checkbox" class="notif-cb" data-id="${n.id}" onchange="onNotifCheck()">
+      <div class="notif-dot" style="cursor:pointer" onclick="markRead('${n.id}')"></div>
+      <div class="notif-body" onclick="markRead('${n.id}')" style="cursor:pointer">
         <div class="notif-title">${n.title}</div>
         <div class="notif-sub">${n.body}</div>
         <div class="notif-time">${fmtTime(n.time)}</div>
       </div>
+      <button onclick="deleteSingleNotif('${n.id}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0" title="حذف">🗑️</button>
     </div>`).join('');
+}
+
+function onNotifCheck() {
+  const checked = document.querySelectorAll('.notif-cb:checked').length;
+  const total = document.querySelectorAll('.notif-cb').length;
+  document.getElementById('bdel-sel').classList.toggle('show', checked > 0);
+  document.getElementById('notif-sel-all').checked = checked === total;
+  document.getElementById('bdel-sel').textContent = `🗑️ حذف (${checked})`;
+}
+
+function toggleSelectAll(val) {
+  document.querySelectorAll('.notif-cb').forEach(cb => cb.checked = val);
+  onNotifCheck();
+}
+
+function deleteSelected() {
+  const ids = [...document.querySelectorAll('.notif-cb:checked')].map(cb => cb.dataset.id);
+  NOTIFS = NOTIFS.filter(n => !ids.includes(String(n.id)));
+  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
+  updateNotifBadge();
+  renderNotifs();
+  toast('🗑️ تم حذف الإشعارات المحددة', 'success');
+}
+
+function deleteSingleNotif(id) {
+  NOTIFS = NOTIFS.filter(n => String(n.id) !== String(id));
+  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
+  updateNotifBadge();
+  renderNotifs();
 }
 
 function markRead(id) {
