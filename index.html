@@ -423,6 +423,7 @@ select:focus{border-color:var(--gold)}
     <button class="nav-tab" id="tab-search" onclick="switchTab('search')">🔍 بحث</button>
     <button class="nav-tab" id="tab-notif" onclick="switchTab('notif')">🔔 الإشعارات</button>
     <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin')">⚙️ المستخدمين</button>
+    <button class="nav-tab admin-only" id="tab-trash" onclick="switchTab('trash')">🗑️ المحذوفات</button>
   </div>
 
   <!-- SEARCH BAR -->
@@ -509,16 +510,28 @@ select:focus{border-color:var(--gold)}
   </div>
 </div>
 
+<!-- TRASH PAGE -->
+<div id="trashpage" style="display:none;padding:22px 22px 90px;max-width:700px;margin:0 auto">
+  <div class="ptitle"><h2>🗑️ الحجوزات المحذوفة</h2><p>يمكن استرجاع أي حجز محذوف</p></div>
+  <div id="trash-list"></div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <!-- OVERLAYS -->
 <div class="overlay" id="deloverlay">
-  <div class="mbox">
-    <h3>⚠️ تأكيد الحذف</h3>
-    <p>هل أنت متأكد من حذف هذا الحجز؟<br>لا يمكن التراجع.</p>
+  <div class="mbox mbox-left" style="max-width:380px">
+    <h3>🗑️ تأكيد الحذف</h3>
+    <p style="margin-bottom:14px;color:var(--text-muted);font-size:13px">أدخل كلمة المرور للمتابعة</p>
+    <div id="del-guest-preview" style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:var(--text-muted)"></div>
+    <div class="fg" style="margin-bottom:12px">
+      <label>🔑 كلمة مرور الحذف</label>
+      <input type="password" id="del-pass" placeholder="أدخل الباسورد" onkeydown="if(event.key==='Enter')confirmDelete()">
+    </div>
+    <div id="del-err" style="display:none;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:12px">❌ كلمة المرور غلط</div>
     <div class="mbtns">
-      <button class="bsave" style="background:var(--red);box-shadow:none" onclick="confirmDelete()">نعم، احذف</button>
+      <button class="bsave" style="background:var(--red);box-shadow:none" onclick="confirmDelete()">🗑️ احذف</button>
       <button class="bcanc" onclick="closeOverlay('deloverlay')">إلغاء</button>
     </div>
   </div>
@@ -577,6 +590,8 @@ const DEFAULT_USERS = [
 ══════════════════════════════════════ */
 let HD = {};
 let USERS = [];
+let DELETED_BK = [];
+const DEL_PASS = 'VANI-0651';
 let NOTIFS = [];
 let curUser = null;
 let curRoom = null, delIdx = null, delUserId = null, cpUserId = null, shrData = null;
@@ -976,6 +991,7 @@ function applyLogin(found) {
   document.getElementById('hdr-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
   if(found.role === 'admin') document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
   try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
+  try { DELETED_BK = JSON.parse(localStorage.getItem('hb_deleted') || '[]'); } catch(e) { DELETED_BK = []; }
   updateNotifBadge();
   renderFloors();
   if(Notification.permission === 'default') {
@@ -1012,7 +1028,7 @@ function doLogout() {
 ══════════════════════════════════════ */
 function switchTab(tab) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  ['fp','bp','adminpage','notifpage'].forEach(id => document.getElementById(id).style.display='none');
+  ['fp','bp','adminpage','notifpage','trashpage'].forEach(id => document.getElementById(id).style.display='none');
   document.getElementById('search-bar').style.display = 'none';
   if(tab === 'rooms') {
     document.getElementById('tab-rooms').classList.add('active');
@@ -1032,6 +1048,10 @@ function switchTab(tab) {
     document.getElementById('tab-admin').classList.add('active');
     document.getElementById('adminpage').style.display = 'block';
     renderAdminUsers();
+  } else if(tab === 'trash') {
+    document.getElementById('tab-trash').classList.add('active');
+    document.getElementById('trashpage').style.display = 'block';
+    renderTrash();
   }
 }
 
@@ -1246,9 +1266,37 @@ function cancelForm() {
   document.getElementById('bkform').style.display = 'none';
   document.getElementById('addbtn').style.display = 'inline-flex';
 }
-function askDelete(i) { delIdx = i; document.getElementById('deloverlay').classList.add('show'); }
+function askDelete(i) {
+  delIdx = i;
+  const g = GG(curRoom)[i];
+  document.getElementById('del-guest-preview').innerHTML =
+    `👤 <strong>${g.name}</strong> &nbsp;|&nbsp; 📞 ${g.phone}<br>📅 ${fmt(g.checkin)} ← ${fmt(g.checkout)}`;
+  document.getElementById('del-pass').value = '';
+  document.getElementById('del-err').style.display = 'none';
+  document.getElementById('deloverlay').classList.add('show');
+  setTimeout(() => document.getElementById('del-pass').focus(), 200);
+}
 async function confirmDelete() {
-  const g = GG(curRoom); g.splice(delIdx, 1); SG(curRoom, g);
+  const pass = document.getElementById('del-pass').value;
+  if(pass !== DEL_PASS) {
+    document.getElementById('del-err').style.display = 'block';
+    document.getElementById('del-pass').value = '';
+    document.getElementById('del-pass').focus();
+    return;
+  }
+  const guests = GG(curRoom);
+  const removed = guests[delIdx];
+  // Save to deleted archive
+  DELETED_BK.unshift({
+    ...removed,
+    room: curRoom,
+    deletedBy: curUser.name,
+    deletedAt: new Date().toISOString()
+  });
+  if(DELETED_BK.length > 100) DELETED_BK = DELETED_BK.slice(0, 100);
+  localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
+  guests.splice(delIdx, 1);
+  SG(curRoom, guests);
   closeOverlay('deloverlay');
   await saveHotel();
   renderGuests(); renderFloors();
@@ -1376,6 +1424,68 @@ window.addEventListener('offline', () => {
 /* ══════════════════════════════════════
    INIT
 ══════════════════════════════════════ */
+function renderTrash() {
+  const list = document.getElementById('trash-list');
+  if(!DELETED_BK.length) {
+    list.innerHTML = '<div class="noguests" style="text-align:center;padding:40px;color:var(--text-muted)">🗑️<br><br>لا توجد حجوزات محذوفة</div>';
+    return;
+  }
+  list.innerHTML = DELETED_BK.map((x, i) => `
+    <div class="gcard">
+      <div class="gchead">
+        <div>
+          <div class="gname">👤 ${x.name}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">🚪 غرفة ${x.room} &nbsp;|&nbsp; حُذف بواسطة: ${x.deletedBy||'—'} &nbsp;|&nbsp; ${fmtTime(x.deletedAt)}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="bsm bedit" onclick="askRestore(${i})">↩️ استرجاع</button>
+          <button class="bsm bdel" onclick="askPermDelete(${i})">❌ حذف نهائي</button>
+        </div>
+      </div>
+      <div class="gdet">
+        <div class="gdi"><div class="dl">📞 الهاتف</div><div class="dv">${x.phone}</div></div>
+        <div class="gdi"><div class="dl">📅 الوصول</div><div class="dv">${fmt(x.checkin)}</div></div>
+        <div class="gdi"><div class="dl">📅 المغادرة</div><div class="dv">${fmt(x.checkout)}</div></div>
+        ${x.amount ? `<div class="gdi"><div class="dl">💰 المبلغ</div><div class="dv" style="color:var(--green)">${x.amount} ج.م</div></div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function askPermDelete(i) {
+  const d = DELETED_BK[i];
+  if(confirm(`⚠️ حذف نهائي لـ "${d.name}" — لا يمكن الاسترجاع بعدها!
+هل أنت متأكد؟`)) {
+    DELETED_BK.splice(i, 1);
+    localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
+    renderTrash();
+    toast('🗑️ تم الحذف النهائي', 'success');
+  }
+}
+
+function askRestore(i) {
+  const d = DELETED_BK[i];
+  if(confirm(`استرجاع حجز "${d.name}" للغرفة ${d.room}؟`)) {
+    restoreBooking(i);
+  }
+}
+
+async function restoreBooking(i) {
+  const d = DELETED_BK[i];
+  const guests = GG(d.room) || [];
+  guests.push({
+    name: d.name, phone: d.phone, checkin: d.checkin, checkout: d.checkout,
+    by: d.by, at: d.at, amount: d.amount, receiver: d.receiver,
+    restoredBy: curUser.name, restoredAt: new Date().toISOString()
+  });
+  SG(d.room, guests);
+  DELETED_BK.splice(i, 1);
+  localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
+  await saveHotel();
+  renderTrash();
+  renderFloors();
+  toast('✅ تم استرجاع الحجز بنجاح', 'success');
+}
+
 function resetConfig() {
   localStorage.removeItem('hb_fb_url');
   FB_URL = null;
