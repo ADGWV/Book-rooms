@@ -408,8 +408,14 @@ select:focus{border-color:var(--gold)}
   .logo p,.sync-pill,.user-pill,.btn-logout{display:none}
   .menu-toggle{display:flex;align-items:center}
   .hstats{gap:4px}.sbadge{padding:4px 6px}.sbadge .n{font-size:14px}
-  .sidebar{position:fixed;top:0;right:-240px;width:240px;height:100vh;z-index:210;transition:right .3s ease;box-shadow:-6px 0 30px rgba(0,0,0,.6)}
+  .sidebar{position:fixed;top:0;right:-100vw;width:80vw;max-width:300px;height:100vh;z-index:210;transition:right .3s cubic-bezier(.22,1,.36,1);box-shadow:-8px 0 40px rgba(0,0,0,.8);border-left:1px solid var(--border);border-right:none}
   .sidebar.open{right:0}
+  .sidebar-user{padding:20px 20px 16px;margin-top:12px}
+  .sidebar-avatar{width:48px;height:48px;font-size:22px}
+  .sidebar-uname{font-size:15px}
+  .sidebar-urole{font-size:12px}
+  .nav-tab{font-size:15px;padding:14px 20px}
+  .btn-logout-side{font-size:14px;padding:13px 20px}
   #fp,#bp,#adminpage,#notifpage{padding:12px 12px 80px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
   .fgrid,.add-user-grid{grid-template-columns:1fr}
