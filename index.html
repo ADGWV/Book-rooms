@@ -9,7 +9,7 @@
 <meta name="description" content="نظام إدارة حجوزات فندق المدينة الشبابية برأس البر">
 
 <!-- Favicon -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231A1A1A'/><text y='.9em' font-size='80' x='10'>🏨</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>">
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231A1A1A'/><text y='.9em' font-size='80' x='10'>🏨</text></svg>">
 
 <!-- لون المتصفح -->
@@ -72,32 +72,31 @@ body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);m
 .btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* HEADER */
-header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 28px rgba(0,0,0,.6);gap:10px}
-.logo{display:flex;align-items:center;gap:11px;flex-shrink:0}
-.logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 14px rgba(201,168,76,.35)}
-.logo h1{font-size:15px;font-weight:800;color:var(--gold)}
-.logo p{font-size:10px;color:var(--text-muted);font-weight:300}
-.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.sync-pill{display:flex;align-items:center;gap:5px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:11px;color:var(--text-muted);cursor:default;user-select:none}
+header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px solid var(--border);padding:10px 22px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 28px rgba(0,0,0,.6);gap:12px;height:56px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;text-decoration:none}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 3px 10px rgba(201,168,76,.35);flex-shrink:0}
+.logo h1{font-size:14px;font-weight:800;color:var(--gold);white-space:nowrap}
+.logo p{font-size:9px;color:var(--text-muted);font-weight:300;display:none}
+/* هيدر يمين: stats + sync dot */
+.hdr-right{display:flex;align-items:center;gap:8px}
+.hstats{display:flex;gap:6px}
+.sbadge{text-align:center;background:var(--dark3);border:1px solid var(--border);border-radius:8px;padding:4px 10px;min-width:44px}
+.sbadge .n{font-size:15px;font-weight:800;color:var(--gold);line-height:1.2}
+.sbadge .l{font-size:8px;color:var(--text-muted);letter-spacing:.2px}
+/* sync dot صغير في الكونر */
+.sync-dot-wrap{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text-muted)}
 .sdot{width:7px;height:7px;border-radius:50%;background:#555;flex-shrink:0;transition:background .4s}
 .sdot.loading,.sdot.syncing{background:var(--gold);animation:blink .7s infinite}
 .sdot.synced{background:var(--green)}
 .sdot.error{background:var(--red)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.user-pill{display:flex;align-items:center;gap:7px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text)}
-.user-pill .uname{font-weight:700;color:var(--gold)}
-.user-pill .urole{font-size:10px;color:var(--text-muted)}
-.btn-logout{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.26);padding:5px 11px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s}
-.btn-logout:hover{background:rgba(231,76,60,.24)}
-.hstats{display:flex;gap:7px}
-.sbadge{text-align:center;background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:5px 10px}
-.sbadge .n{font-size:16px;font-weight:800;color:var(--gold)}
-.sbadge .l{font-size:9px;color:var(--text-muted)}
-
-/* NOTIF BELL */
-.notif-btn{position:relative;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 11px;cursor:pointer;font-size:16px;transition:all .2s;display:flex;align-items:center;gap:5px}
-.notif-btn:hover{border-color:var(--gold)}
-.notif-badge{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none}
+/* إخفاء العناصر الزيادة من الهيدر */
+.sync-pill{display:none}
+.user-pill{display:none}
+.btn-logout{display:none}
+.notif-btn{position:relative;background:transparent;border:none;border-radius:8px;padding:5px 8px;cursor:pointer;font-size:18px;transition:all .2s;display:flex;align-items:center;color:var(--text-muted)}
+.notif-btn:hover{color:var(--gold)}
+.notif-badge{position:absolute;top:0px;right:0px;background:var(--red);color:#fff;font-size:8px;font-weight:800;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none}
 .notif-badge.show{display:flex}
 
 /* NAV */
@@ -111,33 +110,6 @@ header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px
 /* APP */
 #app{display:none}
 #app.show{display:block}
-
-/* SEARCH */
-.search-bar{padding:14px 22px 0;max-width:1400px;margin:0 auto}
-.search-wrap{position:relative;display:flex;align-items:center;gap:10px}
-.search-input{flex:1;background:var(--dark3);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;padding:11px 44px 11px 14px;outline:none;transition:border-color .2s}
-.search-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.1)}
-.search-input::placeholder{color:var(--text-muted)}
-.search-icon{position:absolute;right:14px;font-size:16px;pointer-events:none;color:var(--text-muted)}
-.search-clear{background:var(--dark4);border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:6px 12px;font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;display:none;white-space:nowrap}
-.search-clear.show{display:block}
-.search-clear:hover{border-color:var(--gold);color:var(--gold)}
-.search-results{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:18px;margin-top:14px;display:none}
-.search-results.show{display:block}
-.search-results-title{font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.search-results-title span{color:var(--gold)}
-.search-result-card{background:var(--dark3);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:9px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:14px}
-.search-result-card:hover{border-color:var(--gold);transform:translateX(-3px)}
-.src-room{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:16px;font-weight:800;width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.src-info{flex:1;min-width:0}
-.src-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
-.src-details{font-size:11px;color:var(--text-muted);display:flex;gap:10px;flex-wrap:wrap}
-.src-floor{font-size:11px;color:var(--text-muted);white-space:nowrap}
-.src-status{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px}
-.src-status.bk{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.25)}
-.src-status.av{background:rgba(46,204,113,.12);color:var(--green);border:1px solid rgba(46,204,113,.25)}
-.no-results{text-align:center;padding:24px;color:var(--text-muted);font-size:13px}
-.search-highlight{color:var(--gold);font-weight:800}
 
 /* FLOORS */
 #fp{padding:22px 22px 90px;max-width:1400px;margin:0 auto}
@@ -213,8 +185,24 @@ input[type=date]::-webkit-calendar-picker-indicator{filter:invert(.7) sepia(1) s
 .user-card{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .user-card-info .uname{font-size:14px;font-weight:700;color:var(--text)}
 .user-card-info .urole-badge{font-size:10px;padding:2px 8px;border-radius:20px;display:inline-block;margin-top:3px}
+.urole-badge.emperor{background:rgba(155,89,182,.2);color:#C39BD3;border:1px solid rgba(155,89,182,.4)}
 .urole-badge.admin{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
 .urole-badge.staff{background:rgba(52,152,219,.12);color:var(--blue);border:1px solid rgba(52,152,219,.25)}
+/* ACTIVITY LOG */
+#activitypage{display:none;padding:22px 22px 90px;max-width:800px;margin:0 auto}
+.act-item{background:var(--dark2);border:1px solid var(--border);border-radius:11px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
+.act-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.act-body{flex:1}
+.act-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+.act-meta{font-size:11px;color:var(--text-muted)}
+.act-time{font-size:10px;color:var(--text-muted);white-space:nowrap;margin-top:2px}
+/* ROLE PILLS in header */
+.role-emperor{color:#C39BD3!important}
+/* PERMISSION DENIED */
+.perm-denied{background:rgba(231,76,60,.08);border:1px dashed rgba(231,76,60,.3);border-radius:10px;padding:20px;text-align:center;color:var(--text-muted);font-size:13px;margin:10px 0}
+/* EMPEROR RESET SECTION */
+.danger-zone{background:rgba(231,76,60,.06);border:1px solid rgba(231,76,60,.2);border-radius:12px;padding:18px;margin-top:14px}
+.danger-zone h4{color:var(--red);font-size:14px;font-weight:700;margin-bottom:12px}
 .user-card-actions{display:flex;gap:6px}
 .add-user-form{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:4px}
 .add-user-form h4{font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:13px}
@@ -235,14 +223,6 @@ select:focus{border-color:var(--gold)}
 .notif-sub{font-size:11px;color:var(--text-muted)}
 .notif-time{font-size:10px;color:var(--text-muted);margin-top:4px}
 .notif-empty{text-align:center;padding:50px 20px;color:var(--text-muted)}
-.notif-cb{width:16px;height:16px;accent-color:var(--gold);cursor:pointer;flex-shrink:0;margin-top:3px}
-.notif-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.notif-toolbar-left{display:flex;align-items:center;gap:8px;flex:1}
-.notif-sel-all{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);cursor:pointer;user-select:none}
-.notif-sel-all input{width:16px;height:16px;accent-color:var(--gold);cursor:pointer}
-.bdel-sel{background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.26);padding:6px 12px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:none}
-.bdel-sel.show{display:block}
-.bdel-sel:hover{background:rgba(231,76,60,.24)}
 
 /* TOAST */
 .toast{position:fixed;bottom:calc(20px + var(--sab));left:50%;transform:translateX(-50%) translateY(80px);background:var(--dark3);border:1px solid var(--gold);color:var(--text);padding:11px 20px;border-radius:11px;font-size:13px;font-weight:600;z-index:9999;transition:transform .3s;box-shadow:0 8px 26px rgba(0,0,0,.5);white-space:nowrap;pointer-events:none;max-width:90vw;text-align:center}
@@ -286,7 +266,37 @@ select:focus{border-color:var(--gold)}
 .bcopy{background:var(--dark3);color:var(--text);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
 .bclose{background:transparent;color:var(--text-muted);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
 
+/* INSTALL BANNER */
+#instbanner{display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--dark2),#1C1408);border-top:1px solid var(--border);padding:12px 18px calc(12px + var(--sab));z-index:200;align-items:center;gap:10px;box-shadow:0 -4px 18px rgba(0,0,0,.4)}
+#instbanner.show{display:flex}
+.ibtxt{flex:1;font-size:12px;color:var(--text)}
+.ibtxt strong{color:var(--gold);display:block;font-size:13px;margin-bottom:1px}
+.binst{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:8px 14px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.bdism{background:transparent;color:var(--text-muted);border:none;padding:6px 8px;cursor:pointer;font-size:18px}
 
+/* PROFILE PAGE */
+#profilepage{display:none;padding:22px 22px 90px;max-width:600px;margin:0 auto}
+.profile-card{background:linear-gradient(135deg,var(--dark2),#1C1408);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px;text-align:center}
+.profile-avatar{width:80px;height:80px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 14px;box-shadow:0 6px 20px rgba(201,168,76,.35)}
+.profile-name{font-size:22px;font-weight:800;color:var(--gold);margin-bottom:4px}
+.profile-role{font-size:13px;color:var(--text-muted)}
+.profile-username{font-size:12px;color:var(--text-muted);margin-top:4px;background:var(--dark3);display:inline-block;padding:3px 12px;border-radius:20px;border:1px solid var(--border)}
+.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.pstat{background:var(--dark3);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center}
+.pstat .pn{font-size:24px;font-weight:800;color:var(--gold)}
+.pstat .pl{font-size:10px;color:var(--text-muted);margin-top:3px}
+.profile-section{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px}
+.profile-section h3{font-size:15px;font-weight:700;color:var(--gold);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.profile-info-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
+.profile-info-row:last-child{border-bottom:none}
+.profile-info-row .lbl{color:var(--text-muted);font-size:12px}
+.profile-info-row .val{font-weight:600;color:var(--text)}
+.profile-del-pass-note{font-size:11px;color:var(--text-muted);margin-bottom:12px;background:rgba(201,168,76,.07);border:1px solid var(--border);border-radius:8px;padding:9px 12px;line-height:1.6}
+.my-bookings-list{display:flex;flex-direction:column;gap:9px;max-height:400px;overflow-y:auto}
+.my-bk-card{background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.my-bk-room{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:4px}
+.my-bk-name{font-size:13px;font-weight:600;color:var(--text)}
+.my-bk-dates{font-size:11px;color:var(--text-muted);margin-top:3px}
 
 /* OFFLINE BANNER */
 #offlinebanner{display:none;background:rgba(231,76,60,.15);border-bottom:1px solid rgba(231,76,60,.3);padding:7px 22px;font-size:12px;color:var(--red);text-align:center}
@@ -294,38 +304,46 @@ select:focus{border-color:var(--gold)}
 
 /* RESPONSIVE */
 @media(max-width:640px){
-  header{padding:9px 12px}
-  .logo p,.sync-pill span:not(.sdot),.user-pill .urole{display:none}
-  .hstats{gap:4px}.sbadge{padding:4px 6px}.sbadge .n{font-size:14px}
-  #fp,#bp,#adminpage,#notifpage{padding:12px 12px 80px}
+  header{padding:8px 12px;height:48px}
+  .logo h1{font-size:13px}
+  .logo-icon{width:30px;height:30px;font-size:14px}
+  .sbadge{padding:3px 7px;min-width:36px}
+  .sbadge .n{font-size:13px}
+  .sbadge .l{font-size:7px}
+  .hstats{gap:4px}
+  #stxt{display:none}
+  #fp,#bp,#adminpage,#notifpage,#profilepage,#trashpage,#activitypage{padding:12px 12px 80px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
   .fgrid,.add-user-grid{grid-template-columns:1fr}
   .gdet{grid-template-columns:1fr 1fr}
   .bkhdr{flex-direction:column;align-items:flex-start}
   .nav-tab{padding:10px 10px;font-size:11px}
+  .nav-tabs{padding:0 8px;overflow-x:auto;scrollbar-width:none}
+  .nav-tabs::-webkit-scrollbar{display:none}
 }
 @media(min-width:641px) and (max-width:1024px){
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:11px}
   .fgrid{grid-template-columns:1fr 1fr}
   .gdet{grid-template-columns:repeat(3,1fr)}
+  header{padding:10px 28px}
 }
 @media(min-width:1025px){
-  header{padding:16px 40px}
-  .logo-icon{width:44px;height:44px;font-size:21px}
-  .logo h1{font-size:19px}
-  .logo p{display:block;font-size:12px}
-  .sync-pill span{display:inline}
-  .user-pill .urole{display:block}
+  header{padding:10px 40px;height:58px}
+  .logo-icon{width:38px;height:38px;font-size:18px}
+  .logo h1{font-size:16px}
   .nav-tabs{padding:0 40px}
-  .nav-tab{padding:14px 26px;font-size:15px}
-  #fp{padding:36px 40px 60px;max-width:1500px}
-  #bp{padding:36px 40px 60px;max-width:1000px}
-  #adminpage,#notifpage{padding:36px 40px 60px;max-width:800px}
+  .nav-tab{padding:14px 22px;font-size:14px}
+  #fp{padding:32px 40px 60px;max-width:1500px}
+  #bp{padding:32px 40px 60px;max-width:1000px}
+  #adminpage,#notifpage,#profilepage,#trashpage,#activitypage{padding:32px 40px 60px;max-width:800px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
   .rcard{padding:20px 14px;border-radius:15px}
   .rnum{font-size:30px}
   .fgrid{grid-template-columns:1fr 1fr;gap:16px}
   .add-user-grid{grid-template-columns:1fr 1fr;gap:14px}
+  .sbadge{padding:5px 14px;min-width:54px}
+  .sbadge .n{font-size:18px}
+  .sbadge .l{font-size:9px}
 }
 </style>
 </head>
@@ -343,21 +361,19 @@ select:focus{border-color:var(--gold)}
 <div class="overlay" id="fbsetupoverlay">
   <div class="fb-setup">
     <h3>🔥 إعداد قاعدة البيانات</h3>
-    <p>لحفظ البيانات ومشاركتها بين الأجهزة، تحتاج إلى ربط Firebase مجاني.<br>الخطوات بسيطة جداً 👇</p>
+    <p>أدخل رابط Firebase Realtime Database الخاص بك للمزامنة بين الأجهزة.</p>
     <div class="fb-note">
-      1️⃣ افتح <strong>console.firebase.google.com</strong><br>
-      2️⃣ أنشئ مشروع جديد (مجاني)<br>
-      3️⃣ فعّل <strong>Realtime Database</strong> واختر <code>Test Mode</code><br>
-      4️⃣ انسخ رابط الـ Database URL (مثل: <code>https://xxx-default-rtdb.firebaseio.com</code>)<br>
-      5️⃣ الصقه هنا 👇
+      📌 الرابط الحالي:<br>
+      <code id="fb-current-display" style="color:var(--gold);font-size:11px;word-break:break-all"></code>
     </div>
     <div class="fb-input-group">
-      <label>🔗 Firebase Database URL</label>
+      <label>🔗 Firebase Database URL الجديد</label>
       <input type="text" id="fb-url-input" placeholder="https://your-project-default-rtdb.firebaseio.com" dir="ltr">
     </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="bsave" onclick="saveFbConfig()">✅ اتصال</button>
-      <button class="bcanc" onclick="useDemoMode()">🔧 وضع تجريبي (بدون Firebase)</button>
+    <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
+      <button class="bsave" onclick="saveFbConfig()">✅ حفظ واتصال</button>
+      <button class="bcanc" onclick="keepCurrentConfig()">↩️ إلغاء</button>
+      <button class="bcanc" onclick="useDemoMode()" style="font-size:11px">🔧 وضع تجريبي</button>
     </div>
   </div>
 </div>
@@ -375,8 +391,8 @@ select:focus{border-color:var(--gold)}
       <div class="fg"><label>كلمة المرور</label><input type="password" id="l-pass" placeholder="أدخل كلمة المرور" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"></div>
       <div class="login-err" id="login-err">اسم المستخدم أو كلمة المرور غلط</div>
       <button class="btn-login" id="login-btn" onclick="doLogin()">دخول</button>
-      <div style="text-align:center;margin-top:14px">
-        <button onclick="resetConfig()" style="background:none;border:none;color:var(--text-muted);font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;text-decoration:underline">🔄 تغيير بيانات Firebase</button>
+      <div style="text-align:center;margin-top:12px">
+        <button onclick="resetConfig()" style="background:none;border:1px solid var(--border);color:var(--text-muted);font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;padding:7px 16px;border-radius:8px;transition:all .2s" onmouseover="this.style.borderColor='var(--gold)';this.style.color='var(--gold)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--text-muted)'">🔄 تغيير قاعدة البيانات</button>
       </div>
     </div>
   </div>
@@ -388,32 +404,20 @@ select:focus{border-color:var(--gold)}
   <header>
     <div class="logo">
       <div class="logo-icon">🏨</div>
-      <div>
-        <h1>فندق المدينة الشبابية</h1>
-        <p>نظام إدارة الحجوزات</p>
-      </div>
+      <h1>فندق المدينة الشبابية</h1>
     </div>
     <div class="hdr-right">
-      <div class="sync-pill">
-        <div class="sdot loading" id="sdot"></div>
-        <span id="stxt">...</span>
-      </div>
-      <button class="notif-btn" onclick="switchTab('notif')" title="الإشعارات">
-        🔔
-        <span class="notif-badge" id="notif-badge">0</span>
-      </button>
-      <div class="user-pill">
-        <span>👤</span>
-        <div>
-          <div class="uname" id="hdr-uname">–</div>
-          <div class="urole" id="hdr-urole">–</div>
-        </div>
-      </div>
-      <button class="btn-logout" onclick="doLogout()">خروج</button>
       <div class="hstats">
         <div class="sbadge"><div class="n" id="st">–</div><div class="l">إجمالي</div></div>
         <div class="sbadge"><div class="n" id="sb" style="color:var(--red)">–</div><div class="l">محجوزة</div></div>
         <div class="sbadge"><div class="n" id="sa" style="color:var(--green)">–</div><div class="l">متاحة</div></div>
+      </div>
+      <button class="notif-btn" onclick="switchTab('notif')" title="الإشعارات">
+        🔔<span class="notif-badge" id="notif-badge">0</span>
+      </button>
+      <div class="sync-dot-wrap" title="حالة المزامنة">
+        <div class="sdot loading" id="sdot"></div>
+        <span id="stxt" style="font-size:10px;color:var(--text-muted)"></span>
       </div>
     </div>
   </header>
@@ -422,21 +426,10 @@ select:focus{border-color:var(--gold)}
     <button class="nav-tab active" id="tab-rooms" onclick="switchTab('rooms')">🏨 الغرف</button>
     <button class="nav-tab" id="tab-search" onclick="switchTab('search')">🔍 بحث</button>
     <button class="nav-tab" id="tab-notif" onclick="switchTab('notif')">🔔 الإشعارات</button>
+    <button class="nav-tab" id="tab-profile" onclick="switchTab('profile')">👤 حسابي</button>
     <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin')">⚙️ المستخدمين</button>
     <button class="nav-tab admin-only" id="tab-trash" onclick="switchTab('trash')">🗑️ المحذوفات</button>
-  </div>
-
-  <!-- SEARCH BAR -->
-  <div class="search-bar" id="search-bar" style="display:none">
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input class="search-input" id="search-input" type="text" placeholder="ابحث بالاسم، رقم الهاتف، أو رقم الغرفة..." oninput="doSearch(this.value)">
-      <button class="search-clear" id="search-clear" onclick="clearSearch()">✕ مسح</button>
-    </div>
-    <div class="search-results" id="search-results">
-      <div class="search-results-title">نتائج البحث: <span id="search-count">0</span> نتيجة</div>
-      <div id="search-list"></div>
-    </div>
+    <button class="nav-tab emperor-only" id="tab-activity" onclick="switchTab('activity')" style="display:none">📜 السجل</button>
   </div>
 
   <!-- FLOORS -->
@@ -460,8 +453,6 @@ select:focus{border-color:var(--gold)}
         <div class="fg"><label>رقم الهاتف</label><input type="tel" id="fph" placeholder="01xxxxxxxxx"></div>
         <div class="fg"><label>تاريخ بداية الحجز</label><input type="date" id="fci"></div>
         <div class="fg"><label>تاريخ نهاية الحجز</label><input type="date" id="fco"></div>
-        <div class="fg"><label>💰 المبلغ المدفوع (اختياري)</label><input type="text" id="famount" placeholder="مثال: 500" oninput="toggleReceiver(this.value)"></div>
-        <div class="fg" id="receiver-fg" style="display:none"><label>👤 استلمه</label><input type="text" id="freceiver" placeholder="اسم الموظف أو المدير"></div>
       </div>
       <div class="facts">
         <button class="bsave" id="savebtn" onclick="saveGuest()">💾 حفظ</button>
@@ -473,11 +464,7 @@ select:focus{border-color:var(--gold)}
   <!-- NOTIF PAGE -->
   <div id="notifpage">
     <div class="ptitle"><h2>🔔 الإشعارات</h2><p>حجوزات جديدة من الأجهزة الأخرى</p></div>
-    <div class="notif-toolbar">
-      <div class="notif-toolbar-left">
-        <label class="notif-sel-all"><input type="checkbox" id="notif-sel-all" onchange="toggleSelectAll(this.checked)"> تحديد الكل</label>
-        <button class="bdel-sel" id="bdel-sel" onclick="deleteSelected()">🗑️ حذف المحدد</button>
-      </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
       <button class="bcanc" onclick="clearAllNotifs()" style="font-size:12px;padding:7px 14px">✓ قراءة الكل</button>
     </div>
     <div id="notif-list"></div>
@@ -507,13 +494,97 @@ select:focus{border-color:var(--gold)}
         <button class="bcanc" onclick="requestNotifPermission()" style="width:fit-content">🔔 تفعيل الإشعارات</button>
       </div>
     </div>
+    <!-- EMPEROR ONLY SECTION -->
+    <div class="admin-section emperor-only-section" id="emperor-section" style="display:none;border-color:rgba(155,89,182,.3)">
+      <h3 style="color:#C39BD3">🏛️ لوحة الإمبراطور</h3>
+      <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px">هذه الصلاحيات حصرية للإمبراطور فقط</p>
+      <!-- Reset all data -->
+      <div class="danger-zone">
+        <h4>⚠️ منطقة الخطر</h4>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="bsave" onclick="emperorResetBookings()" style="background:var(--red);box-shadow:none;width:fit-content">🗑️ مسح كل الحجوزات</button>
+          <button class="bsave" onclick="emperorResetAll()" style="background:#6c0000;box-shadow:none;width:fit-content">☢️ إعادة تعيين النظام كاملاً</button>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div id="profilepage" style="display:none;padding:22px 22px 90px;max-width:600px;margin:0 auto">
+  <div class="profile-card">
+    <div class="profile-avatar" id="profile-avatar">👤</div>
+    <div class="profile-name" id="profile-name">–</div>
+    <div class="profile-role" id="profile-role-txt">–</div>
+    <div class="profile-username" id="profile-username">–</div>
+    <div class="profile-stats">
+      <div class="pstat"><div class="pn" id="pstat-bookings">0</div><div class="pl">حجوزاتي</div></div>
+      <div class="pstat"><div class="pn" id="pstat-rooms">0</div><div class="pl">غرفة مختلفة</div></div>
+      <div class="pstat"><div class="pn" id="pstat-deleted">0</div><div class="pl">محذوفة</div></div>
+    </div>
+    <button onclick="doLogout()" style="margin-top:16px;background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.3);padding:9px 24px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s" onmouseover="this.style.background='rgba(231,76,60,.24)'" onmouseout="this.style.background='rgba(231,76,60,.12)'">🚪 تسجيل الخروج</button>
+  </div>
+
+  <!-- Change Delete Password -->
+  <div class="profile-section">
+    <h3>🔑 كلمة مرور الحذف</h3>
+    <div class="profile-del-pass-note">
+      كلمة مرور الحذف هي التي تُستخدم عند حذف أي حجز.<br>
+      الافتراضي: <strong style="color:var(--gold)">12345678</strong> — يُنصح بتغييرها.
+    </div>
+    <div class="fg" style="margin-bottom:10px"><label>كلمة المرور الحالية للحذف</label><input type="password" id="p-old-del" placeholder="أدخل كلمة المرور الحالية"></div>
+    <div class="fg" style="margin-bottom:10px"><label>كلمة المرور الجديدة للحذف</label><input type="password" id="p-new-del" placeholder="كلمة مرور جديدة"></div>
+    <div class="fg" style="margin-bottom:14px"><label>تأكيد كلمة المرور الجديدة</label><input type="password" id="p-new-del2" placeholder="أعد الإدخال"></div>
+    <button class="bsave" onclick="changeDelPass()">💾 تغيير كلمة مرور الحذف</button>
+  </div>
+
+  <!-- Change Login Password -->
+  <div class="profile-section">
+    <h3>🔐 تغيير كلمة مرور الدخول</h3>
+    <div class="fg" style="margin-bottom:10px"><label>كلمة المرور الحالية</label><input type="password" id="p-old-login" placeholder="كلمة المرور الحالية"></div>
+    <div class="fg" style="margin-bottom:10px"><label>كلمة المرور الجديدة</label><input type="password" id="p-new-login" placeholder="كلمة مرور جديدة"></div>
+    <div class="fg" style="margin-bottom:14px"><label>تأكيد</label><input type="password" id="p-new-login2" placeholder="أعد الإدخال"></div>
+    <button class="bsave" onclick="changeLoginPass()">💾 تغيير كلمة مرور الدخول</button>
+  </div>
+
+  <!-- My Recent Bookings -->
+  <div class="profile-section">
+    <h3>📋 آخر حجوزاتي</h3>
+    <div class="my-bookings-list" id="my-bookings-list"></div>
+  </div>
+</div>
+
+<!-- ACTIVITY LOG PAGE (Emperor only) -->
+<div id="activitypage" style="display:none;padding:22px 22px 90px;max-width:800px;margin:0 auto">
+  <div class="ptitle"><h2>📜 سجل العمليات</h2><p>كل العمليات اللي اتعملت في النظام</p></div>
+  <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+    <button class="bcanc" onclick="filterActivity('all')" id="af-all" style="border-color:var(--gold);color:var(--gold)">الكل</button>
+    <button class="bcanc" onclick="filterActivity('booking')">📋 حجوزات</button>
+    <button class="bcanc" onclick="filterActivity('delete')">🗑️ حذف</button>
+    <button class="bcanc" onclick="filterActivity('user')">👤 مستخدمين</button>
+    <button class="bcanc" onclick="filterActivity('login')">🔑 دخول</button>
+    <button class="bsave" onclick="clearActivityLog()" style="background:var(--red);box-shadow:none;font-size:12px;padding:7px 14px">مسح السجل</button>
+  </div>
+  <div id="activity-list"></div>
 </div>
 
 <!-- TRASH PAGE -->
 <div id="trashpage" style="display:none;padding:22px 22px 90px;max-width:700px;margin:0 auto">
   <div class="ptitle"><h2>🗑️ الحجوزات المحذوفة</h2><p>يمكن استرجاع أي حجز محذوف</p></div>
   <div id="trash-list"></div>
+</div>
+
+<!-- SEARCH BAR -->
+<div class="search-bar" id="search-bar" style="display:none">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="search-input" type="text" placeholder="ابحث بالاسم، رقم الهاتف، أو رقم الغرفة..." oninput="doSearch(this.value)">
+    <button class="search-clear" id="search-clear" onclick="clearSearch()">✕ مسح</button>
+  </div>
+  <div class="search-results" id="search-results">
+    <div class="search-results-title">نتائج البحث: <span id="search-count">0</span> نتيجة</div>
+    <div id="search-list"></div>
+  </div>
 </div>
 
 <!-- TOAST -->
@@ -523,9 +594,8 @@ select:focus{border-color:var(--gold)}
 <div class="overlay" id="deloverlay">
   <div class="mbox mbox-left" style="max-width:380px">
     <h3>🗑️ تأكيد الحذف</h3>
-    <p style="margin-bottom:14px;color:var(--text-muted);font-size:13px">أدخل كلمة المرور للمتابعة</p>
     <div id="del-guest-preview" style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:var(--text-muted)"></div>
-    <div class="fg" style="margin-bottom:12px">
+    <div class="fg" style="margin-bottom:10px">
       <label>🔑 كلمة مرور الحذف</label>
       <input type="password" id="del-pass" placeholder="أدخل الباسورد" onkeydown="if(event.key==='Enter')confirmDelete()">
     </div>
@@ -571,19 +641,69 @@ select:focus{border-color:var(--gold)}
   </div>
 </div>
 
+<!-- INSTALL BANNER -->
+<div id="instbanner">
+  <div style="font-size:22px">📲</div>
+  <div class="ibtxt"><strong>ثبّت التطبيق</strong>أضفه على شاشتك الرئيسية للوصول السريع</div>
+  <button class="binst" onclick="installApp()">تثبيت</button>
+  <button class="bdism" onclick="dismissBanner()">✕</button>
+</div>
+
 <script>
 'use strict';
 
 /* ══════════════════════════════════════
    CONFIG
 ══════════════════════════════════════ */
-let FB_URL = localStorage.getItem('hb_fb_url') || null;
+let FB_URL = localStorage.getItem('hb_fb_url') || 'https://store-000-default-rtdb.asia-southeast1.firebasedatabase.app';
 let DEMO_MODE = false;
 
 const DEFAULT_USERS = [
-  {username:'admin', password:'admin123', name:'المدير', role:'admin'},
-  {username:'staff1', password:'staff123', name:'موظف 1', role:'staff'}
+  {username:'emperor', password:'emperor123', name:'الإمبراطور', role:'emperor'},
+  {username:'admin',   password:'admin123',   name:'المدير',     role:'admin'},
+  {username:'staff1',  password:'staff123',   name:'موظف 1',     role:'staff'}
 ];
+
+/* ══════════════════════════════════════
+   PERMISSIONS HELPER
+══════════════════════════════════════ */
+const ROLE_LEVEL = { staff:1, admin:2, emperor:3 };
+function can(action) {
+  if(!curUser) return false;
+  const r = curUser.role;
+  const lvl = ROLE_LEVEL[r] || 0;
+  switch(action) {
+    // موظف
+    case 'view_rooms':     return lvl >= 1;
+    case 'add_booking':    return lvl >= 1;
+    case 'edit_own':       return lvl >= 1;  // يعدل حجوزاته هو
+    case 'delete_own':     return lvl >= 1;  // يحذف حجوزاته هو
+    case 'share':          return lvl >= 1;
+    case 'search':         return lvl >= 1;
+    // أدمن
+    case 'edit_any':       return lvl >= 2;  // يعدل أي حجز
+    case 'delete_any':     return lvl >= 2;  // يحذف أي حجز
+    case 'view_trash':     return lvl >= 2;
+    case 'restore':        return lvl >= 2;
+    case 'manage_staff':   return lvl >= 2;  // يضيف/يحذف موظفين فقط
+    case 'view_reports':   return lvl >= 2;
+    case 'view_activity':  return lvl >= 2;  // أدمن يشوف بس، إمبراطور يعدل
+    // إمبراطور
+    case 'manage_admin':   return lvl >= 3;  // يضيف/يحذف أدمن
+    case 'manage_emperor': return lvl >= 3;
+    case 'reset_system':   return lvl >= 3;
+    case 'clear_activity': return lvl >= 3;
+    case 'change_any_pass':return lvl >= 3;
+    default: return false;
+  }
+}
+
+function roleLabel(role) {
+  return {emperor:'🏛️ إمبراطور', admin:'👑 أدمن', staff:'👔 موظف'}[role] || role;
+}
+function roleBadgeClass(role) {
+  return {emperor:'emperor', admin:'admin', staff:'staff'}[role] || 'staff';
+}
 
 /* ══════════════════════════════════════
    STATE
@@ -591,14 +711,22 @@ const DEFAULT_USERS = [
 let HD = {};
 let USERS = [];
 let DELETED_BK = [];
-const DEL_PASS = '12345678';
+let ACTIVITY_LOG = [];  // سجل العمليات
+const DEFAULT_DEL_PASS = '12345678'; // كلمة الحذف الافتراضية لكل موظف
+
+// كلمة مرور الحذف الخاصة بالمستخدم الحالي
+function getMyDelPass() {
+  if(!curUser) return DEFAULT_DEL_PASS;
+  return curUser.delPass || DEFAULT_DEL_PASS;
+}
+
 let NOTIFS = [];
 let curUser = null;
 let curRoom = null, delIdx = null, delUserId = null, cpUserId = null, shrData = null;
 let saving = false;
-let lastSaveTime = 0;
 let pollTimer = null;
 let lastHotelHash = '';
+let lastSaveTime = 0;
 let unreadCount = 0;
 
 /* ══════════════════════════════════════
@@ -608,7 +736,7 @@ let unreadCount = 0;
   const ic = s => `<svg xmlns='http://www.w3.org/2000/svg' width='${s}' height='${s}'><rect width='${s}' height='${s}' rx='${Math.round(s*.18)}' fill='%231A1A1A'/><text x='50%25' y='72%25' font-size='${Math.round(s*.55)}' text-anchor='middle'>%F0%9F%8F%A8</text></svg>`;
   const m = {
     name: "فندق المدينة الشبابية",
-    short_name: "فندق ذهبي",
+    short_name: "المدينة الشبابية",
     description: "نظام إدارة حجوزات فندق المدينة الشبابية",
     start_url: "./",
     display: "standalone",
@@ -629,7 +757,7 @@ let unreadCount = 0;
    SERVICE WORKER (PWA)
 ══════════════════════════════════════ */
 const SW_CODE = `
-const CACHE = 'hotel-v2';
+const CACHE = 'hotel-v3';
 const ASSETS = ['./', './'];
 
 self.addEventListener('install', e => {
@@ -686,7 +814,31 @@ if('serviceWorker' in navigator) {
 /* ══════════════════════════════════════
    PWA INSTALL
 ══════════════════════════════════════ */
-
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if(!sessionStorage.getItem('banner-dismissed')) {
+    setTimeout(() => document.getElementById('instbanner').classList.add('show'), 4000);
+  }
+});
+window.addEventListener('appinstalled', () => {
+  deferredPrompt = null;
+  dismissBanner();
+  toast('✅ تم تثبيت التطبيق بنجاح!', 'success');
+});
+function installApp() {
+  if(!deferredPrompt) {
+    toast('📲 افتح المتصفح واضغط "إضافة إلى الشاشة الرئيسية"', 'info');
+    return;
+  }
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => { deferredPrompt = null; dismissBanner(); });
+}
+function dismissBanner() {
+  document.getElementById('instbanner').classList.remove('show');
+  sessionStorage.setItem('banner-dismissed', '1');
+}
 
 /* ══════════════════════════════════════
    NOTIFICATIONS
@@ -734,50 +886,17 @@ function renderNotifs() {
   const list = document.getElementById('notif-list');
   if(!NOTIFS.length) {
     list.innerHTML = '<div class="notif-empty">🔔<br><br>لا توجد إشعارات حتى الآن</div>';
-    document.getElementById('bdel-sel').classList.remove('show');
-    document.getElementById('notif-sel-all').checked = false;
     return;
   }
   list.innerHTML = NOTIFS.map(n => `
-    <div class="notif-item ${n.read?'read':'unread'}" style="cursor:default">
-      <input type="checkbox" class="notif-cb" data-id="${n.id}" onchange="onNotifCheck()">
-      <div class="notif-dot" style="cursor:pointer" onclick="markRead('${n.id}')"></div>
-      <div class="notif-body" onclick="markRead('${n.id}')" style="cursor:pointer">
+    <div class="notif-item ${n.read?'read':'unread'}" onclick="markRead('${n.id}')">
+      <div class="notif-dot"></div>
+      <div class="notif-body">
         <div class="notif-title">${n.title}</div>
         <div class="notif-sub">${n.body}</div>
         <div class="notif-time">${fmtTime(n.time)}</div>
       </div>
-      <button onclick="deleteSingleNotif('${n.id}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0" title="حذف">🗑️</button>
     </div>`).join('');
-}
-
-function onNotifCheck() {
-  const checked = document.querySelectorAll('.notif-cb:checked').length;
-  const total = document.querySelectorAll('.notif-cb').length;
-  document.getElementById('bdel-sel').classList.toggle('show', checked > 0);
-  document.getElementById('notif-sel-all').checked = checked === total;
-  document.getElementById('bdel-sel').textContent = `🗑️ حذف (${checked})`;
-}
-
-function toggleSelectAll(val) {
-  document.querySelectorAll('.notif-cb').forEach(cb => cb.checked = val);
-  onNotifCheck();
-}
-
-function deleteSelected() {
-  const ids = [...document.querySelectorAll('.notif-cb:checked')].map(cb => cb.dataset.id);
-  NOTIFS = NOTIFS.filter(n => !ids.includes(String(n.id)));
-  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
-  updateNotifBadge();
-  renderNotifs();
-  toast('🗑️ تم حذف الإشعارات المحددة', 'success');
-}
-
-function deleteSingleNotif(id) {
-  NOTIFS = NOTIFS.filter(n => String(n.id) !== String(id));
-  localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
-  updateNotifBadge();
-  renderNotifs();
 }
 
 function markRead(id) {
@@ -808,13 +927,15 @@ function fmtTime(iso) {
    FIREBASE SETUP
 ══════════════════════════════════════ */
 function saveFbConfig() {
-  const url = document.getElementById('fb-url-input').value.trim().replace(/\/$/, '');
-  if(!url.startsWith('https://')) { toast('❌ أدخل رابط Firebase صحيح', 'error'); return; }
+  let url = document.getElementById('fb-url-input').value.trim().replace(/\/$/, '');
+  if(!url) url = FB_URL; // لو فاضي يفضل الحالي
+  if(!url || !url.startsWith('https://')) { toast('❌ أدخل رابط Firebase صحيح', 'error'); return; }
   FB_URL = url;
   localStorage.setItem('hb_fb_url', FB_URL);
   document.getElementById('fbsetupoverlay').classList.remove('show');
-  document.getElementById('fb-url-display').textContent = FB_URL;
-  toast('✅ تم الاتصال بـ Firebase', 'success');
+  const disp = document.getElementById('fb-url-display');
+  if(disp) disp.textContent = FB_URL;
+  toast('✅ تم حفظ قاعدة البيانات', 'success');
   loadAll();
 }
 
@@ -868,10 +989,10 @@ async function loadAll() {
     localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
     localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
     syncUI('synced');
-    document.getElementById('fb-url-display').textContent = FB_URL || '';
+    const disp = document.getElementById('fb-url-display');
+    if(disp) disp.textContent = FB_URL || '';
   } catch(e) {
     console.error('Firebase load error:', e);
-    // Offline fallback
     try { USERS = JSON.parse(localStorage.getItem('hb_users_bk') || 'null') || DEFAULT_USERS; } catch(x) { USERS = DEFAULT_USERS; }
     try { HD = JSON.parse(localStorage.getItem('hb_hotel_bk') || '{}'); } catch(x) { HD = {}; }
     syncUI('error');
@@ -879,7 +1000,6 @@ async function loadAll() {
     document.getElementById('offlinebanner').classList.add('show');
   }
   hideLoad();
-  document.getElementById('loginpage').classList.add('show');
   startPolling();
 }
 
@@ -892,7 +1012,6 @@ async function saveHotel() {
       await fbSet('hotel', { data: HD });
     }
     lastHotelHash = JSON.stringify(HD);
-    lastSaveTime = Date.now();
     syncUI('synced');
     document.getElementById('offlinebanner').classList.remove('show');
   } catch(e) {
@@ -920,8 +1039,8 @@ function startPolling() {
       const fresh = (hotelData && hotelData.data) ? hotelData.data : {};
       const newHash = JSON.stringify(fresh);
       if(newHash !== lastHotelHash && lastHotelHash !== '') {
-        // Detect new bookings only if change came from another device
-        if(Date.now() - lastSaveTime > 8000) detectNewBookings(HD, fresh);
+        // Detect new bookings
+        detectNewBookings(HD, fresh);
         HD = fresh;
         lastHotelHash = newHash;
         localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
@@ -940,11 +1059,6 @@ function startPolling() {
       // silent fail on poll
     }
   }, 5000); // every 5 seconds
-
-  // Re-render floors every minute to update booked/available colors based on date
-  setInterval(() => {
-    if(curUser) renderFloors();
-  }, 60000);
 }
 
 function detectNewBookings(oldData, newData) {
@@ -982,23 +1096,6 @@ function hideLoad() {
 /* ══════════════════════════════════════
    AUTH
 ══════════════════════════════════════ */
-function applyLogin(found) {
-  curUser = found;
-  localStorage.setItem('hb_session', JSON.stringify(found));
-  document.getElementById('loginpage').classList.remove('show');
-  document.getElementById('app').classList.add('show');
-  document.getElementById('hdr-uname').textContent = found.name;
-  document.getElementById('hdr-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
-  if(found.role === 'admin') document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
-  try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
-  try { DELETED_BK = JSON.parse(localStorage.getItem('hb_deleted') || '[]'); } catch(e) { DELETED_BK = []; }
-  updateNotifBadge();
-  renderFloors();
-  if(Notification.permission === 'default') {
-    setTimeout(() => requestNotifPermission(), 2000);
-  }
-}
-
 function doLogin() {
   const u = document.getElementById('l-user').value.trim();
   const p = document.getElementById('l-pass').value;
@@ -1008,18 +1105,44 @@ function doLogin() {
     document.getElementById('l-pass').value = '';
     return;
   }
+  curUser = found;
+  localStorage.setItem('hb_session', found.username); // حفظ الجلسة
   document.getElementById('login-err').classList.remove('show');
-  applyLogin(found);
+  document.getElementById('loginpage').classList.remove('show');
+  document.getElementById('app').classList.add('show');
+  document.getElementById('hdr-uname') && (document.getElementById('hdr-uname').textContent = found.name);
+  document.getElementById('hdr-urole') && (document.getElementById('hdr-urole').textContent = roleLabel(found.role));
+  const uroleEl = document.getElementById('hdr-urole');
+  if(uroleEl) { uroleEl.classList.toggle('role-emperor', found.role === 'emperor'); }
+
+  // Show tabs based on role
+  const isAdmin = found.role === 'admin' || found.role === 'emperor';
+  document.querySelectorAll('.admin-only').forEach(el => el.classList.toggle('show', isAdmin));
+  const empTab = document.getElementById('tab-activity');
+  if(empTab) empTab.style.display = found.role === 'emperor' ? 'block' : 'none';
+  const empSection = document.getElementById('emperor-section');
+  if(empSection) empSection.style.display = found.role === 'emperor' ? 'block' : 'none';
+
+  try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
+  try { DELETED_BK = JSON.parse(localStorage.getItem('hb_deleted') || '[]'); } catch(e) { DELETED_BK = []; }
+  try { ACTIVITY_LOG = JSON.parse(localStorage.getItem('hb_activity') || '[]'); } catch(e) { ACTIVITY_LOG = []; }
+  updateNotifBadge();
+  renderFloors();
+  logActivity('login', '🔑 تسجيل دخول', `${found.name} (${roleLabel(found.role)})`);
+  if(Notification.permission === 'default') setTimeout(() => requestNotifPermission(), 2000);
 }
 
 function doLogout() {
+  if(curUser) logActivity('login', '🚪 تسجيل خروج', `${curUser.name}`);
   curUser = null;
-  localStorage.removeItem('hb_session');
+  localStorage.removeItem('hb_session'); // مسح الجلسة
   document.getElementById('app').classList.remove('show');
   document.getElementById('loginpage').classList.add('show');
   document.getElementById('l-user').value = '';
   document.getElementById('l-pass').value = '';
   document.querySelectorAll('.admin-only').forEach(el => el.classList.remove('show'));
+  const empTab = document.getElementById('tab-activity');
+  if(empTab) empTab.style.display = 'none';
   switchTab('rooms');
 }
 
@@ -1028,30 +1151,45 @@ function doLogout() {
 ══════════════════════════════════════ */
 function switchTab(tab) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  ['fp','bp','adminpage','notifpage','trashpage'].forEach(id => document.getElementById(id).style.display='none');
-  document.getElementById('search-bar').style.display = 'none';
+  ['fp','bp','adminpage','notifpage','profilepage','trashpage','activitypage'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.style.display='none';
+  });
+  const sb = document.getElementById('search-bar');
+  if(sb) sb.style.display = 'none';
+
   if(tab === 'rooms') {
     document.getElementById('tab-rooms').classList.add('active');
     document.getElementById('fp').style.display = 'block';
     renderFloors();
   } else if(tab === 'search') {
     document.getElementById('tab-search').classList.add('active');
-    document.getElementById('search-bar').style.display = 'block';
+    if(sb) sb.style.display = 'block';
     document.getElementById('fp').style.display = 'block';
     renderFloors();
-    setTimeout(() => document.getElementById('search-input').focus(), 100);
+    setTimeout(() => { const si = document.getElementById('search-input'); if(si) si.focus(); }, 100);
   } else if(tab === 'notif') {
     document.getElementById('tab-notif').classList.add('active');
     document.getElementById('notifpage').style.display = 'block';
     renderNotifs();
+  } else if(tab === 'profile') {
+    document.getElementById('tab-profile').classList.add('active');
+    document.getElementById('profilepage').style.display = 'block';
+    renderProfile();
   } else if(tab === 'admin') {
+    if(!can('manage_staff')) { toast('🚫 ليس لديك صلاحية', 'error'); return; }
     document.getElementById('tab-admin').classList.add('active');
     document.getElementById('adminpage').style.display = 'block';
     renderAdminUsers();
   } else if(tab === 'trash') {
+    if(!can('view_trash')) { toast('🚫 ليس لديك صلاحية', 'error'); return; }
     document.getElementById('tab-trash').classList.add('active');
     document.getElementById('trashpage').style.display = 'block';
     renderTrash();
+  } else if(tab === 'activity') {
+    if(!can('view_activity')) { toast('🚫 ليس لديك صلاحية', 'error'); return; }
+    document.getElementById('tab-activity').classList.add('active');
+    document.getElementById('activitypage').style.display = 'block';
+    renderActivity('all');
   }
 }
 
@@ -1070,9 +1208,8 @@ const SG = (r, g) => { HD[r] = g; };
 
 function isBooked(r) {
   const g = GG(r); if(!g.length) return false;
-  const now = new Date();
-  const t = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
-  return g.some(x => x.checkin && x.checkout && x.checkin <= t && x.checkout >= t);
+  const t = new Date().toISOString().split('T')[0];
+  return g.some(x => x.checkin <= t && x.checkout >= t);
 }
 function overlap(ci, co, bks, ex) {
   const a = new Date(ci), b = new Date(co);
@@ -1082,71 +1219,6 @@ function overlap(ci, co, bks, ex) {
   });
 }
 function fmt(d) { if(!d) return '–'; const[y,m,day]=d.split('-'); return `${day}/${m}/${y}`; }
-
-function highlight(text, query) {
-  if(!query) return text;
-  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return String(text).replace(new RegExp('(' + escaped + ')', 'gi'), '<span class="search-highlight">$1</span>');
-}
-
-function doSearch(q) {
-  q = q.trim();
-  const clearBtn = document.getElementById('search-clear');
-  const resultsBox = document.getElementById('search-results');
-  const list = document.getElementById('search-list');
-  const countEl = document.getElementById('search-count');
-  clearBtn.classList.toggle('show', q.length > 0);
-  if(!q) { resultsBox.classList.remove('show'); return; }
-  const results = [];
-  const qLower = q.toLowerCase();
-  FLOORS.forEach(fl => {
-    fl.rooms.forEach(rn => {
-      const guests = GG(rn);
-      const roomMatch = rn.toLowerCase().includes(qLower);
-      guests.forEach((g, gi) => {
-        const nameMatch = g.name && g.name.toLowerCase().includes(qLower);
-        const phoneMatch = g.phone && g.phone.includes(q);
-        if(roomMatch || nameMatch || phoneMatch) {
-          results.push({room:rn, floor:fl.name, guest:g, gIdx:gi});
-        }
-      });
-      if(roomMatch && guests.length === 0) {
-        results.push({room:rn, floor:fl.name, guest:null, gIdx:-1});
-      }
-    });
-  });
-  countEl.textContent = results.length;
-  resultsBox.classList.add('show');
-  if(results.length === 0) {
-    list.innerHTML = '<div class="no-results">😔 لا توجد نتائج</div>';
-    return;
-  }
-  list.innerHTML = results.map(r => {
-    const booked = isBooked(r.room);
-    return `
-      <div class="search-result-card" onclick="openRoom('${r.room}','${r.floor}');switchTab('rooms')">
-        <div class="src-room">${r.room}</div>
-        <div class="src-info">
-          <div class="src-name">${r.guest ? highlight(r.guest.name, q) : '<span style="color:var(--text-muted)">لا يوجد حجز</span>'}</div>
-          <div class="src-details">
-            ${r.guest ? `<span>📞 ${highlight(r.guest.phone, q)}</span>` : ''}
-            ${r.guest ? `<span>📅 ${fmt(r.guest.checkin)} ← ${fmt(r.guest.checkout)}</span>` : ''}
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
-          <span class="src-status ${booked?'bk':'av'}">${booked?'محجوزة':'متاحة'}</span>
-          <span class="src-floor">${r.floor}</span>
-        </div>
-      </div>`;
-  }).join('');
-}
-
-function clearSearch() {
-  document.getElementById('search-input').value = '';
-  document.getElementById('search-clear').classList.remove('show');
-  document.getElementById('search-results').classList.remove('show');
-  document.getElementById('search-input').focus();
-}
 
 function renderFloors() {
   const c = document.getElementById('fc'); c.innerHTML = '';
@@ -1191,30 +1263,35 @@ function renderGuests() {
   const list = document.getElementById('gl');
   document.getElementById('bps').textContent = 'الحالة: ' + (isBooked(curRoom) ? '🔴 محجوزة حالياً' : '🟢 متاحة');
   if(!g.length) { list.innerHTML = '<div class="noguests">لا توجد حجوزات لهذه الغرفة حتى الآن</div>'; return; }
-  list.innerHTML = g.map((x, i) => `
+  list.innerHTML = g.map((x, i) => {
+    const isOwn = x.by === curUser.name;
+    const canEdit = can('edit_any') || (can('edit_own') && isOwn);
+    const canDel  = can('delete_any') || (can('delete_own') && isOwn);
+    return `
     <div class="gcard">
       <div class="gchead">
-        <div class="gname">👤 ${x.name}</div>
+        <div>
+          <div class="gname">👤 ${x.name}</div>
+          ${x.by ? `<div style="font-size:10px;color:var(--text-muted);margin-top:2px">بواسطة: ${x.by}</div>` : ''}
+        </div>
         <div class="gacts">
           <button class="bsm bshr" onclick="openShare(${i})">📤</button>
-          <button class="bsm bedit" onclick="editGuest(${i})">✏️ تعديل</button>
-          <button class="bsm bdel" onclick="askDelete(${i})">🗑️ حذف</button>
+          ${canEdit ? `<button class="bsm bedit" onclick="editGuest(${i})">✏️ تعديل</button>` : ''}
+          ${canDel  ? `<button class="bsm bdel"  onclick="askDelete(${i})">🗑️ حذف</button>` : ''}
         </div>
       </div>
       <div class="gdet">
         <div class="gdi"><div class="dl">📞 الهاتف</div><div class="dv">${x.phone}</div></div>
         <div class="gdi"><div class="dl">📅 الوصول</div><div class="dv">${fmt(x.checkin)}</div></div>
         <div class="gdi"><div class="dl">📅 المغادرة</div><div class="dv">${fmt(x.checkout)}</div></div>
-        ${x.amount ? `<div class="gdi"><div class="dl">💰 المبلغ</div><div class="dv" style="color:var(--green)">${x.amount} ج.م</div></div>` : ''}
-        ${x.amount && x.receiver ? `<div class="gdi"><div class="dl">👤 استلمه</div><div class="dv" style="color:var(--gold)">${x.receiver}</div></div>` : ''}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function showAddForm() {
   document.getElementById('ei').value = -1;
   document.getElementById('ftitle').textContent = '📋 إضافة حجز جديد';
-  ['fn','fph','fci','fco','famount','freceiver'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('receiver-fg').style.display = 'none';
+  ['fn','fph','fci','fco'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('bkform').style.display = 'block';
   document.getElementById('addbtn').style.display = 'none';
   document.getElementById('bkform').scrollIntoView({behavior:'smooth'});
@@ -1227,19 +1304,10 @@ function editGuest(i) {
   document.getElementById('fph').value = g.phone;
   document.getElementById('fci').value = g.checkin;
   document.getElementById('fco').value = g.checkout;
-  document.getElementById('famount').value = g.amount || '';
-  document.getElementById('freceiver').value = g.receiver || '';
-  document.getElementById('receiver-fg').style.display = g.amount ? 'flex' : 'none';
   document.getElementById('bkform').style.display = 'block';
   document.getElementById('addbtn').style.display = 'none';
   document.getElementById('bkform').scrollIntoView({behavior:'smooth'});
 }
-function toggleReceiver(val) {
-  const fg = document.getElementById('receiver-fg');
-  fg.style.display = val.trim() ? 'flex' : 'none';
-  if(!val.trim()) document.getElementById('freceiver').value = '';
-}
-
 async function saveGuest() {
   const name = document.getElementById('fn').value.trim();
   const phone = document.getElementById('fph').value.trim();
@@ -1250,13 +1318,11 @@ async function saveGuest() {
   const guests = GG(curRoom);
   const ei = parseInt(document.getElementById('ei').value);
   if(overlap(ci, co, guests, ei >= 0 ? ei : null)) { toast('❌ يوجد حجز آخر في نفس الفترة', 'error'); return; }
-  const amount = document.getElementById('famount').value.trim();
-  const receiver = document.getElementById('freceiver').value.trim();
   const gd = { name, phone, checkin: ci, checkout: co, by: curUser.name, at: new Date().toISOString() };
-  if(amount) { gd.amount = amount; gd.receiver = receiver || curUser.name; }
   if(ei >= 0) { guests[ei] = gd; } else { guests.push(gd); }
   SG(curRoom, guests);
   document.getElementById('savebtn').disabled = true;
+  logActivity('booking', ei >= 0 ? '✏️ تعديل حجز' : '➕ حجز جديد', `غرفة ${curRoom} — ${name} | ${fmt(ci)} → ${fmt(co)}`);
   await saveHotel();
   document.getElementById('savebtn').disabled = false;
   toast(ei >= 0 ? '✅ تم تعديل الحجز' : '✅ تم حفظ الحجز', 'success');
@@ -1269,32 +1335,32 @@ function cancelForm() {
 function askDelete(i) {
   delIdx = i;
   const g = GG(curRoom)[i];
-  document.getElementById('del-guest-preview').innerHTML =
-    `👤 <strong>${g.name}</strong> &nbsp;|&nbsp; 📞 ${g.phone}<br>📅 ${fmt(g.checkin)} ← ${fmt(g.checkout)}`;
-  document.getElementById('del-pass').value = '';
-  document.getElementById('del-err').style.display = 'none';
+  // Show guest preview in overlay
+  const preview = document.getElementById('del-guest-preview');
+  if(preview) preview.innerHTML = `👤 <strong>${g.name}</strong> &nbsp;|&nbsp; 📞 ${g.phone}<br>📅 ${fmt(g.checkin)} ← ${fmt(g.checkout)}`;
+  const passInput = document.getElementById('del-pass');
+  if(passInput) { passInput.value = ''; }
+  const errEl = document.getElementById('del-err');
+  if(errEl) errEl.style.display = 'none';
   document.getElementById('deloverlay').classList.add('show');
-  setTimeout(() => document.getElementById('del-pass').focus(), 200);
+  setTimeout(() => { const p = document.getElementById('del-pass'); if(p) p.focus(); }, 200);
 }
 async function confirmDelete() {
-  const pass = document.getElementById('del-pass').value;
-  if(pass !== DEL_PASS) {
-    document.getElementById('del-err').style.display = 'block';
-    document.getElementById('del-pass').value = '';
-    document.getElementById('del-pass').focus();
+  const passInput = document.getElementById('del-pass');
+  const pass = passInput ? passInput.value : '';
+  const myPass = getMyDelPass();
+  if(pass !== myPass) {
+    const errEl = document.getElementById('del-err');
+    if(errEl) errEl.style.display = 'block';
+    if(passInput) { passInput.value = ''; passInput.focus(); }
     return;
   }
   const guests = GG(curRoom);
   const removed = guests[delIdx];
-  // Save to deleted archive
-  DELETED_BK.unshift({
-    ...removed,
-    room: curRoom,
-    deletedBy: curUser.name,
-    deletedAt: new Date().toISOString()
-  });
+  DELETED_BK.unshift({ ...removed, room: curRoom, deletedBy: curUser.name, deletedAt: new Date().toISOString() });
   if(DELETED_BK.length > 100) DELETED_BK = DELETED_BK.slice(0, 100);
   localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
+  logActivity('delete', '🗑️ حذف حجز', `غرفة ${curRoom} — ${removed.name} | بواسطة: ${curUser.name}`);
   guests.splice(delIdx, 1);
   SG(curRoom, guests);
   closeOverlay('deloverlay');
@@ -1308,18 +1374,34 @@ async function confirmDelete() {
 ══════════════════════════════════════ */
 function renderAdminUsers() {
   const list = document.getElementById('users-list');
-  list.innerHTML = USERS.map((u, i) => `
+  // Update role select options based on current user's level
+  const roleSelect = document.getElementById('nu-role');
+  if(roleSelect) {
+    roleSelect.innerHTML = '<option value="staff">👔 موظف</option>';
+    if(can('manage_admin')) roleSelect.innerHTML += '<option value="admin">👑 أدمن</option>';
+    if(can('manage_emperor')) roleSelect.innerHTML += '<option value="emperor">🏛️ إمبراطور</option>';
+  }
+
+  list.innerHTML = USERS.map((u, i) => {
+    const targetLevel = ROLE_LEVEL[u.role] || 0;
+    const myLevel = ROLE_LEVEL[curUser.role] || 0;
+    // يقدر يعدل / يحذف بس اللي مستواهم أقل منه
+    const canEditPass = can('change_any_pass') || (can('manage_staff') && targetLevel < myLevel);
+    const canDel = u.username !== 'emperor' && u.username !== curUser.username && targetLevel < myLevel;
+    return `
     <div class="user-card">
       <div class="user-card-info">
         <div class="uname">${u.name} <span style="color:var(--text-muted);font-weight:400;font-size:12px">(${u.username})</span></div>
-        <span class="urole-badge ${u.role}">${u.role==='admin'?'أدمن':'موظف'}</span>
+        <span class="urole-badge ${roleBadgeClass(u.role)}">${roleLabel(u.role)}</span>
       </div>
       <div class="user-card-actions">
-        <button class="bsm bedit" onclick="openChangePass(${i})">🔑 تغيير الباسورد</button>
-        ${u.username !== 'admin' ? `<button class="bsm bdel" onclick="askDeleteUser(${i})">🗑️</button>` : ''}
+        ${canEditPass ? `<button class="bsm bedit" onclick="openChangePass(${i})">🔑 تغيير الباسورد</button>` : ''}
+        ${canDel ? `<button class="bsm bdel" onclick="askDeleteUser(${i})">🗑️</button>` : ''}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
+
 async function addUser() {
   const username = document.getElementById('nu-user').value.trim();
   const password = document.getElementById('nu-pass').value.trim();
@@ -1327,16 +1409,27 @@ async function addUser() {
   const role = document.getElementById('nu-role').value;
   if(!username || !password || !name) { toast('❌ أكمل جميع البيانات', 'error'); return; }
   if(USERS.find(u => u.username === username)) { toast('❌ اسم المستخدم موجود بالفعل', 'error'); return; }
+  // Permission check
+  if(role === 'emperor' && !can('manage_emperor')) { toast('🚫 ليس لديك صلاحية إضافة إمبراطور', 'error'); return; }
+  if(role === 'admin' && !can('manage_admin')) { toast('🚫 ليس لديك صلاحية إضافة أدمن', 'error'); return; }
   USERS.push({username, password, name, role});
+  logActivity('user', '➕ مستخدم جديد', `${curUser.name} أضاف "${name}" بصلاحية ${roleLabel(role)}`);
   await saveUsers(); renderAdminUsers();
   ['nu-user','nu-pass','nu-name'].forEach(id => document.getElementById(id).value = '');
   toast('✅ تم إضافة المستخدم', 'success');
 }
+
 function askDeleteUser(i) {
-  if(USERS[i].username === 'admin') { toast('❌ لا يمكن حذف الأدمن الرئيسي', 'error'); return; }
+  const u = USERS[i];
+  if(u.username === 'emperor') { toast('❌ لا يمكن حذف الإمبراطور', 'error'); return; }
+  const targetLevel = ROLE_LEVEL[u.role] || 0;
+  const myLevel = ROLE_LEVEL[curUser.role] || 0;
+  if(targetLevel >= myLevel) { toast('🚫 لا يمكنك حذف هذا المستخدم', 'error'); return; }
   delUserId = i; document.getElementById('deluseroverlay').classList.add('show');
 }
 async function confirmDeleteUser() {
+  const u = USERS[delUserId];
+  logActivity('user', '🗑️ حذف مستخدم', `${curUser.name} حذف "${u.name}" (${roleLabel(u.role)})`);
   USERS.splice(delUserId, 1);
   closeOverlay('deluseroverlay');
   await saveUsers(); renderAdminUsers();
@@ -1422,7 +1515,141 @@ window.addEventListener('offline', () => {
 });
 
 /* ══════════════════════════════════════
-   INIT
+   SEARCH
+══════════════════════════════════════ */
+function highlight(text, query) {
+  if(!query) return String(text);
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return String(text).replace(new RegExp('(' + escaped + ')', 'gi'), '<span class="search-highlight">$1</span>');
+}
+function doSearch(q) {
+  q = q.trim();
+  const clearBtn = document.getElementById('search-clear');
+  const resultsBox = document.getElementById('search-results');
+  const list = document.getElementById('search-list');
+  const countEl = document.getElementById('search-count');
+  clearBtn.classList.toggle('show', q.length > 0);
+  if(!q) { resultsBox.classList.remove('show'); return; }
+  const results = [];
+  const qLower = q.toLowerCase();
+  FLOORS.forEach(fl => {
+    fl.rooms.forEach(rn => {
+      const guests = GG(rn);
+      const roomMatch = rn.toLowerCase().includes(qLower);
+      guests.forEach((g) => {
+        const nameMatch = g.name && g.name.toLowerCase().includes(qLower);
+        const phoneMatch = g.phone && g.phone.includes(q);
+        if(roomMatch || nameMatch || phoneMatch) results.push({room:rn, floor:fl.name, guest:g});
+      });
+      if(roomMatch && guests.length === 0) results.push({room:rn, floor:fl.name, guest:null});
+    });
+  });
+  countEl.textContent = results.length;
+  resultsBox.classList.add('show');
+  if(!results.length) { list.innerHTML = '<div class="no-results">😔 لا توجد نتائج</div>'; return; }
+  list.innerHTML = results.map(r => {
+    const booked = isBooked(r.room);
+    return `<div class="search-result-card" onclick="openRoom('${r.room}','${r.floor}');switchTab('rooms')">
+      <div class="src-room">${r.room}</div>
+      <div class="src-info">
+        <div class="src-name">${r.guest ? highlight(r.guest.name, q) : '<span style="color:var(--text-muted)">لا يوجد حجز</span>'}</div>
+        <div class="src-details">
+          ${r.guest ? `<span>📞 ${highlight(r.guest.phone, q)}</span>` : ''}
+          ${r.guest ? `<span>📅 ${fmt(r.guest.checkin)} ← ${fmt(r.guest.checkout)}</span>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
+        <span class="src-status ${booked?'bk':'av'}">${booked?'محجوزة':'متاحة'}</span>
+        <span class="src-floor">${r.floor}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-clear').classList.remove('show');
+  document.getElementById('search-results').classList.remove('show');
+  document.getElementById('search-input').focus();
+}
+
+/* ══════════════════════════════════════
+   PROFILE PAGE
+══════════════════════════════════════ */
+function renderProfile() {
+  if(!curUser) return;
+  document.getElementById('profile-name').textContent = curUser.name;
+  document.getElementById('profile-role-txt').textContent = curUser.role === 'admin' ? '👑 أدمن' : '👔 موظف';
+  document.getElementById('profile-username').textContent = '@' + curUser.username;
+
+  // Calc stats — bookings I made
+  let myBookings = [], myRooms = new Set();
+  FLOORS.forEach(fl => {
+    fl.rooms.forEach(rn => {
+      GG(rn).forEach(g => {
+        if(g.by === curUser.name) { myBookings.push({...g, room:rn}); myRooms.add(rn); }
+      });
+    });
+  });
+  const myDeleted = DELETED_BK.filter(d => d.by === curUser.name || d.deletedBy === curUser.name);
+  document.getElementById('pstat-bookings').textContent = myBookings.length;
+  document.getElementById('pstat-rooms').textContent = myRooms.size;
+  document.getElementById('pstat-deleted').textContent = myDeleted.length;
+
+  // Recent bookings
+  const sorted = myBookings.sort((a,b) => (b.at||'') > (a.at||'') ? 1 : -1).slice(0, 15);
+  const bklist = document.getElementById('my-bookings-list');
+  if(!sorted.length) {
+    bklist.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">لا توجد حجوزات بعد</div>';
+  } else {
+    bklist.innerHTML = sorted.map(b => `
+      <div class="my-bk-card" onclick="openRoom('${b.room}','');switchTab('rooms')" style="cursor:pointer">
+        <div class="my-bk-room">🚪 غرفة ${b.room}</div>
+        <div class="my-bk-name">👤 ${b.name} — 📞 ${b.phone}</div>
+        <div class="my-bk-dates">📅 ${fmt(b.checkin)} ← ${fmt(b.checkout)}${b.amount ? ' &nbsp;|&nbsp; 💰 '+b.amount+' ج.م' : ''}</div>
+      </div>`).join('');
+  }
+
+  // Clear form fields
+  ['p-old-del','p-new-del','p-new-del2','p-old-login','p-new-login','p-new-login2'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value = '';
+  });
+}
+
+async function changeDelPass() {
+  const oldP = document.getElementById('p-old-del').value;
+  const newP = document.getElementById('p-new-del').value;
+  const newP2 = document.getElementById('p-new-del2').value;
+  if(oldP !== getMyDelPass()) { toast('❌ كلمة المرور الحالية غلط', 'error'); return; }
+  if(!newP) { toast('❌ أدخل كلمة المرور الجديدة', 'error'); return; }
+  if(newP !== newP2) { toast('❌ كلمتا المرور غير متطابقتان', 'error'); return; }
+  // Update in USERS array and curUser
+  const idx = USERS.findIndex(u => u.username === curUser.username);
+  if(idx >= 0) USERS[idx].delPass = newP;
+  curUser.delPass = newP;
+  localStorage.setItem('hb_session', JSON.stringify(curUser));
+  await saveUsers();
+  toast('✅ تم تغيير كلمة مرور الحذف', 'success');
+  ['p-old-del','p-new-del','p-new-del2'].forEach(id => document.getElementById(id).value = '');
+}
+
+async function changeLoginPass() {
+  const oldP = document.getElementById('p-old-login').value;
+  const newP = document.getElementById('p-new-login').value;
+  const newP2 = document.getElementById('p-new-login2').value;
+  if(oldP !== curUser.password) { toast('❌ كلمة المرور الحالية غلط', 'error'); return; }
+  if(!newP) { toast('❌ أدخل كلمة المرور الجديدة', 'error'); return; }
+  if(newP !== newP2) { toast('❌ كلمتا المرور غير متطابقتان', 'error'); return; }
+  const idx = USERS.findIndex(u => u.username === curUser.username);
+  if(idx >= 0) USERS[idx].password = newP;
+  curUser.password = newP;
+  localStorage.setItem('hb_session', JSON.stringify(curUser));
+  await saveUsers();
+  toast('✅ تم تغيير كلمة مرور الدخول', 'success');
+  ['p-old-login','p-new-login','p-new-login2'].forEach(id => document.getElementById(id).value = '');
+}
+
+/* ══════════════════════════════════════
+   TRASH
 ══════════════════════════════════════ */
 function renderTrash() {
   const list = document.getElementById('trash-list');
@@ -1439,7 +1666,7 @@ function renderTrash() {
         </div>
         <div style="display:flex;gap:6px">
           <button class="bsm bedit" onclick="askRestore(${i})">↩️ استرجاع</button>
-          <button class="bsm bdel" onclick="askPermDelete(${i})">❌ حذف نهائي</button>
+          <button class="bsm bdel" onclick="askPermDelete(${i})">❌ نهائي</button>
         </div>
       </div>
       <div class="gdet">
@@ -1450,51 +1677,120 @@ function renderTrash() {
       </div>
     </div>`).join('');
 }
-
 function askPermDelete(i) {
-  const d = DELETED_BK[i];
-  if(confirm(`⚠️ حذف نهائي لـ "${d.name}" — لا يمكن الاسترجاع بعدها!
-هل أنت متأكد؟`)) {
+  if(confirm(`⚠️ حذف نهائي لـ "${DELETED_BK[i].name}" — لا يمكن الاسترجاع!`)) {
     DELETED_BK.splice(i, 1);
     localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
-    renderTrash();
-    toast('🗑️ تم الحذف النهائي', 'success');
+    renderTrash(); toast('🗑️ تم الحذف النهائي', 'success');
   }
 }
-
 function askRestore(i) {
-  const d = DELETED_BK[i];
-  if(confirm(`استرجاع حجز "${d.name}" للغرفة ${d.room}؟`)) {
-    restoreBooking(i);
-  }
+  if(confirm(`استرجاع حجز "${DELETED_BK[i].name}" للغرفة ${DELETED_BK[i].room}؟`)) restoreBooking(i);
 }
-
 async function restoreBooking(i) {
   const d = DELETED_BK[i];
   const guests = GG(d.room) || [];
-  guests.push({
-    name: d.name, phone: d.phone, checkin: d.checkin, checkout: d.checkout,
-    by: d.by, at: d.at, amount: d.amount, receiver: d.receiver,
-    restoredBy: curUser.name, restoredAt: new Date().toISOString()
-  });
+  guests.push({ name:d.name, phone:d.phone, checkin:d.checkin, checkout:d.checkout, by:d.by, at:d.at, amount:d.amount, receiver:d.receiver, restoredBy:curUser.name, restoredAt:new Date().toISOString() });
   SG(d.room, guests);
   DELETED_BK.splice(i, 1);
   localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
-  await saveHotel();
-  renderTrash();
-  renderFloors();
+  await saveHotel(); renderTrash(); renderFloors();
   toast('✅ تم استرجاع الحجز بنجاح', 'success');
 }
 
 function resetConfig() {
-  localStorage.removeItem('hb_fb_url');
-  FB_URL = null;
-  DEMO_MODE = false;
-  document.getElementById('loginpage').classList.remove('show');
-  document.getElementById('fb-url-input').value = '';
+  // Show current URL in the overlay
+  const cur = document.getElementById('fb-current-display');
+  if(cur) cur.textContent = FB_URL || '(غير محدد)';
+  document.getElementById('fb-url-input').value = FB_URL || '';
   document.getElementById('fbsetupoverlay').classList.add('show');
+  // Hide login page only if not logged in yet
+  if(!curUser) document.getElementById('loginpage').classList.remove('show');
 }
 
+function keepCurrentConfig() {
+  document.getElementById('fbsetupoverlay').classList.remove('show');
+  if(!curUser) document.getElementById('loginpage').classList.add('show');
+}
+
+/* ══════════════════════════════════════
+   ACTIVITY LOG
+══════════════════════════════════════ */
+function logActivity(type, title, detail) {
+  const entry = { type, title, detail, by: curUser ? curUser.name : '—', at: new Date().toISOString() };
+  ACTIVITY_LOG.unshift(entry);
+  if(ACTIVITY_LOG.length > 200) ACTIVITY_LOG = ACTIVITY_LOG.slice(0, 200);
+  localStorage.setItem('hb_activity', JSON.stringify(ACTIVITY_LOG));
+}
+
+let _actFilter = 'all';
+function filterActivity(type) {
+  _actFilter = type;
+  document.querySelectorAll('#activitypage .bcanc,#activitypage .bsave').forEach(b => {
+    b.style.borderColor = '';b.style.color = '';
+  });
+  const map = {all:'af-all', booking:'af-bk', delete:'af-del', user:'af-usr', login:'af-login'};
+  renderActivity(type);
+}
+
+function renderActivity(filter) {
+  const list = document.getElementById('activity-list');
+  const icons = {booking:'📋', delete:'🗑️', user:'👤', login:'🔑'};
+  let items = filter === 'all' ? ACTIVITY_LOG : ACTIVITY_LOG.filter(a => a.type === filter);
+  if(!items.length) { list.innerHTML = '<div class="noguests" style="text-align:center;padding:30px;color:var(--text-muted)">لا توجد سجلات</div>'; return; }
+  list.innerHTML = items.map(a => `
+    <div class="act-item">
+      <div class="act-icon">${icons[a.type] || '📌'}</div>
+      <div class="act-body">
+        <div class="act-title">${a.title}</div>
+        <div class="act-meta">${a.detail}</div>
+      </div>
+      <div class="act-time">${fmtTime(a.at)}<br><span style="color:#555">${a.by}</span></div>
+    </div>`).join('');
+}
+
+function clearActivityLog() {
+  if(!can('clear_activity')) { toast('🚫 ليس لديك صلاحية', 'error'); return; }
+  if(!confirm('مسح كل سجل العمليات؟')) return;
+  ACTIVITY_LOG = [];
+  localStorage.setItem('hb_activity', JSON.stringify(ACTIVITY_LOG));
+  renderActivity('all');
+  toast('✅ تم مسح السجل', 'success');
+}
+
+/* ══════════════════════════════════════
+   EMPEROR POWERS
+══════════════════════════════════════ */
+async function emperorResetBookings() {
+  if(!can('reset_system')) { toast('🚫 ليس لديك صلاحية', 'error'); return; }
+  const pass = prompt('أدخل كلمة مرور الإمبراطور للتأكيد:');
+  if(pass !== curUser.password) { toast('❌ كلمة المرور غلط', 'error'); return; }
+  if(!confirm('⚠️ سيتم مسح كل الحجوزات نهائياً — هل أنت متأكد؟')) return;
+  HD = {};
+  await saveHotel();
+  logActivity('delete', '☢️ مسح كل الحجوزات', `بواسطة الإمبراطور: ${curUser.name}`);
+  renderFloors();
+  toast('✅ تم مسح كل الحجوزات', 'success');
+}
+
+async function emperorResetAll() {
+  if(!can('reset_system')) { toast('🚫 ليس لديك صلاحية', 'error'); return; }
+  const pass = prompt('⚠️ تحذير: سيتم إعادة تعيين كل البيانات!\nأدخل كلمة مرور الإمبراطور:');
+  if(pass !== curUser.password) { toast('❌ كلمة المرور غلط', 'error'); return; }
+  if(!confirm('☢️ إعادة تعيين كاملة — هذا لا يمكن التراجع عنه!\nهل أنت متأكد 100%؟')) return;
+  HD = {}; DELETED_BK = []; ACTIVITY_LOG = [];
+  USERS = DEFAULT_USERS;
+  await saveHotel(); await saveUsers();
+  localStorage.removeItem('hb_deleted');
+  localStorage.removeItem('hb_activity');
+  localStorage.removeItem('hb_notifs');
+  toast('✅ تمت إعادة التعيين الكاملة', 'success');
+  setTimeout(() => doLogout(), 1500);
+}
+
+/* ══════════════════════════════════════
+   INIT
+══════════════════════════════════════ */
 async function init() {
   try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
 
@@ -1506,18 +1802,18 @@ async function init() {
 
   await loadAll();
 
-  // Restore session if user was logged in before
-  try {
-    const saved = JSON.parse(localStorage.getItem('hb_session') || 'null');
-    if(saved) {
-      const found = USERS.find(x => x.username === saved.username && x.password === saved.password);
-      if(found) {
-        document.getElementById('loginpage').classList.remove('show');
-        applyLogin(found);
-        return;
-      }
+  // استعادة الجلسة تلقائياً
+  const savedUsername = localStorage.getItem('hb_session');
+  if(savedUsername) {
+    const found = USERS.find(u => u.username === savedUsername);
+    if(found) {
+      document.getElementById('loginpage').classList.remove('show');
+      applyLogin(found);
+      return;
     }
-  } catch(e) {}
+  }
+  // مفيش جلسة — اظهر صفحة اللوجن
+  document.getElementById('loginpage').classList.add('show');
 }
 init();
 </script>
