@@ -112,13 +112,31 @@ header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px
 .notif-badge{position:absolute;top:-5px;right:-5px;background:var(--red);color:#fff;font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none}
 .notif-badge.show{display:flex}
 
-/* NAV */
-.nav-tabs{display:flex;gap:4px;background:var(--dark2);border-bottom:1px solid var(--border);padding:0 22px}
-.nav-tab{padding:12px 18px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;user-select:none}
-.nav-tab:hover{color:var(--text)}
-.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+/* SIDEBAR */
+.app-body{display:flex;min-height:calc(100vh - 62px)}
+.sidebar{width:220px;flex-shrink:0;background:linear-gradient(180deg,var(--dark2),#0f0c05);border-left:1px solid var(--border);display:flex;flex-direction:column;padding:16px 0;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;z-index:90}
+.sidebar-user{display:flex;align-items:center;gap:10px;padding:12px 18px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.sidebar-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-dark));display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.sidebar-uname{font-weight:700;font-size:13px;color:var(--gold)}
+.sidebar-urole{font-size:10px;color:var(--text-muted)}
+.nav-tabs{display:flex;flex-direction:column;gap:4px;padding:0 10px;flex:1}
+.nav-tab{padding:11px 14px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--text-muted);cursor:pointer;border-radius:10px;transition:all .2s;background:none;border:none;text-align:right;user-select:none;display:flex;align-items:center;gap:9px;width:100%}
+.nav-tab:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-tab.active{color:var(--gold);background:rgba(201,168,76,.12);border-right:3px solid var(--gold)}
 .nav-tab.admin-only{display:none}
-.nav-tab.admin-only.show{display:block}
+.nav-tab.admin-only.show{display:flex}
+.sidebar-bottom{padding:12px 10px;border-top:1px solid var(--border);margin-top:auto}
+.btn-logout-side{width:100%;padding:10px 14px;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:600;color:var(--red);background:rgba(231,76,60,.08);border:1px solid rgba(231,76,60,.2);border-radius:10px;cursor:pointer;transition:all .2s;text-align:right;display:flex;align-items:center;gap:9px}
+.btn-logout-side:hover{background:rgba(231,76,60,.18)}
+.main-content{flex:1;min-width:0;overflow-x:hidden}
+
+/* MOBILE SIDEBAR TOGGLE */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;backdrop-filter:blur(3px)}
+.sidebar-overlay.open{display:block}
+.menu-toggle{display:none;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:6px 10px;cursor:pointer;font-size:18px;color:var(--text)}
+
+/* NAV old compat - keep hidden */
+.nav-tab-top{display:none}
 
 /* APP */
 #app{display:none}
@@ -305,18 +323,21 @@ select:focus{border-color:var(--gold)}
 #offlinebanner.show{display:block}
 
 /* RESPONSIVE */
-@media(max-width:640px){
+@media(max-width:768px){
   header{padding:9px 12px}
-  .logo p,.sync-pill span:not(.sdot),.user-pill .urole{display:none}
+  .logo p,.sync-pill,.user-pill,.btn-logout{display:none}
+  .menu-toggle{display:flex;align-items:center}
   .hstats{gap:4px}.sbadge{padding:4px 6px}.sbadge .n{font-size:14px}
+  .sidebar{position:fixed;top:0;right:-240px;width:240px;height:100vh;z-index:210;transition:right .3s ease;box-shadow:-6px 0 30px rgba(0,0,0,.6)}
+  .sidebar.open{right:0}
   #fp,#bp,#adminpage,#notifpage{padding:12px 12px 80px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px}
   .fgrid,.add-user-grid{grid-template-columns:1fr}
   .gdet{grid-template-columns:1fr 1fr}
   .bkhdr{flex-direction:column;align-items:flex-start}
-  .nav-tab{padding:10px 10px;font-size:11px}
 }
-@media(min-width:641px) and (max-width:1024px){
+@media(min-width:769px) and (max-width:1024px){
+  .sidebar{width:190px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:11px}
   .fgrid{grid-template-columns:1fr 1fr}
   .gdet{grid-template-columns:repeat(3,1fr)}
@@ -328,11 +349,10 @@ select:focus{border-color:var(--gold)}
   .logo p{display:block;font-size:12px}
   .sync-pill span{display:inline}
   .user-pill .urole{display:block}
-  .nav-tabs{padding:0 40px}
-  .nav-tab{padding:14px 26px;font-size:15px}
-  #fp{padding:36px 40px 60px;max-width:1500px}
-  #bp{padding:36px 40px 60px;max-width:1000px}
-  #adminpage,#notifpage{padding:36px 40px 60px;max-width:800px}
+  .sidebar{width:240px}
+  #fp{padding:36px 24px 60px;max-width:none}
+  #bp{padding:36px 24px 60px;max-width:900px}
+  #adminpage,#notifpage{padding:36px 24px 60px;max-width:700px}
   .rgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
   .rcard{padding:20px 14px;border-radius:15px}
   .rnum{font-size:30px}
@@ -406,6 +426,7 @@ select:focus{border-color:var(--gold)}
       </div>
     </div>
     <div class="hdr-right">
+      <button class="menu-toggle" onclick="toggleSidebar()" title="القائمة">☰</button>
       <div class="sync-pill">
         <div class="sdot loading" id="sdot"></div>
         <span id="stxt">...</span>
@@ -430,13 +451,32 @@ select:focus{border-color:var(--gold)}
     </div>
   </header>
 
-  <div class="nav-tabs">
-    <button class="nav-tab active" id="tab-rooms" onclick="switchTab('rooms')"> الغرف</button>
-    <button class="nav-tab" id="tab-search" onclick="switchTab('search')">🔍 بحث</button>
-    <button class="nav-tab" id="tab-notif" onclick="switchTab('notif')">🔔 الإشعارات</button>
-    <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin')">⚙️ المستخدمين</button>
-    <button class="nav-tab admin-only" id="tab-trash" onclick="switchTab('trash')">🗑️ المحذوفات</button>
-  </div>
+  <!-- SIDEBAR OVERLAY (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+  <div class="app-body">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">👤</div>
+      <div>
+        <div class="sidebar-uname" id="sb-uname">–</div>
+        <div class="sidebar-urole" id="sb-urole">–</div>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" id="tab-rooms" onclick="switchTab('rooms');closeSidebar()">🏨 الغرف</button>
+      <button class="nav-tab" id="tab-search" onclick="switchTab('search');closeSidebar()">🔍 بحث</button>
+      <button class="nav-tab" id="tab-notif" onclick="switchTab('notif');closeSidebar()">🔔 الإشعارات <span class="notif-badge" id="notif-badge-side" style="position:static;margin-right:auto"></span></button>
+      <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin');closeSidebar()">⚙️ المستخدمين</button>
+      <button class="nav-tab admin-only" id="tab-trash" onclick="switchTab('trash');closeSidebar()">🗑️ المحذوفات</button>
+    </div>
+    <div class="sidebar-bottom">
+      <button class="btn-logout-side" onclick="doLogout()">🚪 خروج</button>
+    </div>
+  </aside>
+
+  <div class="main-content">
 
   <!-- SEARCH BAR -->
   <div class="search-bar" id="search-bar" style="display:none">
@@ -745,11 +785,15 @@ function addNotif(title, body) {
 function updateNotifBadge() {
   unreadCount = NOTIFS.filter(n => !n.read).length;
   const badge = document.getElementById('notif-badge');
+  const badgeSide = document.getElementById('notif-badge-side');
   if(unreadCount > 0) {
-    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+    const txt = unreadCount > 9 ? '9+' : unreadCount;
+    badge.textContent = txt;
     badge.classList.add('show');
+    if(badgeSide){ badgeSide.textContent = txt; badgeSide.classList.add('show'); }
   } else {
     badge.classList.remove('show');
+    if(badgeSide) badgeSide.classList.remove('show');
   }
 }
 
@@ -1012,6 +1056,8 @@ function applyLogin(found) {
   document.getElementById('app').classList.add('show');
   document.getElementById('hdr-uname').textContent = found.name;
   document.getElementById('hdr-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
+  document.getElementById('sb-uname').textContent = found.name;
+  document.getElementById('sb-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
   if(found.role === 'admin') document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
   try { NOTIFS = JSON.parse(localStorage.getItem('hb_notifs') || '[]'); } catch(e) { NOTIFS = []; }
   try { DELETED_BK = JSON.parse(localStorage.getItem('hb_deleted') || '[]'); } catch(e) { DELETED_BK = []; }
@@ -1612,7 +1658,21 @@ self.addEventListener('fetch', e => {
   navigator.serviceWorker.register(swUrl).catch(()=>{});
 }
 
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
 init();
 </script>
+  </div><!-- end main-content -->
+  </div><!-- end app-body -->
+
 </body>
 </html>
