@@ -772,16 +772,14 @@ function addNotif(title, body) {
 
 function updateNotifBadge() {
   unreadCount = NOTIFS.filter(n => !n.read).length;
-  const badge = document.getElementById('notif-badge');
-  const badgeSide = document.getElementById('notif-badge-side');
+  const badge = document.getElementById('notif-badge-side');
+  if(!badge) return;
   if(unreadCount > 0) {
     const txt = unreadCount > 9 ? '9+' : unreadCount;
     badge.textContent = txt;
     badge.classList.add('show');
-    if(badgeSide){ badgeSide.textContent = txt; badgeSide.classList.add('show'); }
   } else {
     badge.classList.remove('show');
-    if(badgeSide) badgeSide.classList.remove('show');
   }
 }
 
@@ -1042,8 +1040,10 @@ function applyLogin(found) {
   localStorage.setItem('hb_session', JSON.stringify(found));
   document.getElementById('loginpage').classList.remove('show');
   document.getElementById('app').classList.add('show');
-  document.getElementById('hdr-uname').textContent = found.name;
-  document.getElementById('hdr-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
+  const hdrUname = document.getElementById('hdr-uname');
+  const hdrUrole = document.getElementById('hdr-urole');
+  if(hdrUname) hdrUname.textContent = found.name;
+  if(hdrUrole) hdrUrole.textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
   document.getElementById('sb-uname').textContent = found.name;
   document.getElementById('sb-urole').textContent = found.role === 'admin' ? 'أدمن' : 'موظف';
   if(found.role === 'admin') document.querySelectorAll('.admin-only').forEach(el => el.classList.add('show'));
