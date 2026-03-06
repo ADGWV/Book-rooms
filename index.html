@@ -39,7 +39,17 @@
   --sab:env(safe-area-inset-bottom,0px);
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overscroll-behavior:none}
+body{font-family:'Tajawal',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overscroll-behavior:none;cursor:none}
+a,button,[onclick],[role="button"]{cursor:none!important}
+
+/* CUSTOM CURSOR */
+#cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s,opacity .2s;will-change:transform}
+#cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:2px solid rgba(201,168,76,.6);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width .25s cubic-bezier(.22,1,.36,1),height .25s cubic-bezier(.22,1,.36,1),border-color .25s,opacity .2s;will-change:transform}
+#cursor-dot.clicking{width:4px;height:4px;background:#fff}
+#cursor-ring.clicking{width:22px;height:22px;border-color:var(--gold)}
+#cursor-dot.hovering{width:6px;height:6px;background:#fff}
+#cursor-ring.hovering{width:52px;height:52px;border-color:rgba(201,168,76,.9);background:rgba(201,168,76,.06)}
+#cursor-dot.hidden,#cursor-ring.hidden{opacity:0}
 
 
 /* INSTALL BANNER */
@@ -96,6 +106,76 @@ header{background:linear-gradient(135deg,var(--dark2),#1C1408);border-bottom:1px
 .sdot.synced{background:var(--green)}
 .sdot.error{background:var(--red)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeInLeft{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes pulse-gold{0%,100%{box-shadow:0 0 0 0 rgba(201,168,76,.4)}50%{box-shadow:0 0 0 8px rgba(201,168,76,0)}}
+@keyframes slideInSide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes ripple{0%{transform:scale(0);opacity:.5}100%{transform:scale(4);opacity:0}}
+
+/* Page transitions */
+.page-enter{animation:fadeInUp .35s cubic-bezier(.22,1,.36,1) both}
+
+/* Room cards stagger */
+.rcard{animation:scaleIn .3s cubic-bezier(.22,1,.36,1) both}
+.rcard:nth-child(1){animation-delay:.03s}.rcard:nth-child(2){animation-delay:.06s}
+.rcard:nth-child(3){animation-delay:.09s}.rcard:nth-child(4){animation-delay:.12s}
+.rcard:nth-child(5){animation-delay:.15s}.rcard:nth-child(6){animation-delay:.18s}
+.rcard:nth-child(7){animation-delay:.21s}.rcard:nth-child(8){animation-delay:.24s}
+.rcard:nth-child(9){animation-delay:.27s}.rcard:nth-child(10){animation-delay:.30s}
+.rcard:nth-child(n+11){animation-delay:.33s}
+.rcard:hover{border-color:var(--gold);transform:translateY(-5px) scale(1.03);box-shadow:0 12px 28px rgba(201,168,76,.25)}
+.rcard:active{transform:scale(.93)!important;transition:transform .1s}
+
+/* Floor sections */
+.fsec{animation:fadeInUp .4s cubic-bezier(.22,1,.36,1) both}
+.fsec:nth-child(1){animation-delay:.05s}.fsec:nth-child(2){animation-delay:.12s}
+.fsec:nth-child(3){animation-delay:.19s}.fsec:nth-child(4){animation-delay:.26s}
+.fsec:nth-child(n+5){animation-delay:.32s}
+
+/* Sidebar nav items */
+.nav-tab{transition:all .22s cubic-bezier(.22,1,.36,1)}
+.nav-tab:hover{transform:translateX(-4px)}
+.nav-tab.active{transform:translateX(-4px)}
+.sidebar-user{animation:fadeInUp .4s .1s cubic-bezier(.22,1,.36,1) both}
+
+/* Header elements */
+header .logo{animation:fadeInRight .5s .05s cubic-bezier(.22,1,.36,1) both}
+header .hdr-right{animation:fadeInLeft .5s .1s cubic-bezier(.22,1,.36,1) both}
+
+/* Booking page */
+#bp .backbtn{animation:fadeInUp .3s cubic-bezier(.22,1,.36,1) both}
+#bp .bkhdr{animation:fadeInUp .35s .05s cubic-bezier(.22,1,.36,1) both}
+#bp .stitle{animation:fadeInUp .35s .1s cubic-bezier(.22,1,.36,1) both}
+#bp #gl{animation:fadeInUp .35s .15s cubic-bezier(.22,1,.36,1) both}
+
+/* Buttons */
+.btn-login,.baddg{position:relative;overflow:hidden;transition:all .25s cubic-bezier(.22,1,.36,1)}
+.btn-login:hover,.baddg:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,168,76,.4)}
+.btn-login:active,.baddg:active{transform:scale(.97)}
+
+/* Overlays/modals */
+.overlay.show .modal{animation:scaleIn .25s cubic-bezier(.22,1,.36,1)}
+
+/* Search results */
+.sresult-item{animation:fadeInUp .25s cubic-bezier(.22,1,.36,1) both}
+.sresult-item:nth-child(1){animation-delay:.03s}.sresult-item:nth-child(2){animation-delay:.07s}
+.sresult-item:nth-child(3){animation-delay:.11s}.sresult-item:nth-child(n+4){animation-delay:.15s}
+
+/* Booking cards */
+.gcard{animation:fadeInUp .28s cubic-bezier(.22,1,.36,1) both}
+.gcard:nth-child(1){animation-delay:.04s}.gcard:nth-child(2){animation-delay:.09s}
+.gcard:nth-child(3){animation-delay:.14s}.gcard:nth-child(n+4){animation-delay:.19s}
+
+/* Shimmer on gold elements */
+.logo h1,.sbadge .n{background:linear-gradient(90deg,var(--gold),#fff5c0,var(--gold));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+
+/* Sidebar slide-in on mobile */
+.sidebar{transition:right .32s cubic-bezier(.22,1,.36,1)}
 .user-pill{display:flex;align-items:center;gap:7px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--text)}
 .user-pill .uname{font-weight:700;color:var(--gold)}
 .user-pill .urole{font-size:10px;color:var(--text-muted)}
@@ -362,6 +442,8 @@ select:focus{border-color:var(--gold)}
 </style>
 </head>
 <body>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
 
 <!-- LOADING -->
 <div id="loadscreen">
@@ -1083,6 +1165,12 @@ function doLogout() {
 /* ══════════════════════════════════════
    TABS
 ══════════════════════════════════════ */
+function animatePage(id) {
+  const el = document.getElementById(id);
+  el.classList.remove('page-enter');
+  void el.offsetWidth;
+  el.classList.add('page-enter');
+}
 function switchTab(tab) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   ['fp','bp','adminpage','notifpage','trashpage'].forEach(id => document.getElementById(id).style.display='none');
@@ -1090,22 +1178,27 @@ function switchTab(tab) {
   if(tab === 'rooms') {
     document.getElementById('tab-rooms').classList.add('active');
     document.getElementById('fp').style.display = 'block';
+    animatePage('fp');
     renderFloors();
   } else if(tab === 'search') {
     document.getElementById('tab-search').classList.add('active');
     document.getElementById('search-bar').style.display = 'block';
+    animatePage('search-bar');
     setTimeout(() => document.getElementById('search-input').focus(), 100);
   } else if(tab === 'notif') {
     document.getElementById('tab-notif').classList.add('active');
     document.getElementById('notifpage').style.display = 'block';
+    animatePage('notifpage');
     renderNotifs();
   } else if(tab === 'admin') {
     document.getElementById('tab-admin').classList.add('active');
     document.getElementById('adminpage').style.display = 'block';
+    animatePage('adminpage');
     renderAdminUsers();
   } else if(tab === 'trash') {
     document.getElementById('tab-trash').classList.add('active');
     document.getElementById('trashpage').style.display = 'block';
+    animatePage('trashpage');
     renderTrash();
   }
 }
@@ -1656,6 +1749,44 @@ function closeSidebar() {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebar-overlay').classList.remove('open');
 }
+
+/* ══ CUSTOM CURSOR ══ */
+(function(){
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if(!dot||!ring) return;
+  let mouseX=0,mouseY=0,ringX=0,ringY=0;
+
+  if(window.matchMedia('(pointer:fine)').matches){
+    document.addEventListener('mousemove',e=>{
+      mouseX=e.clientX; mouseY=e.clientY;
+      dot.style.left=mouseX+'px'; dot.style.top=mouseY+'px';
+      dot.classList.remove('hidden'); ring.classList.remove('hidden');
+    });
+    (function loop(){
+      ringX+=(mouseX-ringX)*0.13; ringY+=(mouseY-ringY)*0.13;
+      ring.style.left=ringX+'px'; ring.style.top=ringY+'px';
+      requestAnimationFrame(loop);
+    })();
+    document.addEventListener('mouseover',e=>{
+      if(e.target.closest('button,a,[onclick],.rcard,.nav-tab,.gcard,.sresult-item')){
+        dot.classList.add('hovering'); ring.classList.add('hovering');
+      }
+    });
+    document.addEventListener('mouseout',e=>{
+      if(e.target.closest('button,a,[onclick],.rcard,.nav-tab,.gcard,.sresult-item')){
+        dot.classList.remove('hovering'); ring.classList.remove('hovering');
+      }
+    });
+    document.addEventListener('mousedown',()=>{dot.classList.add('clicking');ring.classList.add('clicking')});
+    document.addEventListener('mouseup',()=>{dot.classList.remove('clicking');ring.classList.remove('clicking')});
+    document.addEventListener('mouseleave',()=>{dot.classList.add('hidden');ring.classList.add('hidden')});
+    document.addEventListener('mouseenter',()=>{dot.classList.remove('hidden');ring.classList.remove('hidden')});
+  } else {
+    dot.style.display='none'; ring.style.display='none';
+    document.body.style.cursor='auto';
+  }
+})();
 
 init();
 </script>
