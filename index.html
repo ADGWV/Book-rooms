@@ -837,10 +837,8 @@ async function requestNotifPermission() {
   else { toast('⚠️ لم يتم السماح بالإشعارات', 'info'); }
 }
 
-function sendLocalNotif(title, body) {
-  // In-app notification
-  addNotif(title, body);
-  // OS notification if allowed
+function sendLocalNotif(title, body, key) {
+  addNotif(title, body, key);
   if(Notification.permission === 'granted') {
     if(swReg) {
       swReg.showNotification(title, { body, icon: '', tag: 'hotel-booking', vibrate: [200, 100, 200] });
@@ -850,8 +848,8 @@ function sendLocalNotif(title, body) {
   }
 }
 
-function addNotif(title, body) {
-  const n = { id: Date.now(), title, body, time: new Date().toISOString(), read: false };
+function addNotif(title, body, key) {
+  const n = { id: Date.now(), title, body, key: key||'', time: new Date().toISOString(), read: false };
   NOTIFS.unshift(n);
   if(NOTIFS.length > 50) NOTIFS = NOTIFS.slice(0, 50);
   localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
@@ -1006,6 +1004,16 @@ async function loadAll() {
     if(!usersData || !usersData.list) await fbSet('users', { list: DEFAULT_USERS });
     if(!hotelData || !hotelData.data) await fbSet('hotel', { data: {} });
     lastHotelHash = JSON.stringify(HD);
+    // سجّل كل الحجوزات الموجودة كـ "مشوفة" عشان متعملش إشعارات
+    try {
+      const existingSeen = new Set(JSON.parse(localStorage.getItem('hb_notif_seen') || '[]'));
+      for(const room in HD) {
+        (HD[room] || []).forEach(g => {
+          existingSeen.add(`${room}_${g.name}_${g.checkin}_${g.by}`);
+        });
+      }
+      localStorage.setItem('hb_notif_seen', JSON.stringify([...existingSeen]));
+    } catch(e) {}
     localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
     localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
     syncUI('synced');
@@ -1089,21 +1097,30 @@ function startPolling() {
 }
 
 function detectNewBookings(oldData, newData) {
+  // نجيب الحجوزات اللي اتبلّغنا عنها قبل كده
+  let seen;
+  try { seen = new Set(JSON.parse(localStorage.getItem('hb_notif_seen') || '[]')); } catch(e) { seen = new Set(); }
+  let changed = false;
+
   for(const room in newData) {
-    const oldGuests = (oldData[room] || []);
     const newGuests = (newData[room] || []);
-    if(newGuests.length > oldGuests.length) {
-      const added = newGuests.slice(oldGuests.length);
-      added.forEach(g => {
-        if(g.by !== curUser.name) { // notification from another user
+    newGuests.forEach(g => {
+      const key = `${room}_${g.name}_${g.checkin}_${g.by}`;
+      if(!seen.has(key)) {
+        seen.add(key);
+        changed = true;
+        // بلّغ بس لو مش أنا اللي عملته
+        if(g.by !== curUser.name) {
           sendLocalNotif(
             `🔔 حجز جديد — غرفة ${room}`,
-            `${g.name} | ${fmt(g.checkin)} → ${fmt(g.checkout)} | بواسطة: ${g.by||'—'}`
+            `${g.name} | ${fmt(g.checkin)} → ${fmt(g.checkout)} | بواسطة: ${g.by||'—'}`,
+            key
           );
         }
-      });
-    }
+      }
+    });
   }
+  if(changed) localStorage.setItem('hb_notif_seen', JSON.stringify([...seen]));
 }
 
 /* ══════════════════════════════════════
