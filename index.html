@@ -266,14 +266,6 @@ select:focus{border-color:var(--gold)}
 .bcopy{background:var(--dark3);color:var(--text);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
 .bclose{background:transparent;color:var(--text-muted);border:1px solid var(--border);padding:9px 16px;border-radius:9px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:600;cursor:pointer}
 
-/* INSTALL BANNER */
-#instbanner{display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--dark2),#1C1408);border-top:1px solid var(--border);padding:12px 18px calc(12px + var(--sab));z-index:200;align-items:center;gap:10px;box-shadow:0 -4px 18px rgba(0,0,0,.4)}
-#instbanner.show{display:flex}
-.ibtxt{flex:1;font-size:12px;color:var(--text)}
-.ibtxt strong{color:var(--gold);display:block;font-size:13px;margin-bottom:1px}
-.binst{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);border:none;padding:8px 14px;border-radius:8px;font-family:'Tajawal',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
-.bdism{background:transparent;color:var(--text-muted);border:none;padding:6px 8px;cursor:pointer;font-size:18px}
-
 /* PROFILE PAGE */
 #profilepage{display:none;padding:22px 22px 90px;max-width:600px;margin:0 auto}
 .profile-card{background:linear-gradient(135deg,var(--dark2),#1C1408);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:18px;text-align:center}
@@ -491,7 +483,6 @@ select:focus{border-color:var(--gold)}
       <div style="display:flex;flex-direction:column;gap:10px">
         <div style="font-size:12px;color:var(--text-muted)">Firebase URL: <code id="fb-url-display" style="color:var(--gold);font-size:11px;word-break:break-all"></code></div>
         <button class="bcanc" onclick="document.getElementById('fbsetupoverlay').classList.add('show')" style="width:fit-content">🔄 تغيير Firebase</button>
-        <button class="bcanc" onclick="requestNotifPermission()" style="width:fit-content">🔔 تفعيل الإشعارات</button>
       </div>
     </div>
     <!-- EMPEROR ONLY SECTION -->
@@ -641,14 +632,6 @@ select:focus{border-color:var(--gold)}
   </div>
 </div>
 
-<!-- INSTALL BANNER -->
-<div id="instbanner">
-  <div style="font-size:22px">📲</div>
-  <div class="ibtxt"><strong>ثبّت التطبيق</strong>أضفه على شاشتك الرئيسية للوصول السريع</div>
-  <button class="binst" onclick="installApp()">تثبيت</button>
-  <button class="bdism" onclick="dismissBanner()">✕</button>
-</div>
-
 <script>
 'use strict';
 
@@ -754,113 +737,16 @@ let unreadCount = 0;
 })();
 
 /* ══════════════════════════════════════
-   SERVICE WORKER (PWA)
-══════════════════════════════════════ */
-const SW_CODE = `
-const CACHE = 'hotel-v3';
-const ASSETS = ['./', './'];
-
-self.addEventListener('install', e => {
-  self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS).catch(()=>{})));
-});
-
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(ks => Promise.all(
-      ks.filter(k => k !== CACHE).map(k => caches.delete(k))
-    ))
-  );
-  self.clients.claim();
-});
-
-self.addEventListener('fetch', e => {
-  if(e.request.method !== 'GET') return;
-  e.respondWith(
-    fetch(e.request)
-      .then(r => { caches.open(CACHE).then(c => c.put(e.request, r.clone())); return r; })
-      .catch(() => caches.match(e.request))
-  );
-});
-
-self.addEventListener('push', e => {
-  if(!e.data) return;
-  const data = e.data.json();
-  e.waitUntil(
-    self.registration.showNotification(data.title || 'فندق المدينة الشبابية', {
-      body: data.body || '',
-      icon: data.icon || '',
-      badge: data.badge || '',
-      tag: data.tag || 'hotel',
-      data: data.data || {}
-    })
-  );
-});
-
-self.addEventListener('notificationclick', e => {
-  e.notification.close();
-  e.waitUntil(clients.openWindow('./'));
-});
-`;
-
-let swReg = null;
-if('serviceWorker' in navigator) {
-  const blob = new Blob([SW_CODE], {type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(blob))
-    .then(reg => { swReg = reg; })
-    .catch(() => {});
-}
-
-/* ══════════════════════════════════════
-   PWA INSTALL
-══════════════════════════════════════ */
-let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if(!sessionStorage.getItem('banner-dismissed')) {
-    setTimeout(() => document.getElementById('instbanner').classList.add('show'), 4000);
-  }
-});
-window.addEventListener('appinstalled', () => {
-  deferredPrompt = null;
-  dismissBanner();
-  toast('✅ تم تثبيت التطبيق بنجاح!', 'success');
-});
-function installApp() {
-  if(!deferredPrompt) {
-    toast('📲 افتح المتصفح واضغط "إضافة إلى الشاشة الرئيسية"', 'info');
-    return;
-  }
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(() => { deferredPrompt = null; dismissBanner(); });
-}
-function dismissBanner() {
-  document.getElementById('instbanner').classList.remove('show');
-  sessionStorage.setItem('banner-dismissed', '1');
-}
-
-/* ══════════════════════════════════════
    NOTIFICATIONS
 ══════════════════════════════════════ */
-async function requestNotifPermission() {
-  if(!('Notification' in window)) { toast('❌ المتصفح لا يدعم الإشعارات', 'error'); return; }
-  const p = await Notification.requestPermission();
-  if(p === 'granted') { toast('✅ تم تفعيل الإشعارات', 'success'); }
-  else { toast('⚠️ لم يتم السماح بالإشعارات', 'info'); }
-}
-
 function sendLocalNotif(title, body) {
-  // In-app notification
+  // منع التكرار — لو نفس العنوان والبيانات موجودين في آخر 30 ثانية، تجاهل
+  const key = title + '|' + body;
+  const now = Date.now();
+  if(!sendLocalNotif._cache) sendLocalNotif._cache = {};
+  if(sendLocalNotif._cache[key] && now - sendLocalNotif._cache[key] < 30000) return;
+  sendLocalNotif._cache[key] = now;
   addNotif(title, body);
-  // OS notification if allowed
-  if(Notification.permission === 'granted') {
-    if(swReg) {
-      swReg.showNotification(title, { body, icon: '', tag: 'hotel-booking', vibrate: [200, 100, 200] });
-    } else {
-      new Notification(title, { body });
-    }
-  }
 }
 
 function addNotif(title, body) {
@@ -1039,8 +925,7 @@ function startPolling() {
       const fresh = (hotelData && hotelData.data) ? hotelData.data : {};
       const newHash = JSON.stringify(fresh);
       if(newHash !== lastHotelHash && lastHotelHash !== '') {
-        // Detect new bookings
-        detectNewBookings(HD, fresh);
+        if(Date.now() - lastSaveTime > 8000) detectNewBookings(HD, fresh);
         HD = fresh;
         lastHotelHash = newHash;
         localStorage.setItem('hb_hotel_bk', JSON.stringify(HD));
@@ -1048,17 +933,21 @@ function startPolling() {
         if(curRoom) renderGuests();
         syncUI('synced');
       }
-      // Also refresh users silently
-      const ud = await fbGet('users');
-      if(ud && ud.list) {
-        USERS = ud.list;
-        localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
-      }
       document.getElementById('offlinebanner').classList.remove('show');
-    } catch(e) {
-      // silent fail on poll
-    }
-  }, 5000); // every 5 seconds
+    } catch(e) { /* silent */ }
+  }, 10000); // كل 10 ثواني
+
+  // تحديث المستخدمين كل دقيقتين فقط
+  setInterval(async () => {
+    if(!curUser || DEMO_MODE || !FB_URL) return;
+    try {
+      const ud = await fbGet('users');
+      if(ud && ud.list) { USERS = ud.list; localStorage.setItem('hb_users_bk', JSON.stringify(USERS)); }
+    } catch(e) {}
+  }, 120000);
+
+  // تحديث ألوان الغرف كل دقيقة
+  setInterval(() => { if(curUser) renderFloors(); }, 60000);
 }
 
 function detectNewBookings(oldData, newData) {
@@ -1129,7 +1018,6 @@ function doLogin() {
   updateNotifBadge();
   renderFloors();
   logActivity('login', '🔑 تسجيل دخول', `${found.name} (${roleLabel(found.role)})`);
-  if(Notification.permission === 'default') setTimeout(() => requestNotifPermission(), 2000);
 }
 
 function doLogout() {
