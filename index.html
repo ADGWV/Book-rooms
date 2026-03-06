@@ -639,9 +639,9 @@ select:focus{border-color:var(--gold)}
 </div>
 
 <!-- TRASH PAGE -->
-<div id="trashpage" style="display:none;padding:22px 22px 90px;max-width:700px;margin:0 auto">
+<div id="trashpage" style="display:none;padding:22px 22px 90px;width:100%">
   <div class="ptitle"><h2>🗑️ الحجوزات المحذوفة</h2><p>يمكن استرجاع أي حجز محذوف</p></div>
-  <div id="trash-list"></div>
+  <div id="trash-list" style="max-width:700px;margin:0 auto"></div>
 </div>
 
 <!-- INSTALL BANNER -->
@@ -1778,11 +1778,13 @@ function closeSidebar() {
   const dot = document.getElementById('cursor-dot');
   const ring = document.getElementById('cursor-ring');
   if(!dot||!ring) return;
-  let mouseX=0,mouseY=0,ringX=0,ringY=0;
+  let mouseX=0,mouseY=0,ringX=0,ringY=0,firstMove=false;
 
   if(window.matchMedia('(pointer:fine)').matches){
+    dot.classList.add('hidden'); ring.classList.add('hidden');
     document.addEventListener('mousemove',e=>{
       mouseX=e.clientX; mouseY=e.clientY;
+      if(!firstMove){ ringX=mouseX; ringY=mouseY; firstMove=true; }
       dot.style.left=mouseX+'px'; dot.style.top=mouseY+'px';
       dot.classList.remove('hidden'); ring.classList.remove('hidden');
     });
