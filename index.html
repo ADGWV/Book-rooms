@@ -284,6 +284,10 @@ header .hdr-right{animation:fadeInLeft .5s .1s cubic-bezier(.22,1,.36,1) both}
 .noguests{background:var(--dark3);border:1px dashed var(--border);border-radius:10px;padding:22px;text-align:center;color:var(--text-muted);font-size:13px}
 .gcard{background:var(--dark3);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:9px;transition:border-color .2s}
 .gcard:hover{border-color:rgba(201,168,76,.3)}
+.gcard.today-active{background:rgba(231,76,60,.07);border:2px solid rgba(231,76,60,.55);box-shadow:0 0 14px rgba(231,76,60,.15)}
+.gcard.today-active:hover{border-color:var(--red)}
+.today-tag{display:inline-flex;align-items:center;gap:4px;background:var(--red);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:20px;animation:pulse-tag 1.5s infinite}
+@keyframes pulse-tag{0%,100%{opacity:1}50%{opacity:.7}}
 .gchead{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;flex-wrap:wrap;gap:7px}
 .gname{font-size:14px;font-weight:700}
 .gacts{display:flex;gap:5px;flex-wrap:wrap}
@@ -398,6 +402,33 @@ select:focus{border-color:var(--gold)}
 
 
 
+/* DAILY BOOKINGS MODAL */
+#dailyoverlay .mbox{max-width:520px;width:96%;text-align:right;max-height:85vh;overflow-y:auto}
+.daily-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.daily-header h3{font-size:16px;font-weight:800;color:var(--gold);margin:0}
+.daily-date-badge{font-size:11px;color:var(--text-muted);background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:4px 10px}
+.daily-card{background:var(--dark3);border:1px solid var(--border);border-radius:11px;padding:13px;margin-bottom:9px;cursor:pointer;transition:all .2s}
+.daily-card:hover{border-color:rgba(201,168,76,.4);transform:translateX(-2px)}
+.daily-card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.daily-room-badge{background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:var(--dark);font-size:13px;font-weight:800;width:42px;height:42px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.daily-name{font-size:14px;font-weight:700}
+.daily-phone{font-size:11px;color:var(--text-muted);margin-top:2px}
+.daily-dates{display:flex;gap:7px;flex-wrap:wrap}
+.daily-dt{background:var(--dark4);border-radius:7px;padding:5px 9px;font-size:11px;color:var(--text-muted)}
+.daily-dt span{color:var(--text);font-weight:600}
+.daily-empty{text-align:center;padding:30px 20px;color:var(--text-muted);font-size:13px}
+.daily-count-pill{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700}
+.btn-daily{position:relative;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:5px 11px;cursor:pointer;font-size:16px;transition:all .2s;display:flex;align-items:center;gap:5px;color:var(--gold)}
+.btn-daily:hover{border-color:var(--gold)}
+.daily-badge{position:absolute;top:-5px;right:-5px;background:var(--gold);color:var(--dark);font-size:9px;font-weight:800;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;display:none}
+.daily-badge.show{display:flex}
+
+/* SVG ICONS */
+.ico{display:inline-block;width:1em;height:1em;vertical-align:middle;margin-left:3px;flex-shrink:0;stroke:currentColor}
+.ico-sm{width:.8em;height:.8em}
+button .ico,a .ico{vertical-align:-.15em}
+.toast .ico{vertical-align:-.2em;margin-left:4px}
+
 /* OFFLINE BANNER */
 #offlinebanner{display:none;background:rgba(231,76,60,.15);border-bottom:1px solid rgba(231,76,60,.3);padding:7px 22px;font-size:12px;color:var(--red);text-align:center}
 #offlinebanner.show{display:block}
@@ -462,7 +493,7 @@ select:focus{border-color:var(--gold)}
 <!-- FIREBASE SETUP OVERLAY -->
 <div class="overlay" id="fbsetupoverlay">
   <div class="fb-setup">
-    <h3>🔥 إعداد قاعدة البيانات</h3>
+    <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg> إعداد قاعدة البيانات</h3>
     <p>لحفظ البيانات ومشاركتها بين الأجهزة، تحتاج إلى ربط Firebase مجاني.<br>الخطوات بسيطة جداً 👇</p>
     <div class="fb-note">
       1️⃣ افتح <strong>console.firebase.google.com</strong><br>
@@ -472,12 +503,29 @@ select:focus{border-color:var(--gold)}
       5️⃣ الصقه هنا 👇
     </div>
     <div class="fb-input-group">
-      <label>🔗 Firebase Database URL</label>
+      <label><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg> Firebase Database URL</label>
       <input type="text" id="fb-url-input" placeholder="https://your-project-default-rtdb.firebaseio.com" dir="ltr">
     </div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button class="bsave" onclick="saveFbConfig()">✅ اتصال</button>
-      <button class="bcanc" onclick="useDemoMode()">🔧 وضع تجريبي (بدون Firebase)</button>
+      <button class="bsave" onclick="saveFbConfig()">✓ اتصال</button>
+      <button class="bcanc" onclick="useDemoMode()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> وضع تجريبي (بدون Firebase)</button>
+    </div>
+  </div>
+</div>
+
+<!-- DAILY BOOKINGS OVERLAY -->
+<div class="overlay" id="dailyoverlay" onclick="if(event.target===this)closeOverlay('dailyoverlay')">
+  <div class="mbox mbox-left">
+    <div class="daily-header">
+      <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> حجوزات اليوم</h3>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="daily-date-badge" id="daily-today-date">–</span>
+        <span class="daily-count-pill" id="daily-count">0</span>
+      </div>
+    </div>
+    <div id="daily-list"></div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="bclose" onclick="closeOverlay('dailyoverlay')">إغلاق</button>
     </div>
   </div>
 </div>
@@ -496,7 +544,7 @@ select:focus{border-color:var(--gold)}
       <div class="login-err" id="login-err">اسم المستخدم أو كلمة المرور غلط</div>
       <button class="btn-login" id="login-btn" onclick="doLogin()">دخول</button>
       <div style="text-align:center;margin-top:14px">
-        <button onclick="resetConfig()" style="background:none;border:none;color:var(--text-muted);font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;text-decoration:underline">🔄 تغيير بيانات Firebase</button>
+        <button onclick="resetConfig()" style="background:none;border:none;color:var(--text-muted);font-family:'Tajawal',sans-serif;font-size:12px;cursor:pointer;text-decoration:underline"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.5 9A9 9 0 0 1 20.5 15"/><path d="M20.5 15A9 9 0 0 1 3.5 9"/></svg> تغيير بيانات Firebase</button>
       </div>
     </div>
   </div>
@@ -515,6 +563,10 @@ select:focus{border-color:var(--gold)}
     </div>
     <div class="hdr-right">
       <button class="menu-toggle" onclick="toggleSidebar()" title="القائمة">☰</button>
+      <button class="btn-daily" onclick="openDailyBookings()" title="حجوزات اليوم">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="daily-badge" id="daily-badge">0</span>
+      </button>
       <div class="sync-pill">
         <div class="sdot loading" id="sdot"></div>
         <span id="stxt">...</span>
@@ -534,21 +586,21 @@ select:focus{border-color:var(--gold)}
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-user">
-      <div class="sidebar-avatar">👤</div>
+      <div class="sidebar-avatar"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg></div>
       <div>
         <div class="sidebar-uname" id="sb-uname">–</div>
         <div class="sidebar-urole" id="sb-urole">–</div>
       </div>
     </div>
     <div class="nav-tabs">
-      <button class="nav-tab active" id="tab-rooms" onclick="switchTab('rooms');closeSidebar()">🏨 الغرف</button>
-      <button class="nav-tab" id="tab-search" onclick="switchTab('search');closeSidebar()">🔍 بحث</button>
-      <button class="nav-tab" id="tab-notif" onclick="switchTab('notif');closeSidebar()">🔔 الإشعارات <span class="notif-badge" id="notif-badge-side" style="position:static;margin-right:auto"></span></button>
-      <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin');closeSidebar()">⚙️ المستخدمين</button>
-      <button class="nav-tab admin-only" id="tab-trash" onclick="switchTab('trash');closeSidebar()">🗑️ المحذوفات</button>
+      <button class="nav-tab active" id="tab-rooms" onclick="switchTab('rooms');closeSidebar()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="1"/><line x1="2" y1="9" x2="22" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/><rect x="13" y="13" width="3" height="4"/><rect x="5" y="13" width="3" height="2"/></svg> الغرف</button>
+      <button class="nav-tab" id="tab-search" onclick="switchTab('search');closeSidebar()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> بحث</button>
+      <button class="nav-tab" id="tab-notif" onclick="switchTab('notif');closeSidebar()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> الإشعارات <span class="notif-badge" id="notif-badge-side" style="position:static;margin-right:auto"></span></button>
+      <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin');closeSidebar()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> المستخدمين</button>
+      <button class="nav-tab admin-only" id="tab-trash" onclick="switchTab('trash');closeSidebar()">🗑 المحذوفات</button>
     </div>
     <div class="sidebar-bottom">
-      <button class="btn-logout-side" onclick="doLogout()">🚪 خروج</button>
+      <button class="btn-logout-side" onclick="doLogout()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><rect x="3" y="2" width="13" height="20" rx="1"/><circle cx="10" cy="12" r="1" fill="currentColor"/></svg> خروج</button>
     </div>
   </aside>
 
@@ -557,7 +609,7 @@ select:focus{border-color:var(--gold)}
   <!-- SEARCH BAR -->
   <div class="search-bar" id="search-bar" style="display:none">
     <div class="search-wrap">
-      <span class="search-icon">🔍</span>
+      <span class="search-icon"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
       <input class="search-input" id="search-input" type="text" placeholder="ابحث بالاسم، رقم الهاتف، أو رقم الغرفة..." oninput="doSearch(this.value)">
       <button class="search-clear" id="search-clear" onclick="clearSearch()">✕ مسح</button>
     </div>
@@ -572,27 +624,27 @@ select:focus{border-color:var(--gold)}
 
   <!-- BOOKING -->
   <div id="bp">
-    <button class="backbtn" onclick="goBack()">← العودة للغرف</button>
+    <button class="backbtn" onclick="goBack()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> العودة للغرف</button>
     <div class="bkhdr">
       <div class="rbn" id="bpn">–</div>
-      <div class="bkinfo"><h3 id="bpt">–</h3><p id="bps">–</p></div>
+      <div class="bkinfo"><h3 id="bpt">–</h3><span id="bps" style="font-size:12px;color:var(--text-muted)">–</span></div>
     </div>
     <div class="stitle">قائمة الحجوزات</div>
     <div id="gl"></div>
-    <button class="baddg" id="addbtn" onclick="showAddForm()">＋ إضافة حجز جديد</button>
+    <button class="baddg" id="addbtn" onclick="showAddForm()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> إضافة حجز جديد</button>
     <div class="bkform" id="bkform" style="display:none">
-      <div class="form-title" id="ftitle">📋 بيانات الحجز</div>
+      <div class="form-title" id="ftitle"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> بيانات الحجز</div>
       <input type="hidden" id="ei" value="-1">
       <div class="fgrid">
         <div class="fg"><label>اسم العميل</label><input type="text" id="fn" placeholder="أدخل الاسم الكامل"></div>
         <div class="fg"><label>رقم الهاتف</label><input type="tel" id="fph" placeholder="01xxxxxxxxx"></div>
         <div class="fg"><label>تاريخ بداية الحجز</label><input type="date" id="fci"></div>
         <div class="fg"><label>تاريخ نهاية الحجز</label><input type="date" id="fco"></div>
-        <div class="fg"><label>💰 المبلغ المدفوع (اختياري)</label><input type="text" id="famount" placeholder="مثال: 500" oninput="toggleReceiver(this.value)"></div>
-        <div class="fg" id="receiver-fg" style="display:none"><label>👤 استلمه</label><input type="text" id="freceiver" placeholder="اسم الموظف أو المدير"></div>
+        <div class="fg"><label><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M9 10h4.5a1.5 1.5 0 0 1 0 3H9"/></svg> المبلغ المدفوع (اختياري)</label><input type="text" id="famount" placeholder="مثال: 500" oninput="toggleReceiver(this.value)"></div>
+        <div class="fg" id="receiver-fg" style="display:none"><label><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> استلمه</label><input type="text" id="freceiver" placeholder="اسم الموظف أو المدير"></div>
       </div>
       <div class="facts">
-        <button class="bsave" id="savebtn" onclick="saveGuest()">💾 حفظ</button>
+        <button class="bsave" id="savebtn" onclick="saveGuest()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> حفظ</button>
         <button class="bcanc" onclick="cancelForm()">إلغاء</button>
       </div>
     </div>
@@ -600,11 +652,11 @@ select:focus{border-color:var(--gold)}
 
   <!-- NOTIF PAGE -->
   <div id="notifpage">
-    <div class="ptitle"><h2>🔔 الإشعارات</h2><p>حجوزات جديدة من الأجهزة الأخرى</p></div>
+    <div class="ptitle"><h2><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> الإشعارات</h2><p>حجوزات جديدة من الأجهزة الأخرى</p></div>
     <div class="notif-toolbar">
       <div class="notif-toolbar-left">
         <label class="notif-sel-all"><input type="checkbox" id="notif-sel-all" onchange="toggleSelectAll(this.checked)"> تحديد الكل</label>
-        <button class="bdel-sel" id="bdel-sel" onclick="deleteSelected()">🗑️ حذف المحدد</button>
+        <button class="bdel-sel" id="bdel-sel" onclick="deleteSelected()">🗑 حذف المحدد</button>
       </div>
       <button class="bcanc" onclick="clearAllNotifs()" style="font-size:12px;padding:7px 14px">✓ قراءة الكل</button>
     </div>
@@ -614,25 +666,25 @@ select:focus{border-color:var(--gold)}
   <!-- ADMIN -->
   <div id="adminpage">
     <div class="admin-section">
-      <h3>👥 المستخدمون</h3>
+      <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> المستخدمون</h3>
       <div class="users-list" id="users-list"></div>
       <div class="add-user-form">
-        <h4>➕ إضافة مستخدم جديد</h4>
+        <h4><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> إضافة مستخدم جديد</h4>
         <div class="add-user-grid">
           <div class="fg"><label>اسم المستخدم</label><input type="text" id="nu-user" placeholder="username"></div>
           <div class="fg"><label>كلمة المرور</label><input type="password" id="nu-pass" placeholder="password"></div>
           <div class="fg"><label>الاسم الكامل</label><input type="text" id="nu-name" placeholder="الاسم"></div>
           <div class="fg"><label>الصلاحية</label><select id="nu-role"><option value="staff">موظف</option><option value="admin">أدمن</option></select></div>
         </div>
-        <button class="bsave" onclick="addUser()">➕ إضافة</button>
+        <button class="bsave" onclick="addUser()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> إضافة</button>
       </div>
     </div>
     <div class="admin-section">
-      <h3>🔧 الإعدادات</h3>
+      <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg> الإعدادات</h3>
       <div style="display:flex;flex-direction:column;gap:10px">
         <div style="font-size:12px;color:var(--text-muted)">Firebase URL: <code id="fb-url-display" style="color:var(--gold);font-size:11px;word-break:break-all"></code></div>
-        <button class="bcanc" onclick="document.getElementById('fbsetupoverlay').classList.add('show')" style="width:fit-content">🔄 تغيير Firebase</button>
-        <button class="bcanc" onclick="requestNotifPermission()" style="width:fit-content">🔔 تفعيل الإشعارات</button>
+        <button class="bcanc" onclick="document.getElementById('fbsetupoverlay').classList.add('show')" style="width:fit-content"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.5 9A9 9 0 0 1 20.5 15"/><path d="M20.5 15A9 9 0 0 1 3.5 9"/></svg> تغيير Firebase</button>
+        <button class="bcanc" onclick="requestNotifPermission()" style="width:fit-content"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> تفعيل الإشعارات</button>
       </div>
     </div>
   </div>
@@ -640,7 +692,7 @@ select:focus{border-color:var(--gold)}
 
 <!-- TRASH PAGE -->
 <div id="trashpage" style="display:none;padding:22px 22px 90px;width:100%">
-  <div class="ptitle"><h2>🗑️ الحجوزات المحذوفة</h2><p>يمكن استرجاع أي حجز محذوف</p></div>
+  <div class="ptitle"><h2>🗑 الحجوزات المحذوفة</h2><p>يمكن استرجاع أي حجز محذوف</p></div>
   <div id="trash-list" style="max-width:700px;margin:0 auto"></div>
 </div>
 
@@ -661,23 +713,23 @@ select:focus{border-color:var(--gold)}
 <!-- OVERLAYS -->
 <div class="overlay" id="deloverlay">
   <div class="mbox mbox-left" style="max-width:380px">
-    <h3>🗑️ تأكيد الحذف</h3>
+    <h3>🗑 تأكيد الحذف</h3>
     <p style="margin-bottom:14px;color:var(--text-muted);font-size:13px">أدخل كلمة المرور للمتابعة</p>
     <div id="del-guest-preview" style="background:var(--dark3);border:1px solid var(--border);border-radius:9px;padding:11px 14px;margin-bottom:14px;font-size:12px;color:var(--text-muted)"></div>
     <div class="fg" style="margin-bottom:12px">
       <label>🔑 كلمة مرور الحذف</label>
       <input type="password" id="del-pass" placeholder="أدخل الباسورد" onkeydown="if(event.key==='Enter')confirmDelete()">
     </div>
-    <div id="del-err" style="display:none;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:12px">❌ كلمة المرور غلط</div>
+    <div id="del-err" style="display:none;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.3);border-radius:8px;padding:8px 12px;font-size:12px;color:var(--red);margin-bottom:12px">✗ كلمة المرور غلط</div>
     <div class="mbtns">
-      <button class="bsave" style="background:var(--red);box-shadow:none" onclick="confirmDelete()">🗑️ احذف</button>
+      <button class="bsave" style="background:var(--red);box-shadow:none" onclick="confirmDelete()">🗑 احذف</button>
       <button class="bcanc" onclick="closeOverlay('deloverlay')">إلغاء</button>
     </div>
   </div>
 </div>
 <div class="overlay" id="deluseroverlay">
   <div class="mbox">
-    <h3>⚠️ حذف مستخدم</h3>
+    <h3>⚠ حذف مستخدم</h3>
     <p>هل أنت متأكد من حذف هذا المستخدم؟</p>
     <div class="mbtns">
       <button class="bsave" style="background:var(--red);box-shadow:none" onclick="confirmDeleteUser()">نعم، احذف</button>
@@ -700,11 +752,11 @@ select:focus{border-color:var(--gold)}
 </div>
 <div class="overlay" id="shroverlay">
   <div class="mbox" style="max-width:400px">
-    <h3>📤 مشاركة الحجز</h3>
+    <h3><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/><path d="M20 21H4a2 2 0 0 1-2-2v-5"/><path d="M22 21v-5a2 2 0 0 0-2-2h-3"/></svg> مشاركة الحجز</h3>
     <div class="sc" id="shrprev"></div>
     <div class="shrbtns">
       <button class="bwa" onclick="shareWA()">📲 واتساب</button>
-      <button class="bcopy" onclick="shareCopy()">📋 نسخ</button>
+      <button class="bcopy" onclick="shareCopy()"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> نسخ</button>
       <button class="bclose" onclick="closeOverlay('shroverlay')">إغلاق</button>
     </div>
   </div>
@@ -831,10 +883,10 @@ if('serviceWorker' in navigator) {
    NOTIFICATIONS
 ══════════════════════════════════════ */
 async function requestNotifPermission() {
-  if(!('Notification' in window)) { toast('❌ المتصفح لا يدعم الإشعارات', 'error'); return; }
+  if(!('Notification' in window)) { toast('✗ المتصفح لا يدعم الإشعارات', 'error'); return; }
   const p = await Notification.requestPermission();
-  if(p === 'granted') { toast('✅ تم تفعيل الإشعارات', 'success'); }
-  else { toast('⚠️ لم يتم السماح بالإشعارات', 'info'); }
+  if(p === 'granted') { toast('✓ تم تفعيل الإشعارات', 'success'); }
+  else { toast('⚠ لم يتم السماح بالإشعارات', 'info'); }
 }
 
 function sendLocalNotif(title, body, key) {
@@ -872,7 +924,7 @@ function updateNotifBadge() {
 function renderNotifs() {
   const list = document.getElementById('notif-list');
   if(!NOTIFS.length) {
-    list.innerHTML = '<div class="notif-empty">🔔<br><br>لا توجد إشعارات حتى الآن</div>';
+    list.innerHTML = '<div class="notif-empty"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><br><br>لا توجد إشعارات حتى الآن</div>';
     document.getElementById('bdel-sel').classList.remove('show');
     document.getElementById('notif-sel-all').checked = false;
     return;
@@ -886,7 +938,7 @@ function renderNotifs() {
         <div class="notif-sub">${n.body}</div>
         <div class="notif-time">${fmtTime(n.time)}</div>
       </div>
-      <button onclick="deleteSingleNotif('${n.id}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0" title="حذف">🗑️</button>
+      <button onclick="deleteSingleNotif('${n.id}')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:0 4px;flex-shrink:0" title="حذف">🗑</button>
     </div>`).join('');
 }
 
@@ -895,7 +947,7 @@ function onNotifCheck() {
   const total = document.querySelectorAll('.notif-cb').length;
   document.getElementById('bdel-sel').classList.toggle('show', checked > 0);
   document.getElementById('notif-sel-all').checked = checked === total;
-  document.getElementById('bdel-sel').textContent = `🗑️ حذف (${checked})`;
+  document.getElementById('bdel-sel').innerHTML = `🗑 حذف (${checked})`;
 }
 
 function toggleSelectAll(val) {
@@ -909,7 +961,7 @@ function deleteSelected() {
   localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
   updateNotifBadge();
   renderNotifs();
-  toast('🗑️ تم حذف الإشعارات المحددة', 'success');
+  toast('🗑 تم حذف الإشعارات المحددة', 'success');
 }
 
 function deleteSingleNotif(id) {
@@ -929,7 +981,7 @@ function clearAllNotifs() {
   localStorage.setItem('hb_notifs', JSON.stringify(NOTIFS));
   updateNotifBadge();
   renderNotifs();
-  toast('✅ تم تحديد الكل كمقروء', 'success');
+  toast('✓ تم تحديد الكل كمقروء', 'success');
 }
 
 function fmtTime(iso) {
@@ -948,12 +1000,12 @@ function fmtTime(iso) {
 ══════════════════════════════════════ */
 function saveFbConfig() {
   const url = document.getElementById('fb-url-input').value.trim().replace(/\/$/, '');
-  if(!url.startsWith('https://')) { toast('❌ أدخل رابط Firebase صحيح', 'error'); return; }
+  if(!url.startsWith('https://')) { toast('✗ أدخل رابط Firebase صحيح', 'error'); return; }
   FB_URL = url;
   localStorage.setItem('hb_fb_url', FB_URL);
   document.getElementById('fbsetupoverlay').classList.remove('show');
   document.getElementById('fb-url-display').textContent = FB_URL;
-  toast('✅ تم الاتصال بـ Firebase', 'success');
+  toast('✓ تم الاتصال بـ Firebase', 'success');
   loadAll();
 }
 
@@ -965,7 +1017,7 @@ function useDemoMode() {
   try { HD = JSON.parse(localStorage.getItem('hb_hotel_bk') || '{}'); } catch(e) { HD = {}; }
   syncUI('synced');
   hideLoad();
-  toast('⚠️ وضع تجريبي — البيانات محلية فقط', 'info');
+  toast('⚠ وضع تجريبي — البيانات محلية فقط', 'info');
 }
 
 /* ══════════════════════════════════════
@@ -1024,7 +1076,7 @@ async function loadAll() {
     try { USERS = JSON.parse(localStorage.getItem('hb_users_bk') || 'null') || DEFAULT_USERS; } catch(x) { USERS = DEFAULT_USERS; }
     try { HD = JSON.parse(localStorage.getItem('hb_hotel_bk') || '{}'); } catch(x) { HD = {}; }
     syncUI('error');
-    toast('⚠️ تعذر الاتصال — البيانات محلية مؤقتاً', 'info');
+    toast('⚠ تعذر الاتصال — البيانات محلية مؤقتاً', 'info');
     document.getElementById('offlinebanner').classList.add('show');
   }
   hideLoad();
@@ -1046,14 +1098,14 @@ async function saveHotel() {
     document.getElementById('offlinebanner').classList.remove('show');
   } catch(e) {
     syncUI('error');
-    toast('⚠️ حُفظ محلياً — تحقق من الاتصال', 'info');
+    toast('⚠ حُفظ محلياً — تحقق من الاتصال', 'info');
   } finally { saving = false; }
 }
 
 async function saveUsers() {
   localStorage.setItem('hb_users_bk', JSON.stringify(USERS));
   if(!DEMO_MODE && FB_URL) {
-    try { await fbSet('users', { list: USERS }); } catch(e) { toast('⚠️ تعذر حفظ المستخدمين', 'error'); }
+    try { await fbSet('users', { list: USERS }); } catch(e) { toast('⚠ تعذر حفظ المستخدمين', 'error'); }
   }
 }
 
@@ -1112,7 +1164,7 @@ function detectNewBookings(oldData, newData) {
         // بلّغ بس لو مش أنا اللي عملته
         if(g.by !== curUser.name) {
           sendLocalNotif(
-            `🔔 حجز جديد — غرفة ${room}`,
+            `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> حجز جديد — غرفة ${room}`,
             `${g.name} | ${fmt(g.checkin)} → ${fmt(g.checkout)} | بواسطة: ${g.by||'—'}`,
             key
           );
@@ -1128,7 +1180,7 @@ function detectNewBookings(oldData, newData) {
 ══════════════════════════════════════ */
 function syncUI(s) {
   document.getElementById('sdot').className = 'sdot ' + s;
-  document.getElementById('stxt').textContent = { loading:'جاري...', syncing:'يحفظ...', synced:'✓ متزامن', error:'⚠️ خطأ' }[s] || s;
+  document.getElementById('stxt').innerHTML = { loading:'جاري...', syncing:'يحفظ...', synced:'✓ متزامن', error:'⚠ خطأ' }[s] || s;
 }
 
 function hideLoad() {
@@ -1300,8 +1352,8 @@ function doSearch(q) {
         <div class="src-info">
           <div class="src-name">${r.guest ? highlight(r.guest.name, q) : '<span style="color:var(--text-muted)">لا يوجد حجز</span>'}</div>
           <div class="src-details">
-            ${r.guest ? `<span>📞 ${highlight(r.guest.phone, q)}</span>` : ''}
-            ${r.guest ? `<span>📅 ${fmt(r.guest.checkin)} ← ${fmt(r.guest.checkout)}</span>` : ''}
+            ${r.guest ? `<span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 4.2 2 2 0 0 1 5.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L9.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"/></svg> ${highlight(r.guest.phone, q)}</span>` : ''}
+            ${r.guest ? `<span><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${fmt(r.guest.checkin)} <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> ${fmt(r.guest.checkout)}</span>` : ''}
           </div>
         </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0">
@@ -1346,6 +1398,7 @@ function renderFloors() {
   document.getElementById('st').textContent = tot;
   document.getElementById('sb').textContent = bkd;
   document.getElementById('sa').textContent = tot - bkd;
+  updateDailyBadge();
 }
 
 /* ══════════════════════════════════════
@@ -1367,30 +1420,53 @@ function goBack() {
 function renderGuests() {
   const g = GG(curRoom);
   const list = document.getElementById('gl');
-  document.getElementById('bps').textContent = 'الحالة: ' + (isBooked(curRoom) ? '🔴 محجوزة حالياً' : '🟢 متاحة');
+  const svgRed = '<svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--red)"/></svg>';
+  const svgGreen = '<svg class="ico ico-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="var(--green)"/></svg>';
+  document.getElementById('bps').innerHTML = 'الحالة: ' + (isBooked(curRoom) ? svgRed + ' محجوزة حالياً' : svgGreen + ' متاحة');
   if(!g.length) { list.innerHTML = '<div class="noguests">لا توجد حجوزات لهذه الغرفة حتى الآن</div>'; return; }
-  list.innerHTML = g.map((x, i) => `
-    <div class="gcard">
+  const t = getTodayStr();
+  const indexed = g.map((x, i) => ({ x, i }));
+  indexed.sort((a, b) => {
+    const aT = a.x.checkin && a.x.checkout && a.x.checkin <= t && a.x.checkout >= t;
+    const bT = b.x.checkin && b.x.checkout && b.x.checkin <= t && b.x.checkout >= t;
+    if(aT !== bT) return (bT ? 1 : 0) - (aT ? 1 : 0);
+    return (a.x.checkin || '').localeCompare(b.x.checkin || '');
+  });
+  const icoPhone = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 4.2 2 2 0 0 1 5.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L9.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"/></svg>';
+  const icoCal = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+  const icoMoney = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M9 10h4.5a1.5 1.5 0 0 1 0 3H9"/></svg>';
+  const icoUser = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>';
+  const icoShare = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/><path d="M20 21H4a2 2 0 0 1-2-2v-5"/><path d="M22 21v-5a2 2 0 0 0-2-2h-3"/></svg>';
+  const icoEdit = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+  const icoTrash = '🗑';
+  list.innerHTML = indexed.map(({ x, i }) => {
+    const isToday = x.checkin && x.checkout && x.checkin <= t && x.checkout >= t;
+    return `
+    <div class="gcard${isToday ? ' today-active' : ''}">
       <div class="gchead">
-        <div class="gname">👤 ${x.name}</div>
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          ${isToday ? '<span class="today-tag">' + svgRed + ' اليوم</span>' : ''}
+          <div class="gname">${icoUser} ${x.name}</div>
+        </div>
         <div class="gacts">
-          <button class="bsm bshr" onclick="openShare(${i})">📤</button>
-          <button class="bsm bedit" onclick="editGuest(${i})">✏️ تعديل</button>
-          <button class="bsm bdel" onclick="askDelete(${i})">🗑️ حذف</button>
+          <button class="bsm bshr" onclick="openShare(${i})">${icoShare}</button>
+          <button class="bsm bedit" onclick="editGuest(${i})">${icoEdit} تعديل</button>
+          <button class="bsm bdel" onclick="askDelete(${i})">${icoTrash} حذف</button>
         </div>
       </div>
       <div class="gdet">
-        <div class="gdi"><div class="dl">📞 الهاتف</div><div class="dv">${x.phone}</div></div>
-        <div class="gdi"><div class="dl">📅 الوصول</div><div class="dv">${fmt(x.checkin)}</div></div>
-        <div class="gdi"><div class="dl">📅 المغادرة</div><div class="dv">${fmt(x.checkout)}</div></div>
-        ${x.amount ? `<div class="gdi"><div class="dl">💰 المبلغ</div><div class="dv" style="color:var(--green)">${x.amount} ج.م</div></div>` : ''}
-        ${x.amount && x.receiver ? `<div class="gdi"><div class="dl">👤 استلمه</div><div class="dv" style="color:var(--gold)">${x.receiver}</div></div>` : ''}
+        <div class="gdi"><div class="dl">${icoPhone} الهاتف</div><div class="dv">${x.phone}</div></div>
+        <div class="gdi"><div class="dl">${icoCal} الوصول</div><div class="dv"${isToday ? ' style="color:var(--red);font-weight:800"' : ''}>${fmt(x.checkin)}</div></div>
+        <div class="gdi"><div class="dl">${icoCal} المغادرة</div><div class="dv"${isToday ? ' style="color:var(--red);font-weight:800"' : ''}>${fmt(x.checkout)}</div></div>
+        ${x.amount ? `<div class="gdi"><div class="dl">${icoMoney} المبلغ</div><div class="dv" style="color:var(--green)">${x.amount} ج.م</div></div>` : ''}
+        ${x.amount && x.receiver ? `<div class="gdi"><div class="dl">${icoUser} استلمه</div><div class="dv" style="color:var(--gold)">${x.receiver}</div></div>` : ''}
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function showAddForm() {
   document.getElementById('ei').value = -1;
-  document.getElementById('ftitle').textContent = '📋 إضافة حجز جديد';
+  document.getElementById('ftitle').innerHTML = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> إضافة حجز جديد';
   ['fn','fph','fci','fco','famount','freceiver'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('receiver-fg').style.display = 'none';
   document.getElementById('bkform').style.display = 'block';
@@ -1400,7 +1476,7 @@ function showAddForm() {
 function editGuest(i) {
   const g = GG(curRoom)[i];
   document.getElementById('ei').value = i;
-  document.getElementById('ftitle').textContent = '✏️ تعديل بيانات الحجز';
+  document.getElementById('ftitle').innerHTML = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> تعديل بيانات الحجز';
   document.getElementById('fn').value = g.name;
   document.getElementById('fph').value = g.phone;
   document.getElementById('fci').value = g.checkin;
@@ -1423,11 +1499,11 @@ async function saveGuest() {
   const phone = document.getElementById('fph').value.trim();
   const ci = document.getElementById('fci').value;
   const co = document.getElementById('fco').value;
-  if(!name || !phone || !ci || !co) { toast('❌ أكمل جميع البيانات', 'error'); return; }
-  if(co <= ci) { toast('❌ تاريخ المغادرة يجب أن يكون بعد الوصول', 'error'); return; }
+  if(!name || !phone || !ci || !co) { toast('✗ أكمل جميع البيانات', 'error'); return; }
+  if(co <= ci) { toast('✗ تاريخ المغادرة يجب أن يكون بعد الوصول', 'error'); return; }
   const guests = GG(curRoom);
   const ei = parseInt(document.getElementById('ei').value);
-  if(overlap(ci, co, guests, ei >= 0 ? ei : null)) { toast('❌ يوجد حجز آخر في نفس الفترة', 'error'); return; }
+  if(overlap(ci, co, guests, ei >= 0 ? ei : null)) { toast('✗ يوجد حجز آخر في نفس الفترة', 'error'); return; }
   const amount = document.getElementById('famount').value.trim();
   const receiver = document.getElementById('freceiver').value.trim();
   const gd = { name, phone, checkin: ci, checkout: co, by: curUser.name, at: new Date().toISOString() };
@@ -1437,7 +1513,7 @@ async function saveGuest() {
   document.getElementById('savebtn').disabled = true;
   await saveHotel();
   document.getElementById('savebtn').disabled = false;
-  toast(ei >= 0 ? '✅ تم تعديل الحجز' : '✅ تم حفظ الحجز', 'success');
+  toast(ei >= 0 ? '✓ تم تعديل الحجز' : '✓ تم حفظ الحجز', 'success');
   cancelForm(); renderGuests(); renderFloors();
 }
 function cancelForm() {
@@ -1448,7 +1524,7 @@ function askDelete(i) {
   delIdx = i;
   const g = GG(curRoom)[i];
   document.getElementById('del-guest-preview').innerHTML =
-    `👤 <strong>${g.name}</strong> &nbsp;|&nbsp; 📞 ${g.phone}<br>📅 ${fmt(g.checkin)} ← ${fmt(g.checkout)}`;
+    `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> <strong>${g.name}</strong> &nbsp;|&nbsp; <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 4.2 2 2 0 0 1 5.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L9.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"/></svg> ${g.phone}<br><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> ${fmt(g.checkin)} <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> ${fmt(g.checkout)}`;
   document.getElementById('del-pass').value = '';
   document.getElementById('del-err').style.display = 'none';
   document.getElementById('deloverlay').classList.add('show');
@@ -1478,7 +1554,7 @@ async function confirmDelete() {
   closeOverlay('deloverlay');
   await saveHotel();
   renderGuests(); renderFloors();
-  toast('🗑️ تم حذف الحجز', 'success');
+  toast('🗑 تم حذف الحجز', 'success');
 }
 
 /* ══════════════════════════════════════
@@ -1494,7 +1570,7 @@ function renderAdminUsers() {
       </div>
       <div class="user-card-actions">
         <button class="bsm bedit" onclick="openChangePass(${i})">🔑 تغيير الباسورد</button>
-        ${u.username !== 'admin' ? `<button class="bsm bdel" onclick="askDeleteUser(${i})">🗑️</button>` : ''}
+        ${u.username !== 'admin' ? `<button class="bsm bdel" onclick="askDeleteUser(${i})">🗑</button>` : ''}
       </div>
     </div>`).join('');
 }
@@ -1503,22 +1579,22 @@ async function addUser() {
   const password = document.getElementById('nu-pass').value.trim();
   const name = document.getElementById('nu-name').value.trim();
   const role = document.getElementById('nu-role').value;
-  if(!username || !password || !name) { toast('❌ أكمل جميع البيانات', 'error'); return; }
-  if(USERS.find(u => u.username === username)) { toast('❌ اسم المستخدم موجود بالفعل', 'error'); return; }
+  if(!username || !password || !name) { toast('✗ أكمل جميع البيانات', 'error'); return; }
+  if(USERS.find(u => u.username === username)) { toast('✗ اسم المستخدم موجود بالفعل', 'error'); return; }
   USERS.push({username, password, name, role});
   await saveUsers(); renderAdminUsers();
   ['nu-user','nu-pass','nu-name'].forEach(id => document.getElementById(id).value = '');
-  toast('✅ تم إضافة المستخدم', 'success');
+  toast('✓ تم إضافة المستخدم', 'success');
 }
 function askDeleteUser(i) {
-  if(USERS[i].username === 'admin') { toast('❌ لا يمكن حذف الأدمن الرئيسي', 'error'); return; }
+  if(USERS[i].username === 'admin') { toast('✗ لا يمكن حذف الأدمن الرئيسي', 'error'); return; }
   delUserId = i; document.getElementById('deluseroverlay').classList.add('show');
 }
 async function confirmDeleteUser() {
   USERS.splice(delUserId, 1);
   closeOverlay('deluseroverlay');
   await saveUsers(); renderAdminUsers();
-  toast('🗑️ تم حذف المستخدم', 'success');
+  toast('🗑 تم حذف المستخدم', 'success');
 }
 function openChangePass(i) {
   cpUserId = i;
@@ -1529,31 +1605,31 @@ function openChangePass(i) {
 async function confirmChangePass() {
   const p1 = document.getElementById('cp-pass').value;
   const p2 = document.getElementById('cp-pass2').value;
-  if(!p1) { toast('❌ أدخل كلمة المرور', 'error'); return; }
-  if(p1 !== p2) { toast('❌ كلمتا المرور غير متطابقتان', 'error'); return; }
+  if(!p1) { toast('✗ أدخل كلمة المرور', 'error'); return; }
+  if(p1 !== p2) { toast('✗ كلمتا المرور غير متطابقتان', 'error'); return; }
   USERS[cpUserId].password = p1;
   closeOverlay('cpoverlay');
   await saveUsers();
-  toast('✅ تم تغيير كلمة المرور', 'success');
+  toast('✓ تم تغيير كلمة المرور', 'success');
 }
 
 /* ══════════════════════════════════════
    SHARE
 ══════════════════════════════════════ */
 function buildTxt(room, g) {
-  return `*فندق المدينة الشبابية*\n━━━━━━━━━━━━━━\n🔔 *حجز جديد*\n🚪 الغرفة: *${room}*\n👤 الاسم: *${g.name}*\n📞 الهاتف: ${g.phone}\n📅 الوصول: ${fmt(g.checkin)}\n📅 المغادرة: ${fmt(g.checkout)}\n━━━━━━━━━━━━━━`;
+  return `*فندق المدينة الشبابية*\n━━━━━━━━━━━━━━\n<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> *حجز جديد*\n<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><rect x="3" y="2" width="13" height="20" rx="1"/><circle cx="10" cy="12" r="1" fill="currentColor"/></svg> الغرفة: *${room}*\n<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> الاسم: *${g.name}*\n<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 4.2 2 2 0 0 1 5.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L9.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"/></svg> الهاتف: ${g.phone}\n<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> الوصول: ${fmt(g.checkin)}\n<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> المغادرة: ${fmt(g.checkout)}\n━━━━━━━━━━━━━━`;
 }
 function openShare(i) {
   shrData = {room:curRoom, g:GG(curRoom)[i]};
   const x = shrData.g;
   document.getElementById('shrprev').innerHTML = `
     <div class="sc-hotel">فندق المدينة الشبابية</div>
-    <div class="sc-head">🔔 حجز جديد — غرفة ${shrData.room}</div>
+    <div class="sc-head"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> حجز جديد — غرفة ${shrData.room}</div>
     <div class="sc-div"></div>
-    <div class="sc-row"><span class="sc-lbl">👤 الاسم</span><span class="sc-val">${x.name}</span></div>
-    <div class="sc-row"><span class="sc-lbl">📞 الهاتف</span><span class="sc-val">${x.phone}</span></div>
-    <div class="sc-row"><span class="sc-lbl">📅 الوصول</span><span class="sc-val">${fmt(x.checkin)}</span></div>
-    <div class="sc-row"><span class="sc-lbl">📅 المغادرة</span><span class="sc-val">${fmt(x.checkout)}</span></div>`;
+    <div class="sc-row"><span class="sc-lbl"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> الاسم</span><span class="sc-val">${x.name}</span></div>
+    <div class="sc-row"><span class="sc-lbl"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 4.2 2 2 0 0 1 5.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L9.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"/></svg> الهاتف</span><span class="sc-val">${x.phone}</span></div>
+    <div class="sc-row"><span class="sc-lbl"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> الوصول</span><span class="sc-val">${fmt(x.checkin)}</span></div>
+    <div class="sc-row"><span class="sc-lbl"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> المغادرة</span><span class="sc-val">${fmt(x.checkout)}</span></div>`;
   document.getElementById('shroverlay').classList.add('show');
 }
 function shareWA() {
@@ -1566,8 +1642,65 @@ async function shareCopy() {
   const txt = buildTxt(shrData.room, shrData.g);
   try { await navigator.clipboard.writeText(txt); }
   catch(e) { const ta = document.createElement('textarea'); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); }
-  toast('✅ تم نسخ بيانات الحجز', 'success');
+  toast('✓ تم نسخ بيانات الحجز', 'success');
   closeOverlay('shroverlay');
+}
+
+/* ══════════════════════════════════════
+   DAILY BOOKINGS
+══════════════════════════════════════ */
+function getTodayStr() {
+  const now = new Date();
+  return now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+}
+function getDailyBookings() {
+  const t = getTodayStr();
+  const results = [];
+  FLOORS.forEach(fl => {
+    fl.rooms.forEach(rn => {
+      GG(rn).forEach((g, gi) => {
+        if(g.checkin && g.checkout && g.checkin <= t && g.checkout >= t)
+          results.push({ room: rn, floor: fl.name, guest: g, gIdx: gi });
+      });
+    });
+  });
+  return results;
+}
+function updateDailyBadge() {
+  const count = getDailyBookings().length;
+  const badge = document.getElementById('daily-badge');
+  if(!badge) return;
+  if(count > 0) { badge.textContent = count > 9 ? '9+' : count; badge.classList.add('show'); }
+  else badge.classList.remove('show');
+}
+function openDailyBookings() {
+  const today = getTodayStr();
+  const [y,m,d] = today.split('-');
+  document.getElementById('daily-today-date').textContent = `${d}/${m}/${y}`;
+  const bookings = getDailyBookings();
+  document.getElementById('daily-count').textContent = bookings.length + ' حجز';
+  const list = document.getElementById('daily-list');
+  if(!bookings.length) {
+    list.innerHTML = '<div class="daily-empty"><svg style="width:40px;height:40px;opacity:.4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3H10l-2-3H2"/><path d="M5.5 5.1L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.7 4H7.3a2 2 0 0 0-1.8 1.1z"/></svg><br><br>لا توجد حجوزات نشطة اليوم</div>';
+  } else {
+    list.innerHTML = bookings.map(b => `
+      <div class="daily-card" onclick="closeOverlay('dailyoverlay');openRoom('${b.room}','${b.floor}');switchTab('rooms')">
+        <div class="daily-card-top">
+          <div class="daily-room-badge">${b.room}</div>
+          <div>
+            <div class="daily-name"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> ${b.guest.name}</div>
+            <div class="daily-phone"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 4.2 2 2 0 0 1 5.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L9.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"/></svg> ${b.guest.phone || '–'}</div>
+          </div>
+        </div>
+        <div class="daily-dates">
+          <div class="daily-dt"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> وصول: <span>${fmt(b.guest.checkin)}</span></div>
+          <div class="daily-dt"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> مغادرة: <span>${fmt(b.guest.checkout)}</span></div>
+          ${b.guest.amount ? `<div class="daily-dt"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M9 10h4.5a1.5 1.5 0 0 1 0 3H9"/></svg> <span style="color:var(--green)">${b.guest.amount} ج.م</span></div>` : ''}
+          <div class="daily-dt"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><line x1="9" y1="22" x2="9" y2="12"/><line x1="15" y1="22" x2="15" y2="12"/></svg> <span>${b.floor}</span></div>
+        </div>
+      </div>`).join('');
+  }
+  document.getElementById('dailyoverlay').classList.add('show');
 }
 
 /* ══════════════════════════════════════
@@ -1582,7 +1715,7 @@ function closeOverlay(id) {
 }
 function toast(msg, type) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast ' + (type||'') + ' show';
+  t.innerHTML = msg; t.className = 'toast ' + (type||'') + ' show';
   clearTimeout(t._timer);
   t._timer = setTimeout(() => t.classList.remove('show'), 3500);
 }
@@ -1605,38 +1738,38 @@ window.addEventListener('offline', () => {
 function renderTrash() {
   const list = document.getElementById('trash-list');
   if(!DELETED_BK.length) {
-    list.innerHTML = '<div class="noguests" style="text-align:center;padding:40px;color:var(--text-muted)">🗑️<br><br>لا توجد حجوزات محذوفة</div>';
+    list.innerHTML = '<div class="noguests" style="text-align:center;padding:40px;color:var(--text-muted)">🗑<br><br>لا توجد حجوزات محذوفة</div>';
     return;
   }
   list.innerHTML = DELETED_BK.map((x, i) => `
     <div class="gcard">
       <div class="gchead">
         <div>
-          <div class="gname">👤 ${x.name}</div>
-          <div style="font-size:11px;color:var(--text-muted);margin-top:3px">🚪 غرفة ${x.room} &nbsp;|&nbsp; حُذف بواسطة: ${x.deletedBy||'—'} &nbsp;|&nbsp; ${fmtTime(x.deletedAt)}</div>
+          <div class="gname"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> ${x.name}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:3px"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><rect x="3" y="2" width="13" height="20" rx="1"/><circle cx="10" cy="12" r="1" fill="currentColor"/></svg> غرفة ${x.room} &nbsp;|&nbsp; حُذف بواسطة: ${x.deletedBy||'—'} &nbsp;|&nbsp; ${fmtTime(x.deletedAt)}</div>
         </div>
         <div style="display:flex;gap:6px">
-          <button class="bsm bedit" onclick="askRestore(${i})">↩️ استرجاع</button>
-          <button class="bsm bdel" onclick="askPermDelete(${i})">❌ حذف نهائي</button>
+          <button class="bsm bedit" onclick="askRestore(${i})"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg> استرجاع</button>
+          <button class="bsm bdel" onclick="askPermDelete(${i})">✗ حذف نهائي</button>
         </div>
       </div>
       <div class="gdet">
-        <div class="gdi"><div class="dl">📞 الهاتف</div><div class="dv">${x.phone}</div></div>
-        <div class="gdi"><div class="dl">📅 الوصول</div><div class="dv">${fmt(x.checkin)}</div></div>
-        <div class="gdi"><div class="dl">📅 المغادرة</div><div class="dv">${fmt(x.checkout)}</div></div>
-        ${x.amount ? `<div class="gdi"><div class="dl">💰 المبلغ</div><div class="dv" style="color:var(--green)">${x.amount} ج.م</div></div>` : ''}
+        <div class="gdi"><div class="dl"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 3.1 4.2 2 2 0 0 1 5.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L9.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7A2 2 0 0 1 22 16.9z"/></svg> الهاتف</div><div class="dv">${x.phone}</div></div>
+        <div class="gdi"><div class="dl"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> الوصول</div><div class="dv">${fmt(x.checkin)}</div></div>
+        <div class="gdi"><div class="dl"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> المغادرة</div><div class="dv">${fmt(x.checkout)}</div></div>
+        ${x.amount ? `<div class="gdi"><div class="dl"><svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><path d="M9 10h4.5a1.5 1.5 0 0 1 0 3H9"/></svg> المبلغ</div><div class="dv" style="color:var(--green)">${x.amount} ج.م</div></div>` : ''}
       </div>
     </div>`).join('');
 }
 
 function askPermDelete(i) {
   const d = DELETED_BK[i];
-  if(confirm(`⚠️ حذف نهائي لـ "${d.name}" — لا يمكن الاسترجاع بعدها!
+  if(confirm(`⚠ حذف نهائي لـ "${d.name}" — لا يمكن الاسترجاع بعدها!
 هل أنت متأكد؟`)) {
     DELETED_BK.splice(i, 1);
     localStorage.setItem('hb_deleted', JSON.stringify(DELETED_BK));
     renderTrash();
-    toast('🗑️ تم الحذف النهائي', 'success');
+    toast('🗑 تم الحذف النهائي', 'success');
   }
 }
 
@@ -1661,7 +1794,7 @@ async function restoreBooking(i) {
   await saveHotel();
   renderTrash();
   renderFloors();
-  toast('✅ تم استرجاع الحجز بنجاح', 'success');
+  toast('✓ تم استرجاع الحجز بنجاح', 'success');
 }
 
 function resetConfig() {
@@ -1719,7 +1852,7 @@ function doInstall() {
     _installPrompt.userChoice.then(r => {
       if(r.outcome === 'accepted') {
         document.getElementById('install-banner').classList.remove('show');
-        toast('✅ تم تثبيت التطبيق!', 'success');
+        toast('✓ تم تثبيت التطبيق!', 'success');
       }
       _installPrompt = null;
     });
@@ -1733,7 +1866,7 @@ function dismissInstall() {
 
 window.addEventListener('appinstalled', () => {
   document.getElementById('install-banner').classList.remove('show');
-  toast('✅ تم تثبيت التطبيق بنجاح!', 'success');
+  toast('✓ تم تثبيت التطبيق بنجاح!', 'success');
 });
 
 // Register Service Worker for offline support
