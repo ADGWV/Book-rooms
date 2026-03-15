@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جاري التحويل...</title>
+<script>
+  // GitHub Pages 404 trick for clean URLs
+  // /Bk-404  →  Bk-rooms.html#Bk-404
+  (function() {
+    var path = window.location.pathname; // e.g. /Book-rooms/Bk-404
+    var parts = path.split('/');
+    var last = parts[parts.length - 1]; // e.g. Bk-404
+
+    // Base URL of the repo (up to repo name)
+    var base = parts.slice(0, parts.length - 1).join('/'); // e.g. /Book-rooms
+
+    if(last && last.startsWith('Bk-')) {
+      window.location.replace(base + '/Bk-rooms.html#' + last);
+    } else {
+      window.location.replace(base + '/Bk-rooms.html');
+    }
+  })();
+</script>
+</head>
+<body style="background:#0D0D0D;color:#F0E6D3;font-family:'Tajawal',sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0">
+  <div style="text-align:center">
+    <div style="font-size:40px;margin-bottom:12px">🏨</div>
+    <div style="font-size:16px;color:#C9A84C;font-weight:700">جاري التحويل...</div>
+  </div>
+</body>
+</html>
