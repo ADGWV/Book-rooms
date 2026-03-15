@@ -27,13 +27,11 @@
 <meta property="og:title" content="فندق المدينة الشبابية">
 <meta property="og:description" content="احجز غرفتك في فندق المدينة الشبابية بكل سهولة">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://adgwv.github.io/Book-rooms
-/Bk-rooms.html">
+<meta property="og:url" content="https://adgwv.github.io/Clover/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="فندق المدينة الشبابية">
 <meta name="twitter:description" content="احجز غرفتك في فندق المدينة الشبابية بكل سهولة">
-<meta name="twitter:image" content="https://adgwv.github.io/Book-rooms
-/Bk.png">
+<meta name="twitter:image" content="https://adgwv.github.io/Clover/cover.png">
 <meta property="og:site_name" content="فندق المدينة الشبابية">
 
 <link rel="manifest" id="pwa-manifest">
@@ -491,6 +489,82 @@ button .ico,a .ico{vertical-align:-.15em}
   .fgrid{grid-template-columns:1fr 1fr;gap:16px}
   .add-user-grid{grid-template-columns:1fr 1fr;gap:14px}
 }
+
+/* ══════════════════════════════════════
+   CALENDAR PAGE — GANTT STYLE
+══════════════════════════════════════ */
+#calpage{display:none;padding:20px 20px 90px;width:100%;box-sizing:border-box}
+
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.cal-header h2{font-size:19px;font-weight:800;color:var(--gold);margin:0}
+.cal-nav{display:flex;align-items:center;gap:8px}
+.cal-nav-btn{background:var(--dark3);border:1px solid var(--border);border-radius:50%;color:var(--text);font-family:'Tajawal','Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-size:18px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;padding:0}
+.cal-nav-btn:hover{border-color:var(--gold);color:var(--gold)}
+.cal-month-label{font-size:15px;font-weight:800;color:var(--text);min-width:140px;text-align:center;background:var(--dark3);border:1px solid var(--border);border-radius:20px;padding:7px 16px}
+.cal-today-btn{background:rgba(201,168,76,.1);color:var(--gold);border:1px solid rgba(201,168,76,.3);border-radius:20px;font-family:'Tajawal','Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-size:12px;font-weight:700;padding:7px 14px;cursor:pointer;transition:all .2s}
+.cal-today-btn:hover{background:rgba(201,168,76,.2)}
+
+.cal-stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.cal-stat{background:var(--dark2);border:1px solid var(--border);border-radius:12px;padding:11px 14px;flex:1;min-width:80px;text-align:center}
+.cal-stat .csn{font-size:20px;font-weight:800;color:var(--gold)}
+.cal-stat .csl{font-size:10px;color:var(--text-muted);margin-top:3px}
+
+/* ── scroll wrapper ── */
+.cal-scroll-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:14px;border:1px solid var(--border);background:var(--dark2)}
+/* RTL: الأيام من اليمين (1) لليسار (31) */
+.cal-table{border-collapse:collapse;table-layout:fixed;direction:ltr}
+
+/* ── header row ── */
+.cal-table thead th{background:var(--dark2);padding:8px 0;font-size:10px;font-weight:700;color:var(--text-muted);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:10;text-align:center;width:34px}
+.cal-table thead th.today-col{color:var(--gold);background:rgba(201,168,76,.08)}
+.cal-table thead th .day-num{font-size:13px;font-weight:800;color:var(--text);display:block;line-height:1.2}
+.cal-table thead th .day-name{font-size:8px;color:var(--text-muted)}
+.cal-table thead th.weekend-col .day-num{color:rgba(255,255,255,.45)}
+
+/* ── room col — sticky اليمين لأن الجدول RTL ── */
+.cal-room-col{background:var(--dark2);padding:0 6px;font-size:12px;font-weight:800;color:var(--gold);border-left:2px solid rgba(201,168,76,.2);white-space:nowrap;position:sticky;right:0;z-index:5;width:34px;min-width:34px;text-align:center;vertical-align:middle}
+
+/* ── floor row ── */
+.cal-floor-row td{background:rgba(201,168,76,.05);padding:5px 12px;font-size:10px;font-weight:700;color:rgba(201,168,76,.7);letter-spacing:.8px;border-top:1px solid rgba(255,255,255,.06)}
+
+/* ── Gantt row ── */
+.cal-room-row td.cal-gantt-cell{padding:3px 0;height:32px;position:relative}
+/* force LTR inside gantt wrap so left:0 = day 1 */
+.cal-gantt-wrap{position:relative;height:26px;overflow:visible;direction:ltr}
+/* day bg and bars use right: positioning so day1=right:0 */
+.cal-day-bg{position:absolute;top:0;height:100%;border-right:1px solid rgba(255,255,255,.04)}
+.cal-today-bg{background:rgba(201,168,76,.07)}
+.cal-weekend-bg{background:rgba(255,255,255,.015)}
+.cal-today-marker{position:absolute;top:0;width:1px;height:100%;background:var(--gold);opacity:.5;z-index:3;pointer-events:none}
+
+/* ── booking bar — لون واحد ذهبي ── */
+.cal-bk-bar{
+  position:absolute;
+  top:3px;height:20px;
+  border-radius:5px;
+  display:flex;align-items:center;justify-content:flex-end;
+  padding:0 6px;
+  cursor:pointer;
+  z-index:2;
+  transition:filter .15s, transform .1s;
+  box-shadow:0 2px 6px rgba(0,0,0,.35);
+  overflow:hidden;
+  min-width:4px;
+  background:linear-gradient(90deg,rgba(201,168,76,.9),rgba(224,186,92,.9));
+  color:#1a1200;
+}
+.cal-bk-bar:hover{filter:brightness(1.15);transform:scaleY(1.08);z-index:4}
+.cal-bk-label{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;direction:rtl;text-align:right;width:100%}
+
+/* ── legend — removed since single color ── */
+.cal-legend{display:none}
+
+@media(max-width:768px){
+  #calpage{padding:10px 8px 80px}
+  .cal-month-label{font-size:12px;min-width:110px}
+  .cal-room-col{width:28px;min-width:28px;font-size:10px;padding:0 3px}
+  .cal-bk-label{font-size:9px}
+}
 </style>
 </head>
 <body>
@@ -610,6 +684,7 @@ button .ico,a .ico{vertical-align:-.15em}
     <div class="nav-tabs">
       <button class="nav-tab active" id="tab-rooms" onclick="switchTab('rooms');closeSidebar()">🏨 الغرف</button>
       <button class="nav-tab" id="tab-search" onclick="switchTab('search');closeSidebar()">🔍 بحث</button>
+      <button class="nav-tab" id="tab-cal" onclick="switchTab('cal');closeSidebar()">📅 التقويم</button>
       <button class="nav-tab" id="tab-notif" onclick="switchTab('notif');closeSidebar()">🔔 الإشعارات <span class="notif-badge" id="notif-badge-side" style="position:static;margin-right:auto"></span></button>
       <button class="nav-tab admin-only" id="tab-admin" onclick="switchTab('admin');closeSidebar()">⚙️ المستخدمين</button>
       <button class="nav-tab admin-only" id="tab-trash" onclick="switchTab('trash');closeSidebar()">🗑 المحذوفات</button>
@@ -709,6 +784,34 @@ button .ico,a .ico{vertical-align:-.15em}
 <div id="trashpage" style="display:none;padding:22px 22px 90px;width:100%">
   <div class="ptitle"><h2>🗑 الحجوزات المحذوفة</h2><p>يمكن استرجاع أي حجز محذوف</p></div>
   <div id="trash-list" style="max-width:700px;margin:0 auto"></div>
+</div>
+
+<!-- CALENDAR PAGE -->
+<div id="calpage">
+  <div class="cal-header">
+    <h2>📅 تقويم الحجوزات</h2>
+    <div class="cal-nav">
+      <button class="cal-nav-btn" onclick="calChangeMonth(1)">‹</button>
+      <div class="cal-month-label" id="cal-month-label">—</div>
+      <button class="cal-nav-btn" onclick="calChangeMonth(-1)">›</button>
+      <button class="cal-today-btn" onclick="calGoToday()">اليوم</button>
+    </div>
+  </div>
+  <div class="cal-stats" id="cal-stats"></div>
+  <div class="cal-scroll-wrap">
+    <table class="cal-table" id="cal-table">
+      <thead id="cal-thead"></thead>
+      <tbody id="cal-tbody"></tbody>
+    </table>
+  </div>
+  <div class="cal-legend">
+    <span style="font-weight:700;color:var(--text)">الألوان:</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot bar-c0"></span>حجز ١</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot bar-c1"></span>حجز ٢</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot bar-c2"></span>حجز ٣</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot bar-c3"></span>حجز ٤</span>
+    <span class="cal-legend-item"><span class="cal-legend-dot bar-c4"></span>حجز ٥+</span>
+  </div>
 </div>
 
 <!-- INSTALL BANNER -->
@@ -1280,7 +1383,7 @@ function animatePage(id) {
 }
 function switchTab(tab) {
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  ['fp','bp','adminpage','notifpage','trashpage'].forEach(id => document.getElementById(id).style.display='none');
+  ['fp','bp','adminpage','notifpage','trashpage','calpage'].forEach(id => document.getElementById(id).style.display='none');
   document.getElementById('search-bar').style.display = 'none';
   if(tab === 'rooms') {
     document.getElementById('tab-rooms').classList.add('active');
@@ -1292,6 +1395,11 @@ function switchTab(tab) {
     document.getElementById('search-bar').style.display = 'block';
     animatePage('search-bar');
     setTimeout(() => document.getElementById('search-input').focus(), 100);
+  } else if(tab === 'cal') {
+    document.getElementById('tab-cal').classList.add('active');
+    document.getElementById('calpage').style.display = 'block';
+    animatePage('calpage');
+    renderCalendar();
   } else if(tab === 'notif') {
     document.getElementById('tab-notif').classList.add('active');
     document.getElementById('notifpage').style.display = 'block';
@@ -2103,6 +2211,158 @@ function closeSidebar() {
     document.body.style.cursor='auto';
   }
 })();
+
+/* ══════════════════════════════════════
+   CALENDAR
+══════════════════════════════════════ */
+let calYear  = new Date().getFullYear();
+let calMonth = new Date().getMonth(); // 0-based
+
+const CAL_MONTH_NAMES = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const CAL_DAY_NAMES   = ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+const CAL_COL_W = 34; // px per day column
+
+function calChangeMonth(dir) {
+  calMonth -= dir; // dir=1 → go forward (Arabic RTL: left arrow = next)
+  if(calMonth > 11) { calMonth = 0; calYear++; }
+  if(calMonth < 0)  { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+function calGoToday() {
+  const n = new Date();
+  calYear = n.getFullYear();
+  calMonth = n.getMonth();
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const todayStr = getTodayStr();
+  const [ty, tm, td] = todayStr.split('-').map(Number);
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+
+  document.getElementById('cal-month-label').textContent = CAL_MONTH_NAMES[calMonth] + ' ' + calYear;
+
+  const days = [];
+  for(let d = 1; d <= daysInMonth; d++) {
+    days.push(calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(d).padStart(2,'0'));
+  }
+
+  // ── THEAD — أيام معكوسة: آخر يوم على اليسار، يوم 1 على اليمين ──
+  const thead = document.getElementById('cal-thead');
+  let thHtml = '<tr>';
+  // نعكس الأيام عشان يوم 1 يكون على اليمين
+  const daysRev = [...days].reverse();
+  daysRev.forEach(dayStr => {
+    const [,, dd] = dayStr.split('-');
+    const dow = new Date(dayStr).getDay();
+    const isToday = dayStr === todayStr;
+    const isWeekend = dow === 5 || dow === 6;
+    thHtml += `<th class="${isToday?'today-col':''} ${isWeekend?'weekend-col':''}">
+      <span class="day-num">${Number(dd)}</span>
+      <span class="day-name">${CAL_DAY_NAMES[dow]}</span>
+    </th>`;
+  });
+  thHtml += '<th class="cal-room-col">غرفة</th></tr>';
+  thead.innerHTML = thHtml;
+
+  // ── TBODY ──
+  const tbody = document.getElementById('cal-tbody');
+  let tbHtml = '';
+  let totalBookings = 0, totalOccupied = 0;
+
+  const firstDay = days[0];
+  const lastDay  = days[days.length - 1];
+
+  FLOORS.forEach(fl => {
+    tbHtml += `<tr class="cal-floor-row"><td colspan="${daysInMonth + 1}">🏢 ${fl.name}</td></tr>`;
+
+    fl.rooms.forEach(rn => {
+      const bookings = GG(rn);
+      const relevant = bookings.filter(bk =>
+        bk.checkin && bk.checkout &&
+        bk.checkin <= lastDay && bk.checkout > firstDay
+      );
+
+      totalBookings += relevant.length;
+
+      // Build cells HTML — each cell is a position anchor
+      let cellsHtml = '';
+      days.forEach((dayStr, di) => {
+        const dow = new Date(dayStr).getDay();
+        const isToday = dayStr === todayStr;
+        const isWeekend = dow === 5 || dow === 6;
+        const occupied = relevant.some(bk => bk.checkin <= dayStr && bk.checkout > dayStr);
+        if(occupied) totalOccupied++;
+        cellsHtml += `<td class="cal-cell${isToday?' today-col':''}${isWeekend?' weekend-col':''}" data-day="${di}">
+          ${isToday ? '<div class="cal-today-marker"></div>' : ''}
+        </td>`;
+      });
+
+      tbHtml += `<tr class="cal-room-row" data-room="${rn}">`;
+      tbHtml += `<td colspan="${daysInMonth}" class="cal-gantt-cell" style="width:${daysInMonth*CAL_COL_W}px">`;
+      tbHtml += `<div class="cal-gantt-wrap" style="width:${daysInMonth*CAL_COL_W}px">`;
+
+      // Day background stripes — right:0 = day 1
+      days.forEach((dayStr, di) => {
+        const dow = new Date(dayStr).getDay();
+        const isToday = dayStr === todayStr;
+        const isWeekend = dow === 5 || dow === 6;
+        const rightPos = di * CAL_COL_W; // di=0 → day1 → right:0
+        tbHtml += `<div class="cal-day-bg${isToday?' cal-today-bg':''}${isWeekend?' cal-weekend-bg':''}" style="right:${rightPos}px;width:${CAL_COL_W}px"></div>`;
+      });
+
+      // Booking bars — right = from day 1
+      relevant.forEach((bk) => {
+        const ciStr = bk.checkin < firstDay ? firstDay : bk.checkin;
+        const coStr = bk.checkout > lastDay ? calYear + '-' + String(calMonth+1).padStart(2,'0') + '-' + String(daysInMonth + 1).padStart(2,'0') : bk.checkout;
+        const ciDay = parseInt(ciStr.split('-')[2]) - 1; // 0-indexed, day1=0
+        const coDay = parseInt(coStr.split('-')[2]) - 1;
+        const spanDays = coDay - ciDay;
+        if(spanDays <= 0) return;
+        const right = ciDay * CAL_COL_W; // right:0 = day 1
+        const width = spanDays * CAL_COL_W;
+        const shortName = bk.name || '';
+        tbHtml += `<div class="cal-bk-bar"
+          style="right:${right}px;width:${width}px"
+          title="${bk.name} | ${fmt(bk.checkin)} ← ${fmt(bk.checkout)}"
+          onclick="openRoom('${rn}','${fl.name}');switchTab('rooms')">
+          <span class="cal-bk-label">${shortName}</span>
+        </div>`;
+      });
+
+      tbHtml += `</div></td><td class="cal-room-col">${rn}</td></tr>`;
+    });
+  });
+
+  tbody.innerHTML = tbHtml;
+
+  // Stats
+  const totalRooms = FLOORS.reduce((s, fl) => s + fl.rooms.length, 0);
+  const maxOccupied = totalRooms * daysInMonth;
+  const occPct = maxOccupied > 0 ? Math.round(totalOccupied / maxOccupied * 100) : 0;
+  document.getElementById('cal-stats').innerHTML = `
+    <div class="cal-stat"><div class="csn">${totalBookings}</div><div class="csl">حجز هذا الشهر</div></div>
+    <div class="cal-stat"><div class="csn">${totalOccupied}</div><div class="csl">يوم-غرفة محجوز</div></div>
+    <div class="cal-stat"><div class="csn">${occPct}%</div><div class="csl">نسبة الإشغال</div></div>
+    <div class="cal-stat"><div class="csn">${daysInMonth}</div><div class="csl">أيام الشهر</div></div>
+  `;
+
+  // Auto-scroll to today — RTL: يوم 1 على اليمين
+  if(calYear === ty && calMonth === tm - 1) {
+    setTimeout(() => {
+      const wrap = document.querySelector('.cal-scroll-wrap');
+      if(!wrap) return;
+      // في RTL، اليوم الأول على أقصى اليمين
+      // نحرك ليوم اليوم في المنتصف
+      const totalW = daysInMonth * CAL_COL_W;
+      const todayIdx = Number(td) - 1;
+      // المسافة من اليمين لليوم = (daysInMonth - todayIdx - 1) أيام
+      const fromRight = (daysInMonth - todayIdx - 1) * CAL_COL_W;
+      const scrollTo = fromRight - wrap.clientWidth / 2 + CAL_COL_W / 2;
+      wrap.scrollLeft = Math.max(0, scrollTo);
+    }, 60);
+  }
+}
 
 init();
 </script>
