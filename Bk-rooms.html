@@ -1670,6 +1670,20 @@ function renderGuests() {
     const isToday = x.checkin === t;
     const isCheckout = x.checkout === t && x.checkin !== t;
     const isActiveNow = x.checkin < t && x.checkout > t;
+    // حساب الأيام المتبقية
+    const todayMs = new Date(t).getTime();
+    const checkinMs = new Date(x.checkin).getTime();
+    const checkoutMs = new Date(x.checkout).getTime();
+    const daysToCheckin = Math.round((checkinMs - todayMs) / 86400000);
+    const daysToCheckout = Math.round((checkoutMs - todayMs) / 86400000);
+    let daysBadge = '';
+    if(!isToday && !isCheckout && !isActiveNow && x.checkin > t) {
+      // حجز مستقبلي — باقي على الوصول
+      daysBadge = `<span style="background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700">⏳ ${daysToCheckin} يوم للوصول</span>`;
+    } else if(isActiveNow) {
+      // نزيل حالي — باقي على المغادرة
+      daysBadge = `<span style="background:rgba(231,76,60,.12);color:var(--red);border:1px solid rgba(231,76,60,.25);border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700">🚪 ${daysToCheckout} يوم للمغادرة</span>`;
+    }
     let cardClass = '';
     let tag = '';
     if(isToday && x.arrivedAt) {
@@ -1696,6 +1710,7 @@ function renderGuests() {
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
           ${tag}
           <div class="gname">👤 ${x.name}</div>
+          ${daysBadge}
         </div>
         <div class="gacts">
           <button class="bsm bshr" onclick="openShare(${i})">${icoShare}</button>
