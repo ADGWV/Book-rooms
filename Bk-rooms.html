@@ -1672,7 +1672,10 @@ function renderGuests() {
     const isActiveNow = x.checkin < t && x.checkout > t;
     let cardClass = '';
     let tag = '';
-    if(isToday) {
+    if(isToday && x.arrivedAt) {
+      cardClass = ' active-now';
+      tag = '<span class="today-tag" style="background:rgba(149,165,166,.2);color:#95a5a6;border:1px solid rgba(149,165,166,.3)">🏨 نزيل حالي</span>';
+    } else if(isToday) {
       cardClass = ' today-active';
       tag = '<span class="today-tag">✈️ وصول اليوم</span>';
     } else if(isActiveNow) {
@@ -1985,7 +1988,7 @@ function openDailyBookings() {
           ? `<button class="daily-action-btn done-btn" onclick="event.stopPropagation()">✓ وصل</button>`
           : `<button class="daily-action-btn arrive-btn" onclick="event.stopPropagation();markArrived('${b.room}',${b.gIdx})">✈️ وصل؟</button>`);
     return `
-    <div class="${cardClass}" onclick="closeOverlay('dailyoverlay');openRoom('${b.room}','${b.floor}');switchTab('rooms')">
+    <div class="${cardClass}" onclick="closeOverlay('dailyoverlay');switchTab('rooms');openRoom('${b.room}','${b.floor}')">
       <div class="daily-card-top">
         <div class="daily-room-badge" style="${isCheckout ? 'background:linear-gradient(135deg,#e74c3c,#c0392b)' : (confirmed && !isCheckout ? 'background:linear-gradient(135deg,#27ae60,#1e8449)' : '')}">${b.room}</div>
         <div>
@@ -2442,7 +2445,7 @@ function renderCalendar() {
         tbHtml += `<div class="cal-bk-bar"
           style="right:${right}px;width:${width}px"
           title="${bk.name} | ${fmt(bk.checkin)} ← ${fmt(bk.checkout)}"
-          onclick="openRoom('${rn}','${fl.name}');switchTab('rooms')">
+          onclick="switchTab('rooms');openRoom('${rn}','${fl.name}')">
           <span class="cal-bk-label">${shortName}</span>
         </div>`;
       });
