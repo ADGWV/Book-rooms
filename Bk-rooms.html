@@ -1227,6 +1227,18 @@ async function loadAll() {
     document.getElementById('offlinebanner').classList.add('show');
   }
   hideLoad();
+  // تحقق من السيشن قبل إظهار صفحة تسجيل الدخول
+  try {
+    const saved = JSON.parse(localStorage.getItem('hb_session') || 'null');
+    if(saved) {
+      const found = USERS.find(x => x.username === saved.username && x.password === saved.password);
+      if(found) {
+        applyLogin(found);
+        startPolling();
+        return;
+      }
+    }
+  } catch(e) {}
   document.getElementById('loginpage').classList.add('show');
   startPolling();
 }
@@ -2186,19 +2198,6 @@ async function init() {
   }
 
   await loadAll();
-
-  // Restore session if user was logged in before
-  try {
-    const saved = JSON.parse(localStorage.getItem('hb_session') || 'null');
-    if(saved) {
-      const found = USERS.find(x => x.username === saved.username && x.password === saved.password);
-      if(found) {
-        document.getElementById('loginpage').classList.remove('show');
-        applyLogin(found);
-        return;
-      }
-    }
-  } catch(e) {}
 }
 
 // Handle hash deep link after login
