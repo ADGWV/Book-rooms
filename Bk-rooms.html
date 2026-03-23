@@ -59,7 +59,6 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{font-family:'Tajawal','Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overscroll-behavior:none;cursor:none}
 a,button,[onclick],[role="button"]{cursor:none!important}
-
 /* CUSTOM CURSOR */
 #cursor-dot{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s,opacity .2s;will-change:transform}
 #cursor-ring{position:fixed;top:0;left:0;width:36px;height:36px;border:2px solid rgba(201,168,76,.6);border-radius:50%;pointer-events:none;z-index:99998;transform:translate(-50%,-50%);transition:width .25s cubic-bezier(.22,1,.36,1),height .25s cubic-bezier(.22,1,.36,1),border-color .25s,opacity .2s;will-change:transform}
@@ -68,6 +67,10 @@ a,button,[onclick],[role="button"]{cursor:none!important}
 #cursor-dot.hovering{width:6px;height:6px;background:#fff}
 #cursor-ring.hovering{width:52px;height:52px;border-color:rgba(201,168,76,.9);background:rgba(201,168,76,.06)}
 #cursor-dot.hidden,#cursor-ring.hidden{opacity:0}
+
+
+
+
 
 
 /* INSTALL BANNER */
@@ -596,8 +599,7 @@ button .ico,a .ico{vertical-align:-.15em}
 </style>
 </head>
 <body>
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
+
 
 <!-- LOADING -->
 <div id="loadscreen">
@@ -606,6 +608,9 @@ button .ico,a .ico{vertical-align:-.15em}
   <div class="load-sub" id="load-sub-txt">جاري الاتصال بقاعدة البيانات...</div>
   <div class="load-bar"><div class="load-fill"></div></div>
 </div>
+
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
 
 <!-- FIREBASE SETUP OVERLAY -->
 <div class="overlay" id="fbsetupoverlay">
@@ -950,9 +955,13 @@ let unreadCount = 0;
 ══════════════════════════════════════ */
 (()=>{
   const ic = s => `<svg xmlns='http://www.w3.org/2000/svg' width='${s}' height='${s}'><rect width='${s}' height='${s}' rx='${Math.round(s*.18)}' fill='%231A1A1A'/><text x='50%25' y='72%25' font-size='${Math.round(s*.55)}' text-anchor='middle'>%F0%9F%8F%A8</text></svg>`;
+
+  // صورة بديلة للـ screenshot (مستطيل ذهبي بسيط)
+  const screenshotSvg = (w,h) => `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='${w}' height='${h}'><rect width='${w}' height='${h}' fill='%230D0D0D'/><rect x='${w*.05}' y='${h*.05}' width='${w*.9}' height='${h*.9}' rx='12' fill='%231A1A1A' stroke='%23C9A84C' stroke-width='2'/><text x='50%25' y='45%25' font-size='48' text-anchor='middle' dominant-baseline='middle'>%F0%9F%8F%A8</text><text x='50%25' y='62%25' font-size='22' text-anchor='middle' fill='%23C9A84C' font-family='sans-serif'>%D9%85%D9%88%D8%AA%D9%8A%D9%84 %D8%B4%D8%A8%D8%A7%D8%A8 %D8%B1%D8%A3%D8%B3 %D8%A7%D9%84%D8%A8%D8%B1</text></svg>`;
+
   const m = {
     name: "موتيل شباب رأس البر",
-    short_name: "فندق ذهبي",
+    short_name: "موتيل رأس البر",
     description: "نظام إدارة حجوزات موتيل شباب رأس البر",
     start_url: "./",
     display: "standalone",
@@ -964,6 +973,10 @@ let unreadCount = 0;
     icons: [
       {src:"data:image/svg+xml,"+ic(192), sizes:"192x192", type:"image/svg+xml"},
       {src:"data:image/svg+xml,"+ic(512), sizes:"512x512", type:"image/svg+xml", purpose:"any maskable"}
+    ],
+    screenshots: [
+      { src: screenshotSvg(1280,720), sizes:"1280x720", type:"image/svg+xml", form_factor:"wide", label:"واجهة إدارة الغرف" },
+      { src: screenshotSvg(390,844), sizes:"390x844", type:"image/svg+xml", form_factor:"narrow", label:"نظام الحجوزات" }
     ]
   };
   document.getElementById('pwa-manifest').href = URL.createObjectURL(new Blob([JSON.stringify(m)], {type:'application/manifest+json'}));
